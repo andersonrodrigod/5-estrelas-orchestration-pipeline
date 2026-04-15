@@ -1,0 +1,50 @@
+INVESTIGACAO DE ESPECIALIDADE PARA CLASSIFICACAO
+
+Arquivo analisado: data\5_estrelas_fevereiro_tratado.csv
+Total de linhas da base: 4249438
+
+GRUPO REAL: QUALIVIDA
+
+PALAVRA_FILTRO: qualivida|qualivita
+- filtro LOCAL: LOCAL contem 'qualivida' ou 'qualivita'
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'qualivida' ou 'qualivita'
+- total apos filtro LOCAL: 27429
+- total final do grupo: 11613
+
+lista_qualivida = [
+    'MEDICO PAI QUALIVIDA',
+    'MEDICO OBESIDADE QUALIVIDA',
+    'CARDIOLOGIA QUALIVIDA',
+    'MÉDICO DA COLUNA QUALIVIDA',
+    'NUTRICAO QUALIVIDA',
+    'CLINICO GERAL QUALIVIDA',
+    'GERONTOLOGIA QUALIVIDA',
+    'ENFERMAGEM OBESIDADE QUALIVIDA',
+    'FISIOTERAPIA QUALIVIDA',
+    'PSICOLOGIA QUALIVIDA',
+]
+
+PALAVRA_FILTRO: sinta-se|sintase
+- filtro LOCAL: LOCAL contem 'sinta-se' ou 'sintase' ou 'sinta se'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro LOCAL: 104
+- total final do grupo: 104
+
+lista_qualivida = [
+    'PROGRAMA SINTA - SE BEM',
+    'MÉDICO TRANSPLANTE RENAL',
+    'ENFERMAGEM TRANSPLANTE RENAL',
+]
+
+PALAVRA_FILTRO: viver bem
+- filtro LOCAL: LOCAL contem 'viver bem'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro LOCAL: 483
+- total final do grupo: 483
+
+lista_qualivida = [
+    'MEDICO VIVER BEM',
+    'ENFERMAGEM VIVER BEM',
+    'CLINICO GERAL',
+    'ORTOPEDIA E TRAUMATOLOGIA',
+]
