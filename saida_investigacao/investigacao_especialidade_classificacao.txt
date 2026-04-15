@@ -3,11 +3,70 @@ INVESTIGACAO DE ESPECIALIDADE PARA CLASSIFICACAO
 Arquivo analisado: data\5_estrelas_fevereiro_tratado.csv
 Total de linhas da base: 4249438
 
-GRUPO REAL: QUALIVIDA
+GRUPO: CRED_ATEND EMERGENCIA
+PALAVRA_FILTRO: None
+- filtro TIPO: TIPO igual a 1
+- filtro CONTRATACAO: CONTRATACAO igual a 'rede credenciada'
+- filtro LOCAL: sem filtro em LOCAL
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 987551
+- total apos filtro CONTRATACAO: 26227
+- total apos filtro LOCAL: 26227
+- total final do grupo: 26227
 
-PALAVRA_FILTRO: qualivida|qualivita
-- filtro LOCAL: LOCAL contem 'qualivida' ou 'qualivita'
-- filtro ESPECIALIDADE: ESPECIALIDADE contem 'qualivida' ou 'qualivita'
+lista_cred_atend_emergencia = [
+    'CLINICO GERAL',
+    'OBSTETRICIA / PRE NATAL',
+    'PEDIATRIA',
+    'OFTALMOLOGIA',
+    'CIRURGIA GERAL',
+    'OTORRINOLARINGOLOGIA',
+    'ORTOPEDIA E TRAUMATOLOGIA',
+    'PSIQUIATRIA',
+    'GINECOLOGIA E OBSTETRICIA',
+    'ATENDIMENTO DO SERVICO',
+    'ORTOPEDIA PEDIATRICA',
+    'UROLOGIA PEDIATRICA',
+    'ACOLHIMENTO NUTRIÇÃO GESTANTES DIABETICA',
+    'CARDIOLOGIA',
+    'CIRURGIA DE CABECA E PESCOCO',
+    'HEMATOLOGIA PEDIATRICA',
+    'NEUROLOGIA',
+    'UROLOGIA',
+]
+
+GRUPO: HOSPITALAR
+PALAVRA_FILTRO: None
+- filtro TIPO: TIPO igual a 1
+- filtro CONTRATACAO: CONTRATACAO igual a 'rede propria'
+- filtro LOCAL: sem filtro em LOCAL
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 987551
+- total apos filtro CONTRATACAO: 178697
+- total apos filtro LOCAL: 178697
+- total final do grupo: 178697
+
+lista_hospitalar = [
+    'CLINICO GERAL',
+    'PEDIATRIA',
+    'OBSTETRICIA / PRE NATAL',
+    'ORTOPEDIA E TRAUMATOLOGIA',
+    'GINECOLOGIA E OBSTETRICIA',
+    'CIRURGIA GERAL',
+    'OFTALMOLOGIA',
+    'CLINICA MEDICA',
+    'ACUPUNTURA',
+    'CARDIOLOGIA',
+]
+
+GRUPO: QUALIVIDA
+PALAVRA_FILTRO: QUALIVIDA|QUALIVITA
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'QUALIVIDA' ou 'QUALIVITA'
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'QUALIVIDA' ou 'QUALIVITA'
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
 - total apos filtro LOCAL: 27429
 - total final do grupo: 11613
 
@@ -24,27 +83,191 @@ lista_qualivida = [
     'PSICOLOGIA QUALIVIDA',
 ]
 
-PALAVRA_FILTRO: sinta-se|sintase
-- filtro LOCAL: LOCAL contem 'sinta-se' ou 'sintase' ou 'sinta se'
+GRUPO: QUALIVIDA
+PALAVRA_FILTRO: SINTA-SE|SINTASE|SINTA SE|VIVER BEM
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'SINTA-SE', 'SINTASE', 'SINTA SE' ou 'VIVER BEM'
 - filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
-- total apos filtro LOCAL: 104
-- total final do grupo: 104
-
-lista_qualivida = [
-    'PROGRAMA SINTA - SE BEM',
-    'MÉDICO TRANSPLANTE RENAL',
-    'ENFERMAGEM TRANSPLANTE RENAL',
-]
-
-PALAVRA_FILTRO: viver bem
-- filtro LOCAL: LOCAL contem 'viver bem'
-- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
-- total apos filtro LOCAL: 483
-- total final do grupo: 483
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 587
+- total final do grupo: 587
 
 lista_qualivida = [
     'MEDICO VIVER BEM',
     'ENFERMAGEM VIVER BEM',
+    'PROGRAMA SINTA - SE BEM',
     'CLINICO GERAL',
+    'MÉDICO TRANSPLANTE RENAL',
     'ORTOPEDIA E TRAUMATOLOGIA',
+    'ENFERMAGEM TRANSPLANTE RENAL',
+]
+
+GRUPO: NASCER BEM
+PALAVRA_FILTRO: NB|RISCO
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'NB' ou 'RISCO'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 16637
+- total final do grupo: 16637
+
+lista_nascer_bem = [
+    'OBSTETRICIA / PRE NATAL',
+    'ENFERMAGEM NASCER BEM',
+    'ACOLHIMENTO PRE NATAL',
+    'OBSTETRICIA ALTO RISCO',
+    'PSICOLOGIA - AVALIAÇÃO',
+    'AVALIACAO PRE-PARTO',
+    'PSICOTERAPIA',
+]
+
+GRUPO: TELEMEDICINA
+PALAVRA_FILTRO: TELEM
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'TELEM'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 468
+- total final do grupo: 468
+
+lista_telemedicina = [
+    'NEUROPEDIATRIA',
+    'GENETICA MEDICA',
+    'FONOTERAPIA',
+    'CIRURGIA CARDIACA/HEMODINAMICA',
+]
+
+GRUPO: PRODUTO COORDENADO
+PALAVRA_FILTRO: NOSSO MEDICO|NOTRELIFE|NUCLEO MF|PROD. COORD|PROD.COORD
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'NOSSO MEDICO', 'NOTRELIFE', 'NUCLEO MF', 'PROD. COORD' ou 'PROD.COORD'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 5663
+- total final do grupo: 5663
+
+lista_produto_coordenado = [
+    'MEDICO SAUDE DA FAMILIA',
+    'GERIATRIA COORDENADO',
+    'ENFERMAGEM DE SAUDE DA FAMILIA',
+    'OFICINAS EDUCATIVAS',
+    'MEDICO OBESIDADE QUALIVIDA',
+    'MEDICO PAI QUALIVIDA',
+    'GERONTOLOGIA COORDENADO',
+    'GRUPO IDOSOS',
+    'MEDICO COORDENADO',
+]
+
+GRUPO: CASE
+PALAVRA_FILTRO: CASE
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'case'
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'QUALIVIDA'
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 7850
+- total final do grupo: 7612
+
+lista_case = [
+    'CASE GERIATRIA/GERONTOLOGIA',
+    'CASE CARDIOLOGIA',
+    'CASE REUMATOLOGIA',
+    'CASE PEDIATRIA',
+    'CASE CLINICA MEDICA',
+    'CASE NEUROLOGIA',
+    'CASE CUIDADOS PALIATIVOS',
+    'CASE ENFERMAGEM',
+    'CASE ANGIOLOGIA/CIRUR VASCULAR',
+    'CASE PNEUMOLOGIA',
+    'CASE INFECTOLOGIA',
+    'CASE NUTRICAO',
+    'CASE GASTROENTEROLOGIA',
+    'CASE ENDOCRINOLOGIA/METABOLOGIA',
+    'CASE DERMATOLOGIA CLINICA E CIRURGICA',
+    'CASE NEUROPEDIATRIA',
+    'CASE PSIQUIATRIA',
+    'CASE CARDIOLOGIA PEDIATRICA',
+    'CASE ORTOPEDIA PEDIATRICA',
+    'CASE PODOLOGIA',
+    'CASE ENDOCRINOLOGIA/METABOLOGIA PEDIATRICA',
+    'CASE PSICOTERAPIA',
+    'CASE PNEUMOLOGIA PEDIATRICA',
+    'CASE FONOAUDIOLOGIA',
+]
+
+GRUPO: TRANSPLANTE
+PALAVRA_FILTRO: TRANSPL
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: sem filtro em LOCAL
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 3780344
+- total final do grupo: 111
+
+lista_transplante = [
+    'MÉDICO TRANSPLANTE RENAL',
+    'MEDICO TRANSPLANTE MEDULA OSSEA',
+    'MEDICO TRANSPLANTE HEPATICO',
+    'ENFERMAGEM TRANSPLANTE RENAL',
+    'Enfermagem Transplante Renal',
+    'Médico Transplante de Medula Óssea',
+    'Assistente Social Transplante Hepatico',
+    'ENFERMAGEM TRANSPLANTE DE MEDULA ÓSSEA',
+    'Médico Transplante Renal',
+]
+
+GRUPO: TEA
+PALAVRA_FILTRO: TEA
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'tea'
+- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 4436
+- total final do grupo: 4436
+
+lista_tea = [
+    'CLINICO GERAL',
+    'FISIOTERAPIA TEA',
+    'ATENDIMENTO TEA',
+    'PSICOLOGIA TEA',
+    'TERAPIA OCUPACIONAL TEA',
+    'FONOAUDIOLOGIA TEA',
+    'PSICOLOGIA - AVALIAÇÃO',
+    'TERAPIA OCUPACIONAL - AVALIAÇÃO',
+    'FISIOTERAPIA',
+    'PSICOTERAPIA',
+    'FONOTERAPIA',
+    'NEUROPSICOLOGO',
+    'CLINICA MEDICA',
+    'FISIOT PEDIATRICA',
+    'ORTOPEDIA E TRAUMATOLOGIA',
+]
+
+GRUPO: GESTAR BEM
+PALAVRA_FILTRO: GESTAR|GESTAR BEM|PGS
+- filtro TIPO: TIPO diferente de 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: LOCAL contem 'gestar', 'gestar bem' ou 'pgs'
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'gestar', 'gestar bem' ou 'pgs'
+- total apos filtro TIPO: 3780344
+- total apos filtro CONTRATACAO: 3780344
+- total apos filtro LOCAL: 1920
+- total final do grupo: 1899
+
+lista_gestar_bem = [
+    'OBSTETRICIA ALTO RISCO GESTAR BEM',
+    'ENFERMAGEM GESTAR BEM',
 ]
