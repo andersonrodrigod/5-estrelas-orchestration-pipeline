@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 from pathlib import Path
 
@@ -165,3 +165,12 @@ else:
 # Grava uma versao resumida e facil de ler em TXT.
 with open(arquivo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
+
+# BLOCO OPCIONAL - GRAVAR BASE TRATADA
+# Descomente as linhas abaixo quando quiser salvar a base com
+# NOTA GERAL e CONTRATACAO ja preenchidas.
+
+arquivo_base_tratada = Path('data/5_estrelas_fevereiro_tratado.csv')
+df_saida = df.copy()
+df_saida.loc[df_valido.index, 'CONTRATACAO'] = df_valido['CONTRATACAO']
+df_saida.to_csv(arquivo_base_tratada, index=False, encoding='utf-8-sig')

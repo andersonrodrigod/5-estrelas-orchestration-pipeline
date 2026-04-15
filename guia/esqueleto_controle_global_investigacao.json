@@ -1,0 +1,47 @@
+{
+    "execucao": {
+        "arquivo_base": "data/5_estrelas_fevereiro_tratado.csv",
+        "arquivo_insumos": "utils/insumos/insumos 5 estrelas.xlsx",
+        "data_execucao": "",
+        "observacao": "Preencher quando a investigacao for executada."
+    },
+    "base": {
+        "total_linhas_original": 0,
+        "total_linhas_com_nota_valida": 0,
+        "total_linhas_sem_nota_valida": 0,
+        "total_com_contratacao": 0,
+        "total_sem_contratacao": 0
+    },
+    "investigacoes": {
+        "tipo_1": {
+            "descricao": "Contagem de CONTRATACAO dentro de TIPO = 1.",
+            "total_tipo_1": 0,
+            "total_tipo_diferente_1": 0,
+            "total_rede_credenciada": 0,
+            "total_rede_propria": 0
+        },
+        "tipo_diferente_6_rede_propria": {
+            "descricao": "Contagem de TIPO diferente de 6 com e sem filtro de rede propria.",
+            "total_tipo_diferente_6": 0,
+            "total_tipo_diferente_6_com_filtro_rede_propria": 0
+        }
+    },
+    "pendencias": {
+        "locais_nao_encontrados": {},
+        "duplicados_conflitantes_insumo": 0,
+        "observacoes": []
+    },
+    "sobrescritas": {
+        "controlar_no_futuro": true,
+        "total_linhas_sobrescritas": 0,
+        "por_regra": {},
+        "exemplos": []
+    },
+    "classificacao": {
+        "controlar_no_futuro": true,
+        "total_classificado": 0,
+        "total_sem_classificacao": 0,
+        "por_regra": {},
+        "por_classificacao_final": {}
+    }
+}
