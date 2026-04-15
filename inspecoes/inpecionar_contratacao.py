@@ -94,10 +94,10 @@ df_mapa = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO', 'contratacao'])
 df_mapa = df_mapa.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 
 mapa_contratacao = df_mapa.set_index('LOCAL_COMPARACAO')['contratacao']
-df_base['Contratacao encontrada'] = df_base['LOCAL_COMPARACAO'].map(mapa_contratacao)
+df_base['CONTRATACAO ENCONTRADA'] = df_base['LOCAL_COMPARACAO'].map(mapa_contratacao)
 
 locais_nao_encontrados = (
-    df_base[df_base['Contratacao encontrada'].isna()]['LOCAL']
+    df_base[df_base['CONTRATACAO ENCONTRADA'].isna()]['LOCAL']
     .fillna('VAZIO')
     .value_counts()
     .head(50)
@@ -112,19 +112,19 @@ resultado['inspecao_cruzamento_base_principal'] = {
     'total_linhas_sem_nota_numerica_valida': int(total_linhas_sem_nota_valida),
     'total_linhas_base_principal': int(len(df_base)),
     'total_linhas_ignoradas_por_nqa_ign_nan': int(total_linhas_ignoradas),
-    'total_encontrado': int(df_base['Contratacao encontrada'].notna().sum()),
-    'total_nao_encontrado': int(df_base['Contratacao encontrada'].isna().sum()),
-    'total_rede_propria': int((df_base['Contratacao encontrada'] == 'rede propria').sum()),
-    'total_rede_credenciada': int((df_base['Contratacao encontrada'] == 'rede credenciada').sum()),
+    'total_encontrado': int(df_base['CONTRATACAO ENCONTRADA'].notna().sum()),
+    'total_nao_encontrado': int(df_base['CONTRATACAO ENCONTRADA'].isna().sum()),
+    'total_rede_propria': int((df_base['CONTRATACAO ENCONTRADA'] == 'rede propria').sum()),
+    'total_rede_credenciada': int((df_base['CONTRATACAO ENCONTRADA'] == 'rede credenciada').sum()),
     'principais_locais_nao_encontrados': locais_nao_encontrados
 }
 
 print('Gravando os relatorios...')
-pasta_saida = Path('saida')
+pasta_saida = Path('saida_inspecao')
 pasta_saida.mkdir(exist_ok=True)
 
-arquivo_json = pasta_saida / 'inspecao_contratacao_duplicados.json'
-arquivo_txt = pasta_saida / 'inspecao_contratacao_duplicados.txt'
+arquivo_json = pasta_saida / 'inspecao_contratacao.json'
+arquivo_txt = pasta_saida / 'inspecao_contratacao.txt'
 
 with open(arquivo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resultado, arquivo, ensure_ascii=False, indent=4)
@@ -135,7 +135,7 @@ linhas_txt = [
     f'Arquivo analisado: {arquivo_insumos}',
     'Aba analisada: insumos',
     'Chave usada: Local',
-    'Valor retornado: contratacao',
+    'Valor retornado: CONTRATACAO',
     'Comparacao em minusculo: sim',
     f"Total de linhas: {resultado['total_linhas']}",
     f"Total de linhas duplicadas: {resultado['total_linhas_duplicadas']}",

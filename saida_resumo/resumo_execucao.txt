@@ -1,0 +1,46 @@
+RESUMO DA EXECUCAO
+
+Arquivo base: data\5_estrelas_fevereiro.csv
+Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+
+Total de linhas original: 4249438
+Total de linhas com nota valida: 1217448
+Total de linhas sem nota valida: 3031990
+
+COLUNAS CRIADAS:
+- Nenhuma coluna criada
+
+NOTA GERAL:
+Linhas com nota geral: 1217448
+Linhas sem nota geral: 3031990
+
+CONTRATACAO:
+Arquivo de insumos encontrado: True
+Total rede propria: 1104281
+Total rede credenciada: 113140
+Total nao encontrado: 27
+
+Principais locais nao encontrados:
+- CRESCER CLINICA E CONSULTORIA: 4
+- CLINICA MOVIMENTAR: 2
+- LABORATORIO CLAUDINO: 1
+- PROLAB ANALISES E DIAGNOSTICO: 1
+- LABORATORIO DR TAJARA: 1
+- BARROS E MORAIS CARVALHO LTDA: 1
+- CONSCIENTEMENTE INFANTIL: 1
+- FISIOMASTER: 1
+- UNIMEF FISIOTERAPIA: 1
+- SANTA LUCIA DIAGNOSTICA: 1
+- CEOP CENTRO ODONTOLOGICO E DE PREVENCAO LTDA: 1
+- CLINICA MEDICA CLEMENTE: 1
+- FISIO SERTAO CENTRAL: 1
+- CALIGO CLINICA DE PSICOLOGIA: 1
+- HOSPITAL IMAGEM SAO CARLOS: 1
+- CENTRO TERAPEUTICO GUAIBA: 1
+- CLINICA NUMEN: 1
+- HORUS CLINICA MED PSICO: 1
+- INST DEBORA CURCIO: 1
+- CLINICA TRES PODERES: 1
+- ROSA CLINICA MULTIDISCIPLINAR: 1
+- HOSPITAL PIO XII: 1
+- POLICLINICA MTZ: 1

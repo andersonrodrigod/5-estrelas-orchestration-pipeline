@@ -8,7 +8,7 @@ df = pd.read_csv('data/5_estrelas_fevereiro.csv')
 
 colunas_notas = ['NOTA1', 'NOTA2', 'NOTA3', 'NOTA4', 'NOTA5']
 
-pasta_saida = Path('saida')
+pasta_saida = Path('saida_inspecao')
 pasta_saida.mkdir(exist_ok=True)
 
 resultado = {}

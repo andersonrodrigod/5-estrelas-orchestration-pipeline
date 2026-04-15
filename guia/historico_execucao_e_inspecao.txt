@@ -1,0 +1,267 @@
+HISTORICO DO PROJETO - EXECUCAO E INSPECAO
+
+OBJETIVO DESTE ARQUIVO
+
+Este arquivo registra o que ja foi definido e implementado no projeto ate agora.
+Ele serve como memoria do projeto para consulta futura e como base para montar
+um README mais completo no final.
+
+--------------------------------------------------
+
+VISAO GERAL DO PROJETO
+
+O projeto foi definido para ser simples, inspecionavel e seguro.
+
+Decisoes principais:
+
+- manter a execucao principal no arquivo app.py
+- manter inspecoes em arquivos separados
+- evitar arquitetura MVC
+- evitar complexidade desnecessaria
+- priorizar leitura facil do codigo
+- gerar resumos em JSON e TXT em vez de depender de muitos prints
+
+Arquivos principais ate agora:
+
+- app.py
+- inspecionar_notas.py
+- inpecionar_contratacao.py
+
+--------------------------------------------------
+
+ESTRUTURA ATUAL DE RESPONSABILIDADE
+
+app.py
+
+- arquivo principal da execucao
+- le a base principal
+- garante colunas obrigatorias
+- calcula Nota geral
+- filtra linhas com nota numerica valida
+- cruza LOCAL com a planilha de insumos
+- preenche Contratacao
+- gera resumo final em JSON e TXT
+
+inspecionar_notas.py
+
+- faz auditoria das colunas NOTA1 a NOTA5
+- conta valores originais e padronizados
+- detecta NaN, vazio, numerico e nao numerico
+- mostra formatos diferentes como 5 e 5.0
+- gera JSON e TXT de inspecao
+
+inpecionar_contratacao.py
+
+- faz auditoria da logica de Contratacao
+- verifica duplicados na planilha de insumos
+- verifica se LOCAL da base principal encontra Local no insumo
+- considera apenas linhas com nota numerica valida
+- ignora IGN, NQA e vazios na parte de LOCAL
+- gera JSON e TXT de inspecao
+
+--------------------------------------------------
+
+REGRAS JA DEFINIDAS PARA NOTA GERAL
+
+Colunas usadas:
+
+- NOTA1
+- NOTA2
+- NOTA3
+- NOTA4
+- NOTA5
+
+Regra definida:
+
+- converter as notas para numero com pandas
+- valores nao numericos viram NaN
+- a Nota geral e calculada somente com valores numericos validos
+- IGN e NQA nao entram na media
+- vazio e NaN nao entram na media
+- a media e arredondada para 2 casas decimais
+
+Observacao importante:
+
+- valores como 5.0 e 5 representam a mesma nota e devem ser tratados como
+  equivalentes na analise
+
+Decisao de negocio ja consolidada:
+
+- linhas sem nenhuma nota numerica valida nao devem seguir para as proximas
+  etapas de classificacao
+
+--------------------------------------------------
+
+O QUE FOI FEITO NA INSPECAO DE NOTAS
+
+O arquivo inspecionar_notas.py foi criado para entender a qualidade dos dados
+das colunas de nota antes de confiar no calculo da media.
+
+O que a inspecao faz:
+
+- conta total de linhas
+- conta total numerico por coluna
+- conta total nao numerico por coluna
+- conta NaN e vazio
+- mostra contagem de valores originais
+- mostra contagem de valores padronizados
+- mostra formatos diferentes encontrados
+- conta linhas com algum valor numerico
+- conta linhas com algum valor nao numerico
+- conta linhas com mistura de numerico e nao numerico
+
+Aprendizados importantes dessa etapa:
+
+- existiam valores como IGN e NQA nas colunas de nota
+- existiam formatos mistos como 5 e 5.0
+- a inspecao ajudou a confirmar que a media nao deveria considerar texto
+- a inspecao mostrou que parte da base nao tinha nota numerica valida
+
+Arquivos gerados por essa etapa:
+
+- saida/inspecao_notas.json
+- saida/inspecao_notas.txt
+
+--------------------------------------------------
+
+REGRAS JA DEFINIDAS PARA CONTRATACAO
+
+Fonte escolhida para contratacao:
+
+- utils/insumos/insumos 5 estrelas.xlsx
+- aba: insumos
+
+Colunas usadas:
+
+- base principal: LOCAL
+- base auxiliar: Local
+- valor retornado: contratacao
+
+Tratamento definido para comparacao:
+
+- remover espacos no inicio e fim
+- usar comparacao em minusculo
+- comparar usando coluna auxiliar LOCAL_COMPARACAO
+
+Regras de execucao:
+
+- considerar apenas linhas com pelo menos uma nota numerica valida
+- ignorar na base principal:
+  - IGN
+  - NQA
+  - vazio
+  - NaN
+
+Tratamento de duplicidade no insumo:
+
+- remover duplicados iguais
+- manter a analise separada para descobrir se ha duplicados conflitantes
+
+--------------------------------------------------
+
+O QUE FOI FEITO NA INSPECAO DE CONTRATACAO
+
+O arquivo inpecionar_contratacao.py foi criado para validar a qualidade da base
+auxiliar e o alcance do cruzamento com a base principal.
+
+O que a inspecao faz:
+
+- le a planilha de insumos
+- le a base principal
+- filtra apenas linhas da base principal com nota numerica valida
+- ignora LOCAL com IGN, NQA e vazio
+- verifica duplicados na coluna Local do insumo
+- separa duplicados iguais e duplicados conflitantes
+- cruza LOCAL da base principal com Local do insumo
+- conta encontrados e nao encontrados
+- conta rede propria e rede credenciada
+- lista principais locais nao encontrados
+
+Aprendizados importantes dessa etapa:
+
+- havia preocupacao com duplicados na base auxiliar
+- a inspecao mostrou como separar duplicado igual de duplicado conflitante
+- tambem foi validado que varios nao encontrados eram locais reais e nao
+  problemas de IGN ou NQA
+- a comparacao em minusculo ajudou a aumentar o numero de correspondencias
+
+Arquivos gerados por essa etapa:
+
+- saida/inspecao_contratacao_duplicados.json
+- saida/inspecao_contratacao_duplicados.txt
+
+--------------------------------------------------
+
+ESTADO ATUAL DO APP.PY
+
+O app.py hoje segue esta ordem:
+
+1. le a base principal
+2. garante colunas obrigatorias
+3. converte notas para numero
+4. calcula Quantidade notas validas
+5. calcula Nota geral
+6. filtra linhas com nota valida
+7. prepara LOCAL para comparacao
+8. le a planilha de insumos
+9. prepara Local e contratacao do insumo
+10. remove duplicidades do insumo
+11. cruza LOCAL com Local
+12. preenche Contratacao
+13. conta rede propria, rede credenciada e nao encontrados
+14. gera resumo final em JSON e TXT
+
+Arquivos gerados pelo app:
+
+- saida/resumo_execucao.json
+- saida/resumo_execucao.txt
+
+O app.py foi refatorado para:
+
+- reduzir prints
+- manter a ordem simples
+- ficar mais limpo para leitura
+- deixar comentarios curtos entre os blocos
+
+--------------------------------------------------
+
+DECISOES DE PROJETO QUE JA FORAM CONSOLIDADAS
+
+- nao usar MVC
+- manter app.py como execucao principal
+- separar inspecoes em arquivos proprios
+- fazer uma etapa por vez e validar antes de seguir
+- nao sobrescrever a base original durante a fase de validacao
+- usar JSON e TXT como saida principal de auditoria
+- preferir codigo simples e linear
+- manter comentarios curtos, apenas para orientar a leitura
+
+--------------------------------------------------
+
+PONTOS IMPORTANTES PARA AS PROXIMAS ETAPAS
+
+As proximas colunas devem seguir o mesmo padrao:
+
+1. entender a regra de negocio
+2. criar inspecao separada se a etapa for sensivel
+3. validar os dados de entrada
+4. implementar no app.py de forma simples
+5. gerar resumo final da execucao
+
+Recomendacao para continuar:
+
+- manter o app.py como pipeline principal
+- usar inspecoes separadas para investigacao
+- registrar novas decisoes neste arquivo ou em outro TXT da pasta guia
+
+--------------------------------------------------
+
+ARQUIVOS IMPORTANTES NESTE MOMENTO
+
+- app.py
+- inspecionar_notas.py
+- inpecionar_contratacao.py
+- diretrizes do projeto na pasta guia
+- resumos e inspecoes na pasta saida
+
+Fim do registro atual.
