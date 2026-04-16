@@ -1,0 +1,12 @@
+{
+    "execucao": "exec_03_classificacao",
+    "arquivo_entrada": "data_exec_indiv\\02_base_com_contratacao.csv",
+    "arquivo_grupos": "data\\grupos_classificacao.json",
+    "arquivo_nomes": "data\\nomes_classificacao.json",
+    "arquivo_saida": "data_exec_indiv\\03_base_com_classificacao.csv",
+    "total_linhas_entrada": 812091,
+    "total_classificadas": 796464,
+    "total_nao_classificadas": 15627,
+    "total_sobrescritas": 21525,
+    "total_regras": 29
+}
