@@ -5,8 +5,8 @@ Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
 Arquivo de saida: data_exec_indiv\02_base_com_contratacao.csv
 
 Total de linhas na entrada: 812091
-Total rede propria: 711986
-Total rede credenciada: 100101
+Total rede propria: 722001
+Total rede credenciada: 90086
 Total sem contratacao: 4
 
 Locais sem contratacao:

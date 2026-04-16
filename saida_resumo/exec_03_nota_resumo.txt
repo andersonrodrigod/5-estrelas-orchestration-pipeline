@@ -1,0 +1,14 @@
+RESUMO DA EXECUCAO 03 - NOTA
+
+Arquivo de entrada: data_exec_indiv\02_base_com_contratacao.csv
+Arquivo de saida: data_exec_indiv\03_base_com_nota.csv
+
+Total de linhas na entrada: 812091
+Total com nota geral calculada: 812091
+Total sem nota geral: 0
+
+Quantidade de notas validas por linha:
+- 1 nota(s) valida(s): 1
+- 3 nota(s) valida(s): 2
+- 4 nota(s) valida(s): 611021
+- 5 nota(s) valida(s): 201067

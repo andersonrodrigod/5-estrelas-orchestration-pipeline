@@ -5,6 +5,6 @@
     "total_linhas_entrada": 812091,
     "total_linhas_saida": 812091,
     "total_linhas_removidas": 0,
-    "linhas_com_nota_geral": 812091,
-    "linhas_sem_nota_geral": 0
+    "total_linhas_com_alguma_nota_valida": 812091,
+    "total_linhas_sem_nota_valida": 0
 }

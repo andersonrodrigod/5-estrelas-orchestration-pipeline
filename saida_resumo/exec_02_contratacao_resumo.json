@@ -4,8 +4,8 @@
     "arquivo_insumos": "utils\\insumos\\insumos 5 estrelas.xlsx",
     "arquivo_saida": "data_exec_indiv\\02_base_com_contratacao.csv",
     "total_linhas_entrada": 812091,
-    "total_rede_propria": 711986,
-    "total_rede_credenciada": 100101,
+    "total_rede_propria": 722001,
+    "total_rede_credenciada": 90086,
     "total_sem_contratacao": 4,
     "locais_sem_contratacao": {
         "IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M": 2,

@@ -1,481 +1,76 @@
 # -*- coding: utf-8 -*-
+import json
 from pathlib import Path
 
 import pandas as pd
 
 arquivo_base = Path('data/5_estrelas_fevereiro_tratado.csv')
+arquivo_grupos = Path('investigacoes/grupos_classificacao.json')
 pasta_saida = Path('saida_investigacao')
 
 pasta_saida.mkdir(exist_ok=True)
 
-grupos_local = [
-    {
-        'nome_grupo': 'CRED_ATEND EMERGENCIA',
-        'nome_lista': 'lista_cred_atend_emergencia',
-        'palavra_filtro': None,
-        'tipo_igual': 1,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 1',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'HOSPITALAR',
-        'nome_lista': 'lista_hospitalar',
-        'palavra_filtro': None,
-        'tipo_igual': 1,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 1',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'QUALIVIDA',
-        'nome_lista': 'lista_qualivida',
-        'palavra_filtro': 'QUALIVIDA|QUALIVITA',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'qualivida|qualivita',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'qualivida|qualivita',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'QUALIVIDA' ou 'QUALIVITA'",
-        'descricao_especialidade': "ESPECIALIDADE contem 'QUALIVIDA' ou 'QUALIVITA'",
-    },
-    {
-        'nome_grupo': 'QUALIVIDA',
-        'nome_lista': 'lista_qualivida',
-        'palavra_filtro': 'SINTA-SE|SINTASE|SINTA SE|VIVER BEM',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'sinta-se|sintase|sinta se|viver bem',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'SINTA-SE', 'SINTASE', 'SINTA SE' ou 'VIVER BEM'",
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'NASCER BEM',
-        'nome_lista': 'lista_nascer_bem',
-        'palavra_filtro': 'NB|RISCO',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': r'\bnb\b|risco',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'NB' ou 'RISCO'",
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'TELEMEDICINA',
-        'nome_lista': 'lista_telemedicina',
-        'palavra_filtro': 'TELEM',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'telemed|telemedicina|telem',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'TELEM'",
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'PRODUTO COORDENADO',
-        'nome_lista': 'lista_produto_coordenado',
-        'palavra_filtro': 'NOSSO MEDICO|NOTRELIFE|NUCLEO MF|PROD. COORD|PROD.COORD',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'nosso medico|notrelife|nucleo mf|prod. coord|prod.coord',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'NOSSO MEDICO', 'NOTRELIFE', 'NUCLEO MF', 'PROD. COORD' ou 'PROD.COORD'",
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'CASE',
-        'nome_lista': 'lista_case',
-        'palavra_filtro': 'CASE',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'case',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'case',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'case'",
-        'descricao_especialidade': "ESPECIALIDADE contem 'case'",
-    },
-    {
-        'nome_grupo': 'TRANSPLANTE',
-        'nome_lista': 'lista_transplante',
-        'palavra_filtro': 'TRANSPL',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'transpl',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "sem filtro em LOCAL",
-        'descricao_especialidade': "ESPECIALIDADE contem 'transpl'",
-    },
-    {
-        'nome_grupo': 'TEA',
-        'nome_lista': 'lista_tea',
-        'palavra_filtro': 'TEA',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'tea',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'tea'",
-        'descricao_especialidade': 'sem filtro em ESPECIALIDADE',
-    },
-    {
-        'nome_grupo': 'GESTAR BEM',
-        'nome_lista': 'lista_gestar_bem',
-        'palavra_filtro': 'GESTAR|GESTAR BEM|PGS',
-        'tipo_igual': None,
-        'tipo_diferente': 6,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': 'gestar|gestar bem|pgs',
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'gestar|gestar bem',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO diferente de 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': "LOCAL contem 'gestar', 'gestar bem' ou 'pgs'",
-        'descricao_especialidade': "ESPECIALIDADE contem 'gestar', 'gestar bem' ou 'pgs'",
-    },
-    {
-        'nome_grupo': 'TELECONSULTA',
-        'nome_lista': 'lista_teleconsulta',
-        'palavra_filtro': 'PGC|TRANSPLANTE|CASE',
-        'tipo_igual': 6,
-        'tipo_diferente': None,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'pgc|transplante|case',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "ESPECIALIDADE contem 'pgc', 'transplante' ou 'case'",
-    },
-    {
-        'nome_grupo': 'TELECONSULTA ELETIVA',
-        'nome_lista': 'lista_teleconsulta_eletiva',
-        'palavra_filtro': None,
-        'tipo_igual': 6,
-        'tipo_diferente': None,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': 'pgc|transplante|case',
-        'descricao_tipo': 'TIPO igual a 6',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "ESPECIALIDADE diferente de 'pgc', 'transplante' ou 'case'",
-    },
-    {
-        'nome_grupo': 'TELECONSULTA URGENCIA', # ADICIONAR ACENTO NA PLANILHA
-        'nome_lista': 'lista_teleconsulta_urgencia',
-        'palavra_filtro': None,
-        'tipo_igual': 7,
-        'tipo_diferente': None,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 7',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'MED PREV', 
-        'nome_lista': 'lista_med_prev',
-        'palavra_filtro': None,
-        'tipo_igual': 4,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 4',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'CRED_TRATAMENTO',
-        'nome_lista': 'lista_cred_tratamento',
-        'palavra_filtro': None,
-        'tipo_igual': 4,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 4',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'MED PREV', 
-        'nome_lista': 'lista_med_prev_tipo_2',
-        'palavra_filtro': 'MED PREV',
-        'tipo_igual': 2,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'med prev',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 2',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'HAPCLINICA', 
-        'nome_lista': 'lista_hapclinica',
-        'palavra_filtro': None,
-        'tipo_igual': 2,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': 'med prev',
-        'descricao_tipo': 'TIPO igual a 2',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'ODONTOLOGIA', 
-        'nome_lista': 'lista_odontologia',
-        'palavra_filtro': None,
-        'tipo_igual': 5,
-        'tipo_diferente': None,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 5',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'ODONTOLOGIA', 
-        'nome_lista': 'lista_odontologia_2',
-        'palavra_filtro': 'ODONT',
-        'tipo_igual': None,
-        'tipo_diferente': None,
-        'contratacao_igual': None,
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': 'odont',
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a None',
-        'descricao_contratacao': 'sem filtro em CONTRATACAO',
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'CRED_ATEND ELETIVO', 
-        'nome_lista': 'lista_cred_atend_eletivo',
-        'palavra_filtro': 'ODONT',
-        'tipo_igual': 3,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 3',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'CRED_ATEND ELETIVO', 
-        'nome_lista': 'lista_cred_atend_eletivo',
-        'palavra_filtro': 'ODONT',
-        'tipo_igual': 3,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 3',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'LABORATORIO', # AQUI TEM ACENTO NA PLANILHA 
-        'nome_lista': 'lista_laboratorio',
-        'palavra_filtro': None,
-        'tipo_igual': 8,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 8',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'CRED_LABORATORIO',  # AQUI TEM ACENTO NA PLANILHA 
-        'nome_lista': 'lista_cred_laboratorio',
-        'palavra_filtro': None,
-        'tipo_igual': 8,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 8',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'VIDA IMAGEM',  # AQUI TEM ACENTO NA PLANILHA 
-        'nome_lista': 'lista_vida_imagem',
-        'palavra_filtro': None,
-        'tipo_igual': 9,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede propria',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 9',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede propria'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-    {
-        'nome_grupo': 'CRED_EXAMES',  # AQUI TEM ACENTO NA PLANILHA 
-        'nome_lista': 'lista_cred_exames',
-        'palavra_filtro': None,
-        'tipo_igual': 9,
-        'tipo_diferente': None,
-        'contratacao_igual': 'rede credenciada',
-        'contratacao_diferente': None,
-        'filtro_local': None,
-        'filtro_local_diferente': None,
-        'filtro_especialidade': None,
-        'filtro_especialidade_diferente': None,
-        'descricao_tipo': 'TIPO igual a 9',
-        'descricao_contratacao': "CONTRATACAO igual a 'rede credenciada'",
-        'descricao_local': 'sem filtro em LOCAL',
-        'descricao_especialidade': "sem filtro em ESPECIALIDADE'",
-    },
-]
+# Ajuste aqui os nomes finais da classificacao sem mexer no json de filtros.
+nomes_grupo_personalizados = {
+    'CRED_ATEND_EMERGENCIA': 'CRED_ATEND EMERGENCIA',
+    'HOSPITALAR': 'HOSPITALAR',
+    'QUALIVIDA': 'QUALIVIDA',
+    'NASCER_BEM': 'NASCER BEM',
+    'TELEMEDICINA': 'TELEMEDICINA',
+    'PRODUTO_COORDENADO': 'PRODUTO COORDENADO',
+    'CASE': 'CASE',
+    'TRANSPLANTE': 'TRANSPLANTE',
+    'TEA': 'TEA',
+    'GESTAR_BEM': 'GESTAR BEM',
+    'TELECONSULTA': 'TELECONSULTA',
+    'TELECONSULTA_ELETIVA': 'TELECONSULTA ELETIVA',
+    'TELECONSULTA_URGENCIA': 'TELECONSULTA URGENCIA',
+    'MED_PREV': 'MED PREV',
+    'CRED_TRATAMENTO': 'CRED_TRATAMENTO',
+    'HAPCLINICA': 'HAPCLINICA',
+    'ODONTOLOGIA': 'ODONTOLOGIA',
+    'CRED_ATEND_ELETIVO': 'CRED_ATEND ELETIVO',
+    'LABORATORIO': 'LABORATORIO',
+    'CRED_LABORATORIO': 'CRED_LABORATORIO',
+    'VIDA_IMAGEM': 'VIDA IMAGEM',
+    'CRED_EXAMES': 'CRED_EXAMES',
+    'CRED_INTERNACAO': 'CRED_INTERNACAO',
+    'INTERNACAO': 'INTERNACAO',
+    'INTERNACAO_PGC': 'INTERNACAO PGC',
+}
 
-df = pd.read_csv(arquivo_base, low_memory=False)
-df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
-df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
-df['LOCAL'] = df['LOCAL'].astype('string').str.strip()
-df['ESPECIALIDADE'] = df['ESPECIALIDADE'].astype('string').str.strip()
+
+def carregar_grupos():
+    with open(arquivo_grupos, 'r', encoding='utf-8') as arquivo:
+        return json.load(arquivo)
+
+
+def normalizar_valor_ou_lista(valor):
+    if valor is None:
+        return None
+
+    if isinstance(valor, list):
+        return valor
+
+    return [valor]
 
 
 def montar_contagem_coluna(dataframe, nome_coluna):
-    contagem_especialidade = (
+    contagem_coluna = (
         dataframe[nome_coluna]
         .fillna('VAZIO')
         .value_counts()
         .reset_index()
     )
-    contagem_especialidade.columns = [nome_coluna, 'QUANTIDADE']
+    contagem_coluna.columns = [nome_coluna, 'QUANTIDADE']
 
-    if not contagem_especialidade.empty:
-        contagem_especialidade = contagem_especialidade.sort_values(
+    if not contagem_coluna.empty:
+        contagem_coluna = contagem_coluna.sort_values(
             by=['QUANTIDADE', nome_coluna],
             ascending=[False, True]
         ).reset_index(drop=True)
 
-    return contagem_especialidade
+    return contagem_coluna
 
 
 def montar_lista_valores(dataframe, nome_coluna):
@@ -483,23 +78,92 @@ def montar_lista_valores(dataframe, nome_coluna):
     return contagem_coluna[nome_coluna].dropna().astype(str).tolist()
 
 
+def formatar_valor_descricao(valor):
+    valores = normalizar_valor_ou_lista(valor)
+
+    if valores is None:
+        return ''
+
+    valores_texto = [str(item) for item in valores]
+
+    if len(valores_texto) == 1:
+        return valores_texto[0]
+
+    return ', '.join(valores_texto[:-1]) + ' ou ' + valores_texto[-1]
+
+
+def descrever_tipo(grupo):
+    if grupo['tipo_igual'] is not None:
+        return f"TIPO igual a {formatar_valor_descricao(grupo['tipo_igual'])}"
+
+    if grupo['tipo_diferente'] is not None:
+        return f"TIPO diferente de {formatar_valor_descricao(grupo['tipo_diferente'])}"
+
+    return 'sem filtro em TIPO'
+
+
+def descrever_contratacao(grupo):
+    if grupo['contratacao_igual']:
+        return f"CONTRATACAO igual a '{formatar_valor_descricao(grupo['contratacao_igual'])}'"
+
+    if grupo['contratacao_diferente']:
+        return f"CONTRATACAO diferente de '{formatar_valor_descricao(grupo['contratacao_diferente'])}'"
+
+    return 'sem filtro em CONTRATACAO'
+
+
+def descrever_texto(nome_coluna, filtro_igual, filtro_diferente):
+    if filtro_igual:
+        return f"{nome_coluna} contem '{filtro_igual}'"
+
+    if filtro_diferente:
+        return f"{nome_coluna} diferente de '{filtro_diferente}'"
+
+    return f'sem filtro em {nome_coluna}'
+
+
+def obter_nome_grupo(chave_grupo):
+    return nomes_grupo_personalizados.get(chave_grupo, chave_grupo.replace('_', ' '))
+
+
+grupos_local = carregar_grupos()
+
+df = pd.read_csv(arquivo_base, low_memory=False)
+df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
+df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
+df['LOCAL'] = df['LOCAL'].astype('string').str.strip()
+df['ESPECIALIDADE'] = df['ESPECIALIDADE'].astype('string').str.strip()
+
 todas_as_contagens = []
 linhas_txt = [
     'INVESTIGACAO DE ESPECIALIDADE PARA CLASSIFICACAO',
     '',
     f'Arquivo analisado: {arquivo_base}',
+    f'Arquivo de grupos: {arquivo_grupos}',
     f'Total de linhas da base: {len(df)}',
     '',
 ]
 
 for grupo in grupos_local:
+    nome_grupo = obter_nome_grupo(grupo['grupo_classificacao'])
+    descricao_tipo = descrever_tipo(grupo)
+    descricao_contratacao = descrever_contratacao(grupo)
+    descricao_local = descrever_texto('LOCAL', grupo['filtro_local'], grupo['filtro_local_diferente'])
+    descricao_especialidade = descrever_texto(
+        'ESPECIALIDADE',
+        grupo['filtro_especialidade'],
+        grupo['filtro_especialidade_diferente']
+    )
+
     df_tipo_filtrado = df.copy()
+    tipos_iguais = normalizar_valor_ou_lista(grupo['tipo_igual'])
+    tipos_diferentes = normalizar_valor_ou_lista(grupo['tipo_diferente'])
 
-    if grupo['tipo_igual'] is not None:
-        df_tipo_filtrado = df_tipo_filtrado[df_tipo_filtrado['TIPO'] == grupo['tipo_igual']].copy()
+    if tipos_iguais is not None:
+        df_tipo_filtrado = df_tipo_filtrado[df_tipo_filtrado['TIPO'].isin(tipos_iguais)].copy()
 
-    if grupo['tipo_diferente'] is not None:
-        df_tipo_filtrado = df_tipo_filtrado[df_tipo_filtrado['TIPO'] != grupo['tipo_diferente']].copy()
+    if tipos_diferentes is not None:
+        df_tipo_filtrado = df_tipo_filtrado[~df_tipo_filtrado['TIPO'].isin(tipos_diferentes)].copy()
 
     df_contratacao_filtrado = df_tipo_filtrado.copy()
 
@@ -554,29 +218,34 @@ for grupo in grupos_local:
         df_final_filtrado = df_final_filtrado[~filtro_especialidade_diferente].copy()
 
     contagem_especialidade = montar_contagem_coluna(df_final_filtrado, 'ESPECIALIDADE')
-    contagem_especialidade['GRUPO'] = grupo['nome_grupo']
+    contagem_especialidade['GRUPO'] = nome_grupo
+    contagem_especialidade['CHAVE_GRUPO'] = grupo['grupo_classificacao']
     contagem_especialidade['NOME_LISTA'] = grupo['nome_lista']
     contagem_especialidade['PALAVRA_FILTRO'] = grupo['palavra_filtro']
-    contagem_especialidade['TIPO_FILTRO'] = grupo['descricao_tipo']
-    contagem_especialidade['CONTRATACAO_FILTRO'] = grupo['descricao_contratacao']
+    contagem_especialidade['TIPO_FILTRO'] = descricao_tipo
+    contagem_especialidade['CONTRATACAO_FILTRO'] = descricao_contratacao
+    contagem_especialidade['LOCAL_FILTRO'] = descricao_local
+    contagem_especialidade['ESPECIALIDADE_FILTRO'] = descricao_especialidade
     todas_as_contagens.append(contagem_especialidade)
 
     lista_local = montar_lista_valores(df_local_filtrado, 'LOCAL')
     lista_especialidade = montar_lista_valores(df_final_filtrado, 'ESPECIALIDADE')
 
-    linhas_txt.append(f"GRUPO: {grupo['nome_grupo']}")
+    linhas_txt.append(f'GRUPO: {nome_grupo}')
+    linhas_txt.append(f"CHAVE_GRUPO: {grupo['grupo_classificacao']}")
+    linhas_txt.append(f"NOME_LISTA: {grupo['nome_lista']}")
     linhas_txt.append(f"PALAVRA_FILTRO: {grupo['palavra_filtro']}")
-    linhas_txt.append(f"- filtro TIPO: {grupo['descricao_tipo']}")
-    linhas_txt.append(f"- filtro CONTRATACAO: {grupo['descricao_contratacao']}")
-    linhas_txt.append(f"- filtro LOCAL: {grupo['descricao_local']}")
-    linhas_txt.append(f"- filtro ESPECIALIDADE: {grupo['descricao_especialidade']}")
-    linhas_txt.append(f"- total apos filtro TIPO: {len(df_tipo_filtrado)}")
-    linhas_txt.append(f"- total apos filtro CONTRATACAO: {len(df_contratacao_filtrado)}")
-    linhas_txt.append(f"- total apos filtro LOCAL: {len(df_local_filtrado)}")
-    linhas_txt.append(f"- total final do grupo: {len(df_final_filtrado)}")
+    linhas_txt.append(f'- filtro TIPO: {descricao_tipo}')
+    linhas_txt.append(f'- filtro CONTRATACAO: {descricao_contratacao}')
+    linhas_txt.append(f'- filtro LOCAL: {descricao_local}')
+    linhas_txt.append(f'- filtro ESPECIALIDADE: {descricao_especialidade}')
+    linhas_txt.append(f'- total apos filtro TIPO: {len(df_tipo_filtrado)}')
+    linhas_txt.append(f'- total apos filtro CONTRATACAO: {len(df_contratacao_filtrado)}')
+    linhas_txt.append(f'- total apos filtro LOCAL: {len(df_local_filtrado)}')
+    linhas_txt.append(f'- total final do grupo: {len(df_final_filtrado)}')
     linhas_txt.append('')
-    
-    if grupo['filtro_local']:
+
+    if grupo['filtro_local'] or grupo['filtro_local_diferente']:
         linhas_txt.append(f"{grupo['nome_lista']}_filtro_local = [")
 
         for valor in lista_local:
@@ -585,7 +254,7 @@ for grupo in grupos_local:
         linhas_txt.append(']')
         linhas_txt.append('')
 
-    if grupo['filtro_especialidade']:
+    if grupo['filtro_especialidade'] or grupo['filtro_especialidade_diferente']:
         linhas_txt.append(f"{grupo['nome_lista']}_filtro_especialidade = [")
 
         for valor in lista_especialidade:
@@ -594,7 +263,12 @@ for grupo in grupos_local:
         linhas_txt.append(']')
         linhas_txt.append('')
 
-    if not grupo['filtro_local'] and not grupo['filtro_especialidade']:
+    if (
+        not grupo['filtro_local']
+        and not grupo['filtro_local_diferente']
+        and not grupo['filtro_especialidade']
+        and not grupo['filtro_especialidade_diferente']
+    ):
         linhas_txt.append(f"{grupo['nome_lista']} = [")
 
         for valor in lista_especialidade:
@@ -617,10 +291,13 @@ else:
             'ESPECIALIDADE',
             'QUANTIDADE',
             'GRUPO',
+            'CHAVE_GRUPO',
             'NOME_LISTA',
             'PALAVRA_FILTRO',
             'TIPO_FILTRO',
-            'CONTRATACAO_FILTRO'
+            'CONTRATACAO_FILTRO',
+            'LOCAL_FILTRO',
+            'ESPECIALIDADE_FILTRO'
         ]
     )
 

@@ -49,9 +49,8 @@ for coluna in colunas_notas:
     df[coluna] = pd.to_numeric(df[coluna], errors='coerce')
 
 df['Quantidade notas validas'] = df[colunas_notas].notna().sum(axis=1)
-df['NOTA GERAL'] = df[colunas_notas].mean(axis=1).round(2)
-
 df_limpo = df[df['Quantidade notas validas'] > 0].copy()
+df_limpo['NOTA GERAL'] = None
 
 print(f'Total de linhas apos tirar IGN, NQA e sem nota valida: {len(df_limpo)}')
 print(f'Total de linhas removidas: {len(df) - len(df_limpo)}')
@@ -68,8 +67,8 @@ resumo = {
     'total_linhas_entrada': int(len(df)),
     'total_linhas_saida': int(len(df_limpo)),
     'total_linhas_removidas': int(len(df) - len(df_limpo)),
-    'linhas_com_nota_geral': int(df_limpo['NOTA GERAL'].notna().sum()),
-    'linhas_sem_nota_geral': int(df_limpo['NOTA GERAL'].isna().sum())
+    'total_linhas_com_alguma_nota_valida': int((df['Quantidade notas validas'] > 0).sum()),
+    'total_linhas_sem_nota_valida': int((df['Quantidade notas validas'] == 0).sum())
 }
 
 with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
@@ -84,8 +83,8 @@ linhas_txt = [
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total de linhas na saida: {resumo['total_linhas_saida']}",
     f"Total de linhas removidas: {resumo['total_linhas_removidas']}",
-    f"Linhas com nota geral: {resumo['linhas_com_nota_geral']}",
-    f"Linhas sem nota geral: {resumo['linhas_sem_nota_geral']}",
+    f"Linhas com alguma nota valida: {resumo['total_linhas_com_alguma_nota_valida']}",
+    f"Linhas sem nota valida: {resumo['total_linhas_sem_nota_valida']}",
 ]
 
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:

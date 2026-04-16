@@ -4,18 +4,18 @@ from pathlib import Path
 
 import pandas as pd
 
-arquivo_entrada = Path('data_exec_indiv/02_base_com_contratacao.csv')
+arquivo_entrada = Path('data_exec_indiv/03_base_com_nota.csv')
 arquivo_grupos = Path('data/grupos_classificacao.json')
 arquivo_nomes = Path('data/nomes_classificacao.json')
-arquivo_saida = Path('data_exec_indiv/03_base_com_classificacao.csv')
+arquivo_saida = Path('data_exec_indiv/04_base_com_classificacao.csv')
 
 pasta_resumo = Path('saida_resumo')
-arquivo_resumo_json = pasta_resumo / 'exec_03_classificacao_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_03_classificacao_resumo.txt'
-arquivo_auditoria_csv = pasta_resumo / 'exec_03_classificacao_auditoria.csv'
-arquivo_sobrescritas_csv = pasta_resumo / 'exec_03_classificacao_sobrescritas.csv'
-arquivo_nao_classificados_csv = pasta_resumo / 'exec_03_classificacao_nao_classificados.csv'
-arquivo_nao_classificados_detalhado_csv = pasta_resumo / 'exec_03_classificacao_nao_classificados_detalhado.csv'
+arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_resumo.txt'
+arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_auditoria.csv'
+arquivo_sobrescritas_csv = pasta_resumo / 'exec_04_classificacao_sobrescritas.csv'
+arquivo_nao_classificados_csv = pasta_resumo / 'exec_04_classificacao_nao_classificados.csv'
+arquivo_nao_classificados_detalhado_csv = pasta_resumo / 'exec_04_classificacao_nao_classificados_detalhado.csv'
 
 
 def carregar_json(caminho):
@@ -70,8 +70,8 @@ def descrever_regra(grupo):
     return ' | '.join(str(parte) for parte in partes)
 
 
-print('Iniciando execucao 03 - classificacao...')
-print(f'Lendo arquivo da execucao 02: {arquivo_entrada}')
+print('Iniciando execucao 04 - classificacao...')
+print(f'Lendo arquivo da execucao 03: {arquivo_entrada}')
 print(f'Lendo arquivo de grupos: {arquivo_grupos}')
 print(f'Lendo arquivo de nomes: {arquivo_nomes}')
 
@@ -210,7 +210,7 @@ total_nao_classificadas = int(filtro_nao_classificados.sum())
 total_sobrescritas_geral = int(sum(item['QUANTIDADE'] for item in sobrescritas))
 
 resumo = {
-    'execucao': 'exec_03_classificacao',
+    'execucao': 'exec_04_classificacao',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_grupos': str(arquivo_grupos),
     'arquivo_nomes': str(arquivo_nomes),
@@ -226,7 +226,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 03 - CLASSIFICACAO',
+    'RESUMO DA EXECUCAO 04 - CLASSIFICACAO',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de grupos: {resumo['arquivo_grupos']}",
@@ -282,4 +282,4 @@ df_sobrescritas.to_csv(arquivo_sobrescritas_csv, index=False, encoding='utf-8-si
 resumo_nao_classificados.to_csv(arquivo_nao_classificados_csv, index=False, encoding='utf-8-sig')
 df_nao_classificados_detalhado.to_csv(arquivo_nao_classificados_detalhado_csv, index=False, encoding='utf-8-sig')
 
-print('Execucao 03 finalizada.')
+print('Execucao 04 finalizada.')

@@ -6,5 +6,5 @@ Arquivo de saida: data_exec_indiv\01_base_limpa.csv
 Total de linhas na entrada: 812091
 Total de linhas na saida: 812091
 Total de linhas removidas: 0
-Linhas com nota geral: 812091
-Linhas sem nota geral: 0
+Linhas com alguma nota valida: 812091
+Linhas sem nota valida: 0

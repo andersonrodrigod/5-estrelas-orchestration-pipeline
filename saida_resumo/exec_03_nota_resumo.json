@@ -1,0 +1,14 @@
+{
+    "execucao": "exec_03_nota",
+    "arquivo_entrada": "data_exec_indiv\\02_base_com_contratacao.csv",
+    "arquivo_saida": "data_exec_indiv\\03_base_com_nota.csv",
+    "total_linhas_entrada": 812091,
+    "total_com_nota_geral": 812091,
+    "total_sem_nota_geral": 0,
+    "distribuicao_quantidade_notas_validas": {
+        "1": 1,
+        "3": 2,
+        "4": 611021,
+        "5": 201067
+    }
+}

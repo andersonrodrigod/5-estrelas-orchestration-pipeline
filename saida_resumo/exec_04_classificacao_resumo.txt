@@ -1,19 +1,19 @@
-RESUMO DA EXECUCAO 03 - CLASSIFICACAO
+RESUMO DA EXECUCAO 04 - CLASSIFICACAO
 
-Arquivo de entrada: data_exec_indiv\02_base_com_contratacao.csv
+Arquivo de entrada: data_exec_indiv\03_base_com_nota.csv
 Arquivo de grupos: data\grupos_classificacao.json
 Arquivo de nomes: data\nomes_classificacao.json
-Arquivo de saida: data_exec_indiv\03_base_com_classificacao.csv
+Arquivo de saida: data_exec_indiv\04_base_com_classificacao.csv
 
 Total de linhas na entrada: 812091
-Total classificadas: 796464
-Total nao classificadas: 15627
+Total classificadas: 806315
+Total nao classificadas: 5776
 Total sobrescritas: 21525
 Total de regras aplicadas: 29
 
 REGRAS APLICADAS:
-- ordem=1 | lista=lista_cred_atend_emergencia | classificacao=CRED_ATEND EMERGENCIA | atingidas=23079 | vazias=23079 | ja_classificadas=0 | sobrescritas=0
-- ordem=2 | lista=lista_hospitalar | classificacao=HOSPITALAR | atingidas=134793 | vazias=134793 | ja_classificadas=0 | sobrescritas=0
+- ordem=1 | lista=lista_cred_atend_emergencia | classificacao=CRED_ATEND EMERGENCIA | atingidas=22918 | vazias=22918 | ja_classificadas=0 | sobrescritas=0
+- ordem=2 | lista=lista_hospitalar | classificacao=HOSPITALAR | atingidas=134954 | vazias=134954 | ja_classificadas=0 | sobrescritas=0
 - ordem=3 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=3240 | vazias=3240 | ja_classificadas=0 | sobrescritas=0
 - ordem=4 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=626 | vazias=626 | ja_classificadas=0 | sobrescritas=0
 - ordem=5 | lista=lista_nascer_bem | classificacao=NASCER BEM | atingidas=703 | vazias=703 | ja_classificadas=0 | sobrescritas=0
@@ -26,16 +26,16 @@ REGRAS APLICADAS:
 - ordem=12 | lista=lista_teleconsulta | classificacao=TELECONSULTA | atingidas=1041 | vazias=1041 | ja_classificadas=0 | sobrescritas=0
 - ordem=13 | lista=lista_teleconsulta_eletiva | classificacao=TELECONSULTA ELETIVA | atingidas=162231 | vazias=162231 | ja_classificadas=0 | sobrescritas=0
 - ordem=14 | lista=lista_teleconsulta_urgencia | classificacao=TELECONSULTA URGENCIA | atingidas=46157 | vazias=46157 | ja_classificadas=0 | sobrescritas=0
-- ordem=15 | lista=lista_med_prev | classificacao=MED PREV | atingidas=7355 | vazias=6537 | ja_classificadas=818 | sobrescritas=818
-- ordem=16 | lista=lista_cred_tratamento | classificacao=CRED_TRATAMENTO | atingidas=37332 | vazias=37327 | ja_classificadas=5 | sobrescritas=5
+- ordem=15 | lista=lista_med_prev | classificacao=MED PREV | atingidas=7357 | vazias=6539 | ja_classificadas=818 | sobrescritas=818
+- ordem=16 | lista=lista_cred_tratamento | classificacao=CRED_TRATAMENTO | atingidas=37330 | vazias=37325 | ja_classificadas=5 | sobrescritas=5
 - ordem=17 | lista=lista_med_prev_tipo_2 | classificacao=MED PREV | atingidas=5 | vazias=5 | ja_classificadas=0 | sobrescritas=0
-- ordem=18 | lista=lista_hapclinica | classificacao=HAPCLINICA | atingidas=327860 | vazias=320195 | ja_classificadas=7665 | sobrescritas=7665
+- ordem=18 | lista=lista_hapclinica | classificacao=HAPCLINICA | atingidas=337711 | vazias=330046 | ja_classificadas=7665 | sobrescritas=7665
 - ordem=19 | lista=lista_odontologia | classificacao=ODONTOLOGIA | atingidas=12194 | vazias=12194 | ja_classificadas=0 | sobrescritas=0
 - ordem=20 | lista=lista_odontologia_2 | classificacao=ODONTOLOGIA | atingidas=11906 | vazias=0 | ja_classificadas=11906 | sobrescritas=11906
 - ordem=21 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=1123 | vazias=1123 | ja_classificadas=0 | sobrescritas=0
 - ordem=22 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=1123 | vazias=0 | ja_classificadas=1123 | sobrescritas=1123
-- ordem=23 | lista=lista_laboratorio | classificacao=LABORATORIO | atingidas=30460 | vazias=30453 | ja_classificadas=7 | sobrescritas=7
-- ordem=24 | lista=lista_cred_laboratorio | classificacao=CRED_LABORATORIO | atingidas=11207 | vazias=11207 | ja_classificadas=0 | sobrescritas=0
+- ordem=23 | lista=lista_laboratorio | classificacao=LABORATORIO | atingidas=30461 | vazias=30454 | ja_classificadas=7 | sobrescritas=7
+- ordem=24 | lista=lista_cred_laboratorio | classificacao=CRED_LABORATORIO | atingidas=11206 | vazias=11206 | ja_classificadas=0 | sobrescritas=0
 - ordem=25 | lista=lista_vida_imagem | classificacao=VIDA IMAGEM | atingidas=843 | vazias=843 | ja_classificadas=0 | sobrescritas=0
 - ordem=26 | lista=lista_cred_exames | classificacao=CRED_EXAMES | atingidas=148 | vazias=148 | ja_classificadas=0 | sobrescritas=0
 - ordem=27 | lista=lista_cred_internacao | classificacao=CRED_INTERNACAO | atingidas=324 | vazias=324 | ja_classificadas=0 | sobrescritas=0
@@ -65,34 +65,20 @@ SOBRESCRITAS:
 - ordem=23 | lista=lista_laboratorio | TEA -> LABORATORIO: 7
 
 NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
-- CENTRO MEDICO ESPECIALIDADES: 1777
-- MAIS SAUDE SANTA EFIGENIA: 1580
-- CLINICA MINEIRA DE APARECIDA: 1043
 - CENTRO CLINICO VENDA NOVA: 1009
-- CLIN J ALBUQUERQUE: 956
-- NOVA CLINICA CARIRI: 942
-- CLINICA RIO AZUL: 893
 - CENTRO CLIN ANDRADE NEVES II: 738
 - COPE CENTRO OFTALMOL: 663
 - CLINICA DE PSIQ E PSICOLOGIA: 617
-- CLINICA E DIAGNOSTICO BARREIRO: 612
-- CLINICA WALLIG: 556
-- CLINICA JARDIM DOS ESTADOS: 422
-- NOVA OFTALMOLOGIA PIRACICABA: 383
 - COPE IMPERATRIZ: 357
 - CENTRO CLINICO SANTA MONICA: 283
-- CENTRO ONCOLOGICO CABRAL: 238
 - CLINICA GUAÍBA: 224
-- CLINICA JARDIM PRIMAVERA: 215
 - CLINIC MAREC DEODORO: 215
-- CL MARECHAL DEODORO: 213
+- CLINICA JARDIM PRIMAVERA: 215
 - CLINICA JARDIM CENTRAL: 173
 - CLIN ESP IRACEMAPOLIS: 113
 - NUCLEO DE ONCOLOGIA: 112
-- PA MARIA MENDES: 104
 - CLINICA GAMA: 104
 - CLINICA GUARIBA: 104
-- ONCOLOGIA AUGUSTO DE LIMA: 102
 - CLINICA PRUDENTE DE MORAES: 99
 - CENTRO CIRURGICO JUNDIAI: 97
 - CLINICA ATTENTIS: 96
@@ -103,7 +89,6 @@ NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
 - CENTRO CLINICO DR SANTOS: 46
 - CLINICA MONTENEGRO: 41
 - COPE CAMARAGIBE: 34
-- CLINICA FLORENCA PAULISTA: 30
 - CONSULTORIO GUSTAVO DELLA: 25
 - HOSPITAL FRANCA: 20
 - AMB AERIS IND E COM DE EQUI GE: 14
@@ -115,3 +100,18 @@ NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
 - CONSULTORIO CLAUDIO GABRIELE: 9
 - CLINICA CHAPADAO DO CEU: 8
 - CONSULT PAULO N S MARQUES: 8
+- CLINICA SOLO DE LUCENA: 8
+- CLINICA NAVIRAI: 8
+- CONSULTORIO GUSTAVO RUAS: 6
+- CONSULT. DANIEL DINIZ DE FREI: 5
+- CLINICA MARILIA TOMAZIN: 4
+- PA EDEIA: 4
+- CLINICA CINTIA KAORI KUROGI: 3
+- CLINICA RIO JOAO LEITE: 3
+- PA RIO VERDE: 3
+- CONSULTORIO CINCINATO NOGUEIRA: 2
+- IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M: 2
+- CLINICA TASSIANA VALENTIN: 2
+- CLINICA POÇOS DE CALDAS: 1
+- CLINICA MARILUCI TOSI ADDAD: 1
+- MEDICINA PREVENTIVA FRANCA: 1
