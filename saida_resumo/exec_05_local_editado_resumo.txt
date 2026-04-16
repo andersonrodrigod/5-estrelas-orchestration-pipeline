@@ -1,0 +1,15 @@
+RESUMO DA EXECUCAO 05 - LOCAL EDITADO
+
+Arquivo de entrada: data_exec_indiv\04_base_com_classificacao.csv
+Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+Arquivo de saida: data_exec_indiv\05_base_com_local_editado.csv
+
+Total de linhas na entrada: 812091
+Registros atualizados: 812087
+Registros nao alterados: 0
+Registros nao encontrados: 4
+
+PRINCIPAIS LOCAIS NAO ENCONTRADOS:
+- IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M: 2
+- CENTRO CLINICO E ORTOPEDICO DE CEILANDIA LTDA: 1
+- CLINICA FISIOGYN LTDA: 1

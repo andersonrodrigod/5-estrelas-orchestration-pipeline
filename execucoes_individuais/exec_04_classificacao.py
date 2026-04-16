@@ -203,7 +203,18 @@ resumo_nao_classificados = (
     .reset_index()
 )
 resumo_nao_classificados.columns = ['LOCAL', 'QUANTIDADE']
-df_nao_classificados_detalhado = df_nao_classificados[['TIPO', 'CONTRATACAO', 'LOCAL', 'ESPECIALIDADE']].copy()
+colunas_nao_classificados_detalhado = [
+    'CDUSUARIO',
+    'MES',
+    'DIA',
+    'ANO',
+    'TIPO',
+    'CONTRATACAO',
+    'LOCAL',
+    'ESPECIALIDADE'
+]
+
+df_nao_classificados_detalhado = df_nao_classificados[colunas_nao_classificados_detalhado].copy()
 
 total_classificadas = int((~filtro_nao_classificados).sum())
 total_nao_classificadas = int(filtro_nao_classificados.sum())
