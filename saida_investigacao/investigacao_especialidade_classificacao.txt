@@ -70,7 +70,56 @@ PALAVRA_FILTRO: QUALIVIDA|QUALIVITA
 - total apos filtro LOCAL: 27429
 - total final do grupo: 11613
 
-lista_qualivida = [
+lista_qualivida_filtro_local = [
+    'QUALIVIDA ANGELICA',
+    'QUALIVIDA ABC',
+    'QUALIVIDA HIGIENOPOLIS',
+    'QUALIVIDA JUNDIAI',
+    'QUALIVIDA MOGI DAS CRUZES',
+    'QUALIVIDA RIO DE JANEIRO',
+    'QUALIVIDA SALVALUS',
+    'QUALIVIDA SOROCABA',
+    'QUALIVIDA BEZERRA DE MENEZES',
+    'QUALIVIDA COSTA AZUL',
+    'QUALIVIDA CONSELHEIRO AGUIAR',
+    'QUALIVIDA AV 85',
+    'QUALIVIDA SOROCABA 2',
+    'QUALIVIDA CAMPINAS',
+    'QUALIVIDA RODRIGUES JUNIOR',
+    'ONCOLOGIA QUALIVIDA ADM RIO DE',
+    'QUALIVIDA LIFECENTER',
+    'QUALIVIDA CLINICA MAIS',
+    'QUALIVIDA MESSEJANA',
+    'QUALIVIDA JOSE WALTER',
+    'QUALIVIDA GARIBALDI',
+    'NUCLEO CASE QUALIVIDA SOROCABA',
+    'QUALIVITA LUSTOZA',
+    'QUALIVIDA LUSTOZA',
+    'QUALIVIDA SANTA MONICA',
+    'QUALIVIDA AUGUSTO DE LIMA',
+    'QUALIVIDA SANTOS',
+    'NUCLEO QUALIVIDA ESPINHEIRO',
+    'QUALIVIDA INTERLAGOS',
+    'QUALIVIDA PIEDADE',
+    'QUALIVIDA ONCOLOGIA ABC',
+    'QUALIVIDA POCOS DE CALDAS',
+    'NUCLEO CASE QUALIVIDA CAMPINAS',
+    'QUALIVIDA ZONA NORTE',
+    'QUALIVIDA CC ALPHAVILLE',
+    'QUALIVIDA SOROCABA II',
+    'QUALIVIDA',
+    'NUCLEO QUALIVIDA ZONA SUL',
+    'QUALIVIDA SAO GONCALO',
+    'QUALIVIDA UBERLANDIA',
+    'QUALIVIDA MARACANAU',
+    'TRELABS QUALIVIDA ANGELICA',
+    'NUCLEO QUALIVIDA AUGUSTO DE LIMA',
+    'NUCLEO QUALIVIDA UBERLANDIA',
+    'DIAG QUALIVIDA HIGIENÓPOLIS',
+    'NUCLEO QUALIVIDA SANTA MONICA',
+]
+
+lista_qualivida_filtro_especialidade = [
     'MEDICO PAI QUALIVIDA',
     'MEDICO OBESIDADE QUALIVIDA',
     'CARDIOLOGIA QUALIVIDA',
@@ -94,14 +143,11 @@ PALAVRA_FILTRO: SINTA-SE|SINTASE|SINTA SE|VIVER BEM
 - total apos filtro LOCAL: 587
 - total final do grupo: 587
 
-lista_qualivida = [
-    'MEDICO VIVER BEM',
-    'ENFERMAGEM VIVER BEM',
-    'PROGRAMA SINTA - SE BEM',
-    'CLINICO GERAL',
-    'MÉDICO TRANSPLANTE RENAL',
-    'ORTOPEDIA E TRAUMATOLOGIA',
-    'ENFERMAGEM TRANSPLANTE RENAL',
+lista_qualivida_filtro_local = [
+    'NUCLEO VIVER BEM MANAUS',
+    'NUCLEO SINTA-SE BEM LOBO FILHO',
+    'CLINICA ARTE VIVER BEM',
+    'SOMAP VIVER BEM',
 ]
 
 GRUPO: NASCER BEM
@@ -115,14 +161,61 @@ PALAVRA_FILTRO: NB|RISCO
 - total apos filtro LOCAL: 16637
 - total final do grupo: 16637
 
-lista_nascer_bem = [
-    'OBSTETRICIA / PRE NATAL',
-    'ENFERMAGEM NASCER BEM',
-    'ACOLHIMENTO PRE NATAL',
-    'OBSTETRICIA ALTO RISCO',
-    'PSICOLOGIA - AVALIAÇÃO',
-    'AVALIACAO PRE-PARTO',
-    'PSICOTERAPIA',
+lista_nascer_bem_filtro_local = [
+    'NB RIO ARAGUAIA',
+    'NB MESSEJANA',
+    'NB DAS GRAÇAS',
+    'NB SAO GERARDO',
+    'NB MONTESE',
+    'NB JOSE WALTER',
+    'NB MARACANAU',
+    'NB ZONA LESTE',
+    'NB EPAMINONDAS',
+    'NB DUARTE COELHO',
+    'NB DUQUE DE CAXIAS',
+    'NB DOM MANUEL',
+    'NB PSICOLOGIA',
+    'NB LOBO FIHO',
+    'NB PEDRO DA HORA',
+    'NB VIERALVES',
+    'NB FRANCISCO SA',
+    'NB 1 ANTONIO SALES',
+    'NB CONSELHEIRO AGUIAR',
+    'NB COSTA AZUL',
+    'NB-LAURO DE FREITAS',
+    'NB NOVA PIEDADE',
+    'NB FLORES',
+    'NB URUGUAI',
+    'NB 01-HAPCLINICA GAR',
+    'NB ALTO RISCO BARAO DE STUDART',
+    'NB CABO',
+    'NB ALTO RISCO RIO ARAGUAIA',
+    'NB METROPOLITANA',
+    'NB CAMACARI',
+    'NB AUGUSTO MONTENEGRO',
+    'NB 2 LOMAS VALENTINO',
+    'NB ALTO RISCO EPAMIN',
+    'NB MUNDURUCUS',
+    'ALTO RISCO MARACANAU',
+    'NB ALTO RISCO LOBO FILHO',
+    'NB ALTO RISCO NOVA PIEDADE',
+    'NB ALTO RISCO FLORES',
+    'NB ALTO RISCO PARQUE 10',
+    'NB ALTO RISCO GRACA',
+    'NB ALTO RISCO LAURO',
+    'NB ALTO RISCO GARIBA',
+    'NB ALTO RISCO URUGUA',
+    'NB ALTO RISCO VIERALVES',
+    'NB ALTO RISCO COSTA AZUL',
+    'NB ALTO RISCO DOM MANUEL',
+    'NB ALTO RISCO CONSELHEIRO AGUI',
+    'NB ALTO RISCO OLINDA',
+    'NB ALTO RISCO METROPOLITANA',
+    'NB ALTO RISCO MUNDURUCUS',
+    'NB ALTO RISCO MONTESE',
+    'NB ALTO RISCO AUG MONTE',
+    'NB ALTO RISCO LOMAS',
+    'NB ALTO RISCO ANTONIO SALES',
 ]
 
 GRUPO: TELEMEDICINA
@@ -136,11 +229,18 @@ PALAVRA_FILTRO: TELEM
 - total apos filtro LOCAL: 468
 - total final do grupo: 468
 
-lista_telemedicina = [
-    'NEUROPEDIATRIA',
-    'GENETICA MEDICA',
-    'FONOTERAPIA',
-    'CIRURGIA CARDIACA/HEMODINAMICA',
+lista_telemedicina_filtro_local = [
+    'TELEMED LOBO FILHO',
+    'TELEMED SILVES',
+    'TELEMED ZONA NORTE',
+    'TELEMEDICINA RODOLFO FERNANDES',
+    'TELEMEDICINA LAPA',
+    'TELEMED DAS GRACA',
+    'TELEMEDICINA MESSEJANA',
+    'TELEMEDICINA FERNANDES LIMA',
+    'TELEMEDICINA MERCES',
+    'TELEMEDICINA JOINVILLE',
+    'TELEMED TERESINA',
 ]
 
 GRUPO: PRODUTO COORDENADO
@@ -154,16 +254,52 @@ PALAVRA_FILTRO: NOSSO MEDICO|NOTRELIFE|NUCLEO MF|PROD. COORD|PROD.COORD
 - total apos filtro LOCAL: 5663
 - total final do grupo: 5663
 
-lista_produto_coordenado = [
-    'MEDICO SAUDE DA FAMILIA',
-    'GERIATRIA COORDENADO',
-    'ENFERMAGEM DE SAUDE DA FAMILIA',
-    'OFICINAS EDUCATIVAS',
-    'MEDICO OBESIDADE QUALIVIDA',
-    'MEDICO PAI QUALIVIDA',
-    'GERONTOLOGIA COORDENADO',
-    'GRUPO IDOSOS',
-    'MEDICO COORDENADO',
+lista_produto_coordenado_filtro_local = [
+    'NUCLEO MF JARAGUA DO SUL',
+    'NOTRELIFE MOGI DAS CRUZES',
+    'NOSSO MEDICO BOQUEIRAO',
+    'NUCLEO MF CENTRO',
+    'NOSSO MEDICO TERESINA',
+    'PROD. COORD. BELA SUIÇA',
+    'NUCLEO NOSSO MEDICO SALVALUS',
+    'NOTRELIFE JUNDIAI',
+    'NOSSO MEDICO UBERLANDIA',
+    'NOSSO MEDICO MARACANAU',
+    'NOTRELIFE ABC',
+    'NOTRELIFE SOROCABA',
+    'NOTRELIFE GUARULHOS',
+    'NOSSO MEDICO ZONA SUL',
+    'NOSSO MEDICO INTERLAGOS',
+    'NOSSO MEDICO LIFE CENTER',
+    'NOSSO MEDICO GARIBALDI',
+    'NOSSO MEDICO GUARULHOS',
+    'NUCLEO MF JOINVILLE',
+    'NOSSO MEDICO RODRIGUES JUNIOR',
+    'NOSSO MEDICO SOROCABA',
+    'NUCLEO NOSSO MEDICO JUNDIAI',
+    'NOSSO MEDICO MONTES CLAROS',
+    'NUCLEO NOSSO MEDICO ITAQUERA',
+    'NUCLEO NOSSO MEDICO ABC',
+    'NUCLEO MF ITAJAI',
+    'NUCLEO MF PINHAIS',
+    'NUCLEO MF ARAUCARIA',
+    'NUCLEO NOSSO MEDICO ABC II',
+    'NOSSO MEDICO CAMPINAS',
+    'NOSSO MEDICO MOGI DAS CRUZES',
+    'NOSSO MEDICO ELDORADO',
+    'NUCLEO NOSSO MEDICO HERMINIO L',
+    'NOSSO MEDICO CONJUNTO CEARA',
+    'NUCLEO NOSSO MEDICO MAUA',
+    'NUCLEO NOSSO MEDICO ZONA NORTE',
+    'NUCLEO MF BLUMENAU',
+    'NOSSO MEDICO MONTESE',
+    'NOSSO MEDICO MANAUS',
+    'NOSSO MEDICO FEIRA DE SANTANA',
+    'NOSSO MEDICO BETIM',
+    'NOSSO MEDICO ESPINHEIRO',
+    'NOSSO MEDICO SAO JOSE DOS CAMP',
+    'NOSSO MEDICO LIMEIRA',
+    'NOSSO MEDICO AUGUSTO DE LIMA',
 ]
 
 GRUPO: CASE
@@ -171,13 +307,28 @@ PALAVRA_FILTRO: CASE
 - filtro TIPO: TIPO diferente de 6
 - filtro CONTRATACAO: sem filtro em CONTRATACAO
 - filtro LOCAL: LOCAL contem 'case'
-- filtro ESPECIALIDADE: ESPECIALIDADE contem 'QUALIVIDA'
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'case'
 - total apos filtro TIPO: 3780344
 - total apos filtro CONTRATACAO: 3780344
 - total apos filtro LOCAL: 7850
 - total final do grupo: 7612
 
-lista_case = [
+lista_case_filtro_local = [
+    'NUCLEO CASE UNIDADE AVANCADA S',
+    'NUCLEO CASE SAO BERNARDO',
+    'NUCLEO CASE CC JUNDIAI',
+    'NUCLEO CASE ADM RIO DE JANEIRO',
+    'CASE AUGUSTO DE LIMA',
+    'NUCLEO CASE QUALIVIDA SOROCABA',
+    'NUCLEO CASE UNIDADE AVANCADA SALVALUS',
+    'NUCLEO CASE CLINIPAM',
+    'NUCLEO CASE QUALIVIDA CAMPINAS',
+    'NUCLEO CASE BARAO DE STUDART',
+    'NUCLEO CASE BARAO DE ITAMARACA',
+    'NUCLEO CASE CCG',
+]
+
+lista_case_filtro_especialidade = [
     'CASE GERIATRIA/GERONTOLOGIA',
     'CASE CARDIOLOGIA',
     'CASE REUMATOLOGIA',
@@ -209,13 +360,13 @@ PALAVRA_FILTRO: TRANSPL
 - filtro TIPO: TIPO diferente de 6
 - filtro CONTRATACAO: sem filtro em CONTRATACAO
 - filtro LOCAL: sem filtro em LOCAL
-- filtro ESPECIALIDADE: sem filtro em ESPECIALIDADE
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'transpl'
 - total apos filtro TIPO: 3780344
 - total apos filtro CONTRATACAO: 3780344
 - total apos filtro LOCAL: 3780344
 - total final do grupo: 111
 
-lista_transplante = [
+lista_transplante_filtro_especialidade = [
     'MÉDICO TRANSPLANTE RENAL',
     'MEDICO TRANSPLANTE MEDULA OSSEA',
     'MEDICO TRANSPLANTE HEPATICO',
@@ -238,22 +389,32 @@ PALAVRA_FILTRO: TEA
 - total apos filtro LOCAL: 4436
 - total final do grupo: 4436
 
-lista_tea = [
-    'CLINICO GERAL',
-    'FISIOTERAPIA TEA',
-    'ATENDIMENTO TEA',
-    'PSICOLOGIA TEA',
-    'TERAPIA OCUPACIONAL TEA',
-    'FONOAUDIOLOGIA TEA',
-    'PSICOLOGIA - AVALIAÇÃO',
-    'TERAPIA OCUPACIONAL - AVALIAÇÃO',
-    'FISIOTERAPIA',
-    'PSICOTERAPIA',
-    'FONOTERAPIA',
-    'NEUROPSICOLOGO',
-    'CLINICA MEDICA',
-    'FISIOT PEDIATRICA',
-    'ORTOPEDIA E TRAUMATOLOGIA',
+lista_tea_filtro_local = [
+    'DIAGNOSTICO JOAO PENTEADO',
+    'CLINICA TEA RECIFE',
+    'TEA AREINHA',
+    'CLINICA TEA CAMPINA GRANDE',
+    'TEABA CLINICA MULTIDISCIPLINAR',
+    'CLINICA TEA ARACAJU',
+    'TEA SALVADOR',
+    'CLINICA TEA MARACANAU',
+    'CLINICA TEA FORTALEZA',
+    'TEA ZONA NORTE SANTANA',
+    'TEA SAO BERNARDO',
+    'TEAINTER COMPORTAMENTAL',
+    'CLINICA TEA NATAL',
+    'TEA JUAZEIRO DO NORTE',
+    'TEA GOIANIA',
+    'TEA SAO LUIS',
+    'TEA SAO CAETANO',
+    'TEA ZONA LESTE',
+    'MEDICINA PREVENTIVA TEA RIBEIR',
+    'TEA BARAO SERRA AZUL',
+    'CLINICA TEA MACEIO',
+    'HOSPITAL IRMAOS PENTEADO',
+    'MEDICINA PREVENTIVA TEA',
+    'MEDPREV TEA ANA LIMA',
+    'TEA SETOR DOS FUNCIONARIOS',
 ]
 
 GRUPO: GESTAR BEM
@@ -267,7 +428,228 @@ PALAVRA_FILTRO: GESTAR|GESTAR BEM|PGS
 - total apos filtro LOCAL: 1920
 - total final do grupo: 1899
 
-lista_gestar_bem = [
+lista_gestar_bem_filtro_local = [
+    'PGS OSASCO',
+    'PGS SANTO ANDRE II',
+    'GESTAR BEM LUSTOZA',
+    'PGS ANALIA FRANCO',
+    'PGS GUARULHOS I',
+    'GESTAR BEM OCTAVIANO NEVES',
+    'PGS DUQUE DE CAXIAS',
+    'PGS DOM PEDRO',
+    'PGS ARUJA',
+    'PGS JACAREPAGUA',
+    'PGS MOGI DAS CRUZES',
+    'PGS ZONA OESTE',
+    'PGS SAO GABRIEL',
+    'NUCLEO GESTAR BEM HUMANIZA',
+    'GESTAR BEM DIVINOPOLIS',
+    'GESTAR BEM AUGUSTO LIMA',
+    'PGS ITU',
+    'GESTAR PSI',
+    'GESTAR BEM ELDORADO II',
+    'GESTAR BEM BETIM',
+    'GESTAR BEM VENDA NOVA',
+]
+
+lista_gestar_bem_filtro_especialidade = [
     'OBSTETRICIA ALTO RISCO GESTAR BEM',
     'ENFERMAGEM GESTAR BEM',
+]
+
+GRUPO: TELECONSULTA
+PALAVRA_FILTRO: PGC|TRANSPLANTE|CASE
+- filtro TIPO: TIPO igual a 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: sem filtro em LOCAL
+- filtro ESPECIALIDADE: ESPECIALIDADE contem 'pgc', 'transplante' ou 'case'
+- total apos filtro TIPO: 469094
+- total apos filtro CONTRATACAO: 469094
+- total apos filtro LOCAL: 469094
+- total final do grupo: 2574
+
+lista_teleconsulta_filtro_especialidade = [
+    'TELE CASE NUTRICAO',
+    'TELEMEDICINA CASE CLÍNICA MÉDICA',
+    'TELE CASE PSICOLOGIA',
+    'TELEMEDICINA CASE CUIDADOS PALIATIVOS',
+    'Tele Case Nutricao',
+    'Tele Case Psicologia',
+    'TELE CASE INFECTOLOGIA',
+    'TELEMEDICINA CASE PEDIATRIA',
+    'Tele Case Fisioterapia',
+    'TELE CASE ENFERMAGEM',
+    'Tele Case Fonoaudiologia',
+    'Tele Case Enfermagem',
+    'Telemedicina Case Clínica Médica',
+    'TELE CASE FISIOTERAPIA',
+    'TELE CASE FONOAUDIOLOGIA',
+    'Telemedicina Case Cuidados Paliativos',
+    'CASE NEUROLOGIA',
+    'TELE PGC TERAPIA OCUPACIONAL',
+    'Telemedicina Case Pediatria',
+    'TELEMEDICINA CASE GERIATRIA',
+    'ENFERMAGEM TRANSPLANTE RENAL',
+    'Tele Case Infectologia',
+    'Case Neurologia',
+    'MÉDICO TRANSPLANTE RENAL',
+    'TELEMEDICINA CASE NUTROLOGIA',
+    'Telemedicina Case Geriatria',
+    'TELEMEDICINA CASE PSIQUIATRIA',
+    'Pgc Terapia Ocupacional',
+    'CASE REUMATOLOGIA',
+    'TELEMEDICINA CASE ENDOCRINOLOGIA',
+    'Médico Transplante Renal',
+    'Enfermagem Transplante Renal',
+    'CASE GASTROENTEROLOGIA',
+    'Telemedicina Case Nutrologia',
+    'Telemedicina Case Psiquiatria',
+    'Case Reumatologia',
+    'Telemedicina Case Endocrinologia',
+    'Case Gastroenterologia',
+    'ENFERMAGEM TRANSPLANTE HEPÁTICO',
+    'ENFERMAGEM TRANSPLANTE DE MEDULA ÓSSEA',
+    'MEDICO TRANSPLANTE MEDULA OSSEA',
+    'Enfermagem Transplante Hepatico',
+    'ASSISTENTE SOCIAL TRANSPLANTE HEPÁTICO',
+    'Enfermagem Transplante de Medula Ossea',
+    'Médico Transplante de Medula Óssea',
+]
+
+GRUPO: TELECONSULTA ELETIVA
+PALAVRA_FILTRO: None
+- filtro TIPO: TIPO igual a 6
+- filtro CONTRATACAO: sem filtro em CONTRATACAO
+- filtro LOCAL: sem filtro em LOCAL
+- filtro ESPECIALIDADE: ESPECIALIDADE diferente de 'pgc', 'transplante' ou 'case'
+- total apos filtro TIPO: 469094
+- total apos filtro CONTRATACAO: 469094
+- total apos filtro LOCAL: 469094
+- total final do grupo: 466520
+
+lista_teleconsulta_eletiva = [
+    'CLINICO GERAL',
+    'Clínica Médica',
+    'RENOVAÇÃO DE RECEITAS',
+    'PSICOTERAPIA',
+    'PSIQUIATRIA',
+    'ORTOPEDIA E TRAUMATOLOGIA',
+    'GINECOLOGIA CLINICA',
+    'DERMATOLOGIA CLINICA E CIRURGICA',
+    'PEDIATRIA',
+    'NUTRICAO',
+    'Psicoterapia',
+    'Psiquiatria',
+    'CARDIOLOGIA',
+    'GASTROENTEROLOGIA',
+    'Ortopedia e Traumatologia',
+    'Ginecologia e Obstetrícia',
+    'Renovação de Receitas',
+    'Dermatologia',
+    'OTORRINOLARINGOLOGIA',
+    'Nutrição',
+    'NEUROLOGIA',
+    'Pediatria',
+    'ENDOCRINOLOGIA/METABOLOGIA',
+    'Cardiologia',
+    'REUMATOLOGIA',
+    'PNEUMOLOGIA',
+    'Gastroenterologia',
+    'DOR DE CABECA CEFALEIA',
+    'NUTROLOGIA',
+    'ALERGOLOGIA',
+    'Otorrinolaringologia',
+    'Neurologia',
+    'UROLOGIA',
+    'HEMATOLOGIA',
+    'NEFROLOGIA',
+    'Endocrinologia',
+    'MEDICO SAUDE DA FAMILIA',
+    'INFECTOLOGIA',
+    'Pneumologia',
+    'Reumatologia',
+    'ENDOCRINOLOGIA PEDIATRICA',
+    'Alergia e Imunologia',
+    'NEUROPEDIATRIA',
+    'Nutrologia',
+    'Dor de Cabeca Cefaleia',
+    'DOR NAS COSTAS - LOMBALGIA',
+    'FISIOTERAPIA',
+    'CARDIOLOGIA PEDIATRICA',
+    'Hematologia e Hemoterapia',
+    'GERIATRIA/GERONTOLOGIA',
+    'Nefrologia',
+    'Urologia',
+    'Infectologia',
+    'ATENDIMENTO TEA',
+    'Médico Saúde da Família',
+    'Endocrinologia Pediátrica',
+    'Neuropediatria',
+    'NUTRICAO QUALIVIDA',
+    'GASTROENTEROLOGIA PEDIATRICA',
+    'Cardiologia Pediatrica',
+    'PSICOTERAPIA LINHAS DE CUIDADO',
+    'TRIAGEM INFANTIL NEUROPSICOLOGIA',
+    'Dor Nas Costas - Lombalgia',
+    'Geriatria',
+    'Atendimento Tea',
+    'TRIAGEM DE FONOAUDIOLOGIA',
+    'Fisioterapia Individual',
+    'Nutricao Qualivida',
+    'Psicoterapia Linhas de Cuidado',
+    'Gastroenterologia Pediátrica',
+    'Triagem Infantil Neuropsicol',
+    'GENETICA MEDICA',
+    'PSICOLOGIA QUALIVIDA',
+    'TRIAGEM TERAPIA OCUPACIONAL',
+    'Triagem de Fonoaudiologia',
+    'DOR NO ESTOMAGO - REFLUXO',
+    'OBSTETRICIA / PRE NATAL',
+    'FONOTERAPIA',
+    'Genética Médica',
+    'MEDICO VIVER BEM',
+    'Psicologia Qualivida',
+    'MEDICO OBESIDADE QUALIVIDA',
+    'Triagem Terapia Ocupacional',
+    'Obstetrícia  Pré Natal',
+    'Dor No Estomago - Refluxo',
+    'Médico Viver Bem',
+    'Fonoaudiologia',
+    'PSIQUIATRIA INFANTIL',
+    'Medico Obesidade Qualivida',
+    'PROGRAMA SINTA BEM TLM',
+    'MÉDICO DA COLUNA QUALIVIDA',
+    'Psiquiatria Infantil',
+    'CARDIOLOGIA QUALIVIDA',
+    'MEDICO PAI QUALIVIDA',
+    'ACONSELHAMENTO FETAL GESTAR BEM',
+    'ACOLHIMENTO MEDICO VIVER BEM',
+    'Médico da Coluna Qualivida',
+    'Programa Sinta Bem Tlm',
+    'Programa Viver Bem',
+    'RENOVAÇÃO DE RECEITA AZUL E AMARELO',
+    'ENDOCRINOLOGIA PARA GESTANTE',
+    'Medico Pai Qualivida',
+    'Aconselhamento Fetal Gestar Bem',
+    'Endocrinologia Para Gestante',
+    'Enfermagem Gestar Bem',
+    'TERAPIA OCUPACIONAL-SESSAO',
+    'TELEMEDICINA PSIQUIATRIA POS ALTA',
+    'FIBROMIALGIA',
+    'Terapia Ocupacional',
+    'Cardiologia Qualivida',
+    'ENDOMETRIOSE',
+    'ENFERMAGEM VIVER BEM',
+    'Renovação de Receita Polo Sp – Azul e Amarelo',
+    'ENFERMAGEM GESTAR BEM',
+    'Hemato-tmo',
+    'Psiquiatria Pós-alta',
+    'ACOLHIMENTO ENFERMAGEM VIVER BEM',
+    'HEMATOLOGIA TMO',
+    'Endometriose',
+    'Enfermagem Viver Bem',
+    'Fibromialgia',
+    'Acolhimento Enfermagem Viver Bem',
+    'OBSTETRICIA ALTO RISCO GESTAR BEM',
+    'Obstetricia Alto Risco Gestar Bem',
 ]
