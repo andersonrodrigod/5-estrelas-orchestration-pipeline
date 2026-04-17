@@ -7,7 +7,7 @@ import pandas as pd
 arquivo_entrada = Path('data_exec_indiv/01_base_limpa.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
 arquivo_saida = Path('data_exec_indiv/02_base_com_contratacao.csv')
-pasta_resumo = Path('saida_resumo')
+pasta_resumo = Path('saida_resumo') / 'exec_02_contratacao'
 arquivo_resumo_json = pasta_resumo / 'exec_02_contratacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_02_contratacao_resumo.txt'
 
@@ -51,7 +51,7 @@ print(f'Gravando arquivo da execucao 02: {arquivo_saida}')
 
 df = df.drop(columns=['LOCAL_COMPARACAO'])
 arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(exist_ok=True)
+pasta_resumo.mkdir(parents=True, exist_ok=True)
 df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
 
 resumo = {

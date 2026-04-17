@@ -1,0 +1,222 @@
+[
+    {
+        "descricao": "CLASSIFICACAO contem TELE",
+        "valor_operadora": "TELECONSULTA",
+        "filtros": [
+            {
+                "coluna": "CLASSIFICACAO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "TELE"
+            }
+        ]
+    },
+    {
+        "descricao": "CLASSIFICACAO contem CRED",
+        "valor_operadora": "REDE CREDENCIADA",
+        "filtros": [
+            {
+                "coluna": "CLASSIFICACAO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "CRED"
+            }
+        ]
+    },
+    {
+        "descricao": "UF igual a PR",
+        "valor_operadora": "CLINIPAN",
+        "filtros": [
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "PR"
+            }
+        ]
+    },
+    {
+        "descricao": "UF igual a RS",
+        "valor_operadora": "CCG",
+        "filtros": [
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "RS"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem OCTAVIANO NEVES e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "OCTAVIANO NEVES"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem VENDA NOVA e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "VENDA NOVA"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem PROCLIN ELDORADO e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "PROCLIN ELDORADO"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem HVC DAY UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "HVC"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "HOSPITAL VERA CRUZ e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "HOSPITAL VERA CRUZ"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem BETIM e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "BETIM"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem RAJA e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "RAJA"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO igual a LIFE CENTER CONTAGEM e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "igual",
+                "valor_filtro": "LIFE CENTER CONTAGEM"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO igual a HOSPITAL LIFE CENTER e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "igual",
+                "valor_filtro": "HOSPITAL LIFE CENTER"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO contem EFIGENCIA e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "contem",
+                "valor_filtro": "EFIGENCIA"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
+        "descricao": "LOCAL EDITADO igual a PA CONTORNO e UF igual a MG",
+        "valor_operadora": "PROMED",
+        "filtros": [
+            {
+                "coluna": "LOCAL EDITADO",
+                "tipo_filtro": "igual",
+                "valor_filtro": "PA CONTORNO"
+            },
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    }
+]

@@ -187,7 +187,7 @@
         "descricao_especialidade":  "ESPECIALIDADE contem \u0027gestar|gestar bem\u0027"
     },
     {
-        "grupo_classificacao":  "TELECONSULTA",
+        "grupo_classificacao":  "TELECONSULTA CASE",
         "nome_lista":  "lista_teleconsulta",
         "palavra_filtro":  "PGC|TRANSPLANTE|CASE",
         "tipo_igual":  6,

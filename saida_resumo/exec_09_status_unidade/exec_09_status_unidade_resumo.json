@@ -1,0 +1,10 @@
+{
+    "execucao": "exec_09_status_unidade",
+    "arquivo_entrada": "data_exec_indiv\\08_base_com_resultado_unidade.csv",
+    "arquivo_saida": "data_exec_indiv\\09_base_com_status_unidade.csv",
+    "arquivo_status_csv": "saida_resumo\\exec_09_status_unidade\\exec_09_status_unidade_status.csv",
+    "total_linhas_entrada": 812091,
+    "total_dentro_meta": 776642,
+    "total_fora_meta": 32786,
+    "total_sem_status": 2663
+}

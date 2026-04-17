@@ -1,0 +1,103 @@
+RESUMO DA EXECUCAO 04 - CLASSIFICACAO
+
+Arquivo de entrada: data_exec_indiv\03_base_com_nota.csv
+Arquivo de grupos: data\grupos_classificacao.json
+Arquivo de nomes: data\nomes_classificacao.json
+Arquivo de saida: data_exec_indiv\04_base_com_classificacao.csv
+
+Total de linhas na entrada: 812091
+Total classificadas: 809428
+Total nao classificadas: 2663
+Total sobrescritas: 21567
+Total de regras aplicadas: 29
+
+REGRAS APLICADAS:
+- ordem=1 | lista=lista_cred_atend_emergencia | classificacao=CRED_ATEND EMERGENCIA | atingidas=22562 | vazias=22562 | ja_classificadas=0 | sobrescritas=0
+- ordem=2 | lista=lista_hospitalar | classificacao=HOSPITALAR | atingidas=135310 | vazias=135310 | ja_classificadas=0 | sobrescritas=0
+- ordem=3 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=3240 | vazias=3240 | ja_classificadas=0 | sobrescritas=0
+- ordem=4 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=626 | vazias=626 | ja_classificadas=0 | sobrescritas=0
+- ordem=5 | lista=lista_nascer_bem | classificacao=NASCER BEM | atingidas=703 | vazias=703 | ja_classificadas=0 | sobrescritas=0
+- ordem=6 | lista=lista_telemedicina | classificacao=TELEMEDICINA | atingidas=96 | vazias=96 | ja_classificadas=0 | sobrescritas=0
+- ordem=7 | lista=lista_produto_coordenado | classificacao=PRODUTO COORDENADO | atingidas=1666 | vazias=1666 | ja_classificadas=0 | sobrescritas=0
+- ordem=8 | lista=lista_case | classificacao=CASE | atingidas=1433 | vazias=1433 | ja_classificadas=0 | sobrescritas=0
+- ordem=9 | lista=lista_transplante | classificacao=TRANSPLANTE | atingidas=16 | vazias=15 | ja_classificadas=1 | sobrescritas=1
+- ordem=10 | lista=lista_tea | classificacao=TEA | atingidas=99 | vazias=99 | ja_classificadas=0 | sobrescritas=0
+- ordem=11 | lista=lista_gestar_bem | classificacao=GESTAR BEM | atingidas=716 | vazias=716 | ja_classificadas=0 | sobrescritas=0
+- ordem=12 | lista=lista_teleconsulta | classificacao=TELECONSULTA CASE | atingidas=1041 | vazias=1041 | ja_classificadas=0 | sobrescritas=0
+- ordem=13 | lista=lista_teleconsulta_eletiva | classificacao=TELECONSULTA ELETIVA | atingidas=162231 | vazias=162231 | ja_classificadas=0 | sobrescritas=0
+- ordem=14 | lista=lista_teleconsulta_urgencia | classificacao=TELECONSULTA URGENCIA | atingidas=46157 | vazias=46157 | ja_classificadas=0 | sobrescritas=0
+- ordem=15 | lista=lista_med_prev | classificacao=MED PREV | atingidas=7380 | vazias=6562 | ja_classificadas=818 | sobrescritas=818
+- ordem=16 | lista=lista_cred_tratamento | classificacao=CRED_TRATAMENTO | atingidas=37307 | vazias=37302 | ja_classificadas=5 | sobrescritas=5
+- ordem=17 | lista=lista_med_prev_tipo_2 | classificacao=MED PREV | atingidas=5 | vazias=5 | ja_classificadas=0 | sobrescritas=0
+- ordem=18 | lista=lista_hapclinica | classificacao=HAPCLINICA | atingidas=340866 | vazias=333159 | ja_classificadas=7707 | sobrescritas=7707
+- ordem=19 | lista=lista_odontologia | classificacao=ODONTOLOGIA | atingidas=12194 | vazias=12194 | ja_classificadas=0 | sobrescritas=0
+- ordem=20 | lista=lista_odontologia_2 | classificacao=ODONTOLOGIA | atingidas=11906 | vazias=0 | ja_classificadas=11906 | sobrescritas=11906
+- ordem=21 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=1123 | vazias=1123 | ja_classificadas=0 | sobrescritas=0
+- ordem=22 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=1123 | vazias=0 | ja_classificadas=1123 | sobrescritas=1123
+- ordem=23 | lista=lista_laboratorio | classificacao=LABORATORIO | atingidas=30559 | vazias=30552 | ja_classificadas=7 | sobrescritas=7
+- ordem=24 | lista=lista_cred_laboratorio | classificacao=CRED_LABORATORIO | atingidas=11108 | vazias=11108 | ja_classificadas=0 | sobrescritas=0
+- ordem=25 | lista=lista_vida_imagem | classificacao=VIDA IMAGEM | atingidas=846 | vazias=846 | ja_classificadas=0 | sobrescritas=0
+- ordem=26 | lista=lista_cred_exames | classificacao=CRED_EXAMES | atingidas=145 | vazias=145 | ja_classificadas=0 | sobrescritas=0
+- ordem=27 | lista=lista_cred_internacao | classificacao=CRED_INTERNACAO | atingidas=324 | vazias=324 | ja_classificadas=0 | sobrescritas=0
+- ordem=28 | lista=lista_internacao | classificacao=INTERNACAO | atingidas=5 | vazias=5 | ja_classificadas=0 | sobrescritas=0
+- ordem=29 | lista=lista_internacao_pgc | classificacao=INTERNACAO PGC | atingidas=208 | vazias=208 | ja_classificadas=0 | sobrescritas=0
+
+SOBRESCRITAS:
+- ordem=9 | lista=lista_transplante | QUALIVIDA -> TRANSPLANTE: 1
+- ordem=15 | lista=lista_med_prev | QUALIVIDA -> MED PREV: 362
+- ordem=15 | lista=lista_med_prev | PRODUTO COORDENADO -> MED PREV: 302
+- ordem=15 | lista=lista_med_prev | CASE -> MED PREV: 108
+- ordem=15 | lista=lista_med_prev | TEA -> MED PREV: 45
+- ordem=15 | lista=lista_med_prev | TELEMEDICINA -> MED PREV: 1
+- ordem=16 | lista=lista_cred_tratamento | TEA -> CRED_TRATAMENTO: 3
+- ordem=16 | lista=lista_cred_tratamento | QUALIVIDA -> CRED_TRATAMENTO: 2
+- ordem=18 | lista=lista_hapclinica | QUALIVIDA -> HAPCLINICA: 3501
+- ordem=18 | lista=lista_hapclinica | PRODUTO COORDENADO -> HAPCLINICA: 1352
+- ordem=18 | lista=lista_hapclinica | CASE -> HAPCLINICA: 1325
+- ordem=18 | lista=lista_hapclinica | NASCER BEM -> HAPCLINICA: 703
+- ordem=18 | lista=lista_hapclinica | GESTAR BEM -> HAPCLINICA: 671
+- ordem=18 | lista=lista_hapclinica | TELEMEDICINA -> HAPCLINICA: 95
+- ordem=18 | lista=lista_hapclinica | TEA -> HAPCLINICA: 44
+- ordem=18 | lista=lista_hapclinica | TRANSPLANTE -> HAPCLINICA: 16
+- ordem=20 | lista=lista_odontologia_2 | ODONTOLOGIA -> ODONTOLOGIA: 11904
+- ordem=20 | lista=lista_odontologia_2 | CRED_TRATAMENTO -> ODONTOLOGIA: 2
+- ordem=22 | lista=lista_cred_atend_eletivo | CRED_ATEND ELETIVO -> CRED_ATEND ELETIVO: 1123
+- ordem=23 | lista=lista_laboratorio | TEA -> LABORATORIO: 7
+
+NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
+- COPE CENTRO OFTALMOL: 663
+- CLINICA DE PSIQ E PSICOLOGIA: 617
+- COPE IMPERATRIZ: 357
+- CLINICA GUAÍBA: 224
+- CLINICA JARDIM CENTRAL: 173
+- NUCLEO DE ONCOLOGIA: 112
+- CLINICA GUARIBA: 104
+- NOVA CLINICA E SAD ARARAS: 88
+- CLINICA SERRANA: 54
+- CLINICA SONORA: 48
+- CLINICA MONTENEGRO: 41
+- COPE CAMARAGIBE: 34
+- CONSULTORIO GUSTAVO DELLA: 25
+- AMB AERIS IND E COM DE EQUI GE: 14
+- CONSULT MAURO KALIFE: 12
+- CLINICA RIO BRILHANTE: 11
+- CONSULT. ALEXANDRE CASSARO: 11
+- CONSULTORIO CLAUDIO GABRIELE: 9
+- CLINICA SOLO DE LUCENA: 8
+- CLINICA CHAPADAO DO CEU: 8
+- CLINICA NAVIRAI: 8
+- CONSULT PAULO N S MARQUES: 8
+- CONSULTORIO GUSTAVO RUAS: 6
+- CONSULT. DANIEL DINIZ DE FREI: 5
+- PA EDEIA: 4
+- CLINICA MARILIA TOMAZIN: 4
+- CLINICA CINTIA KAORI KUROGI: 3
+- CONSULTORIO CINCINATO NOGUEIRA: 2
+- IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M: 2
+- CLINICA TASSIANA VALENTIN: 2
+- CLINICA POÇOS DE CALDAS: 1
+- CLINICA MARILUCI TOSI ADDAD: 1
+- MEDICINA PREVENTIVA FRANCA: 1
+- TRAJANO II: 1
+- CENTRO CLINICO E ORTOPEDICO DE CEILANDIA LTDA: 1
+- CLINICA FISIOGYN LTDA: 1

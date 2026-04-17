@@ -6,7 +6,8 @@ import pandas as pd
 
 arquivo_entrada = Path('data/5_estrelas_marco.csv')
 arquivo_saida = Path('data_exec_indiv/01_base_limpa.csv')
-pasta_resumo = Path('saida_resumo')
+arquivo_auditoria_classificacao = Path('data/base_auditoria_classificacao.csv')
+pasta_resumo = Path('saida_resumo') / 'exec_01_limpeza'
 arquivo_resumo_json = pasta_resumo / 'exec_01_limpeza_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_01_limpeza_resumo.txt'
 
@@ -55,15 +56,31 @@ df_limpo['NOTA GERAL'] = None
 print(f'Total de linhas apos tirar IGN, NQA e sem nota valida: {len(df_limpo)}')
 print(f'Total de linhas removidas: {len(df) - len(df_limpo)}')
 print(f'Gravando arquivo da execucao 01: {arquivo_saida}')
+print(f'Gravando base de auditoria da classificacao: {arquivo_auditoria_classificacao}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(exist_ok=True)
+pasta_resumo.mkdir(parents=True, exist_ok=True)
 df_limpo.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+
+colunas_auditoria_classificacao = [
+    'CDUSUARIO',
+    'MES',
+    'DIA',
+    'ANO',
+    'TIPO',
+    'CONTRATACAO',
+    'LOCAL',
+    'ESPECIALIDADE'
+]
+
+df_auditoria_classificacao = df_limpo[colunas_auditoria_classificacao].copy()
+df_auditoria_classificacao.to_csv(arquivo_auditoria_classificacao, index=False, encoding='utf-8-sig')
 
 resumo = {
     'execucao': 'exec_01_limpeza',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_auditoria_classificacao': str(arquivo_auditoria_classificacao),
     'total_linhas_entrada': int(len(df)),
     'total_linhas_saida': int(len(df_limpo)),
     'total_linhas_removidas': int(len(df) - len(df_limpo)),
@@ -79,6 +96,7 @@ linhas_txt = [
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Arquivo de auditoria da classificacao: {resumo['arquivo_auditoria_classificacao']}",
     '',
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total de linhas na saida: {resumo['total_linhas_saida']}",

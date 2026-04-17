@@ -1,0 +1,11 @@
+{
+    "execucao": "exec_01_limpeza",
+    "arquivo_entrada": "data\\5_estrelas_marco.csv",
+    "arquivo_saida": "data_exec_indiv\\01_base_limpa.csv",
+    "arquivo_auditoria_classificacao": "data\\base_auditoria_classificacao.csv",
+    "total_linhas_entrada": 812091,
+    "total_linhas_saida": 812091,
+    "total_linhas_removidas": 0,
+    "total_linhas_com_alguma_nota_valida": 812091,
+    "total_linhas_sem_nota_valida": 0
+}

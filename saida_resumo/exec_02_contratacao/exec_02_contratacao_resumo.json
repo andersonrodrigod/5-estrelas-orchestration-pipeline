@@ -1,0 +1,15 @@
+{
+    "execucao": "exec_02_contratacao",
+    "arquivo_entrada": "data_exec_indiv\\01_base_limpa.csv",
+    "arquivo_insumos": "utils\\insumos\\insumos 5 estrelas.xlsx",
+    "arquivo_saida": "data_exec_indiv\\02_base_com_contratacao.csv",
+    "total_linhas_entrada": 812091,
+    "total_rede_propria": 725636,
+    "total_rede_credenciada": 86451,
+    "total_sem_contratacao": 4,
+    "locais_sem_contratacao": {
+        "IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M": 2,
+        "CENTRO CLINICO E ORTOPEDICO DE CEILANDIA LTDA": 1,
+        "CLINICA FISIOGYN LTDA": 1
+    }
+}

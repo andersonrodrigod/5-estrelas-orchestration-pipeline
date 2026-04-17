@@ -6,7 +6,7 @@ import pandas as pd
 
 arquivo_entrada = Path('data_exec_indiv/02_base_com_contratacao.csv')
 arquivo_saida = Path('data_exec_indiv/03_base_com_nota.csv')
-pasta_resumo = Path('saida_resumo')
+pasta_resumo = Path('saida_resumo') / 'exec_03_nota'
 arquivo_resumo_json = pasta_resumo / 'exec_03_nota_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_03_nota_resumo.txt'
 
@@ -42,7 +42,7 @@ print(f'Total sem nota geral: {total_sem_nota_geral}')
 print(f'Gravando arquivo da execucao 03: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(exist_ok=True)
+pasta_resumo.mkdir(parents=True, exist_ok=True)
 df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
 
 resumo = {

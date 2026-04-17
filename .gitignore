@@ -2,3 +2,6 @@
 *.xls
 *.xlsx
 *.xlsm
+__pycache__/
+*.pyc
+.~lock*

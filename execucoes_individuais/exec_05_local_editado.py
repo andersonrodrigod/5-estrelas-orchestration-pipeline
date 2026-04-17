@@ -8,7 +8,7 @@ arquivo_entrada = Path('data_exec_indiv/04_base_com_classificacao.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
 arquivo_saida = Path('data_exec_indiv/05_base_com_local_editado.csv')
 
-pasta_resumo = Path('saida_resumo')
+pasta_resumo = Path('saida_resumo') / 'exec_05_local_editado'
 arquivo_resumo_json = pasta_resumo / 'exec_05_local_editado_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_05_local_editado_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_05_local_editado_resumo.csv'
@@ -106,7 +106,7 @@ print(f'Total nao encontradas: {total_nao_encontrados}')
 print(f'Gravando arquivo da execucao 05: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(exist_ok=True)
+pasta_resumo.mkdir(parents=True, exist_ok=True)
 df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
 
 resumo = {

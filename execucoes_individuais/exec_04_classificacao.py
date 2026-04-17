@@ -9,7 +9,7 @@ arquivo_grupos = Path('data/grupos_classificacao.json')
 arquivo_nomes = Path('data/nomes_classificacao.json')
 arquivo_saida = Path('data_exec_indiv/04_base_com_classificacao.csv')
 
-pasta_resumo = Path('saida_resumo')
+pasta_resumo = Path('saida_resumo') / 'exec_04_classificacao'
 arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_resumo.txt'
 arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_auditoria.csv'
@@ -190,7 +190,7 @@ for ordem, grupo in enumerate(grupos, start=1):
 
 df_saida = df.copy()
 arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(exist_ok=True)
+pasta_resumo.mkdir(parents=True, exist_ok=True)
 df_saida.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
 
 filtro_nao_classificados = df_saida['CLASSIFICACAO'].isna() | (df_saida['CLASSIFICACAO'] == '')
