@@ -1,0 +1,13 @@
+{
+    "execucao": "exec_02_contratacao",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\01_base_limpa.csv",
+    "arquivo_insumos": "utils\\insumos\\insumos 5 estrelas.xlsx",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\02_base_com_contratacao.csv",
+    "arquivo_locais_sem_contratacao": "saida_resumo_avaliacoes\\exec_02_contratacao\\exec_02_locais_sem_contratacao.csv",
+    "arquivo_linhas_sem_contratacao": "saida_resumo_avaliacoes\\exec_02_contratacao\\exec_02_linhas_sem_contratacao.csv",
+    "total_linhas_entrada": 1497449,
+    "total_rede_propria": 1440363,
+    "total_rede_credenciada": 57086,
+    "total_sem_contratacao": 0,
+    "locais_sem_contratacao": {}
+}

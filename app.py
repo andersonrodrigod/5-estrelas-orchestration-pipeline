@@ -6,7 +6,7 @@ import pandas as pd
 
 arquivo_base = Path('data/5_estrelas_fevereiro.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
-pasta_saida = Path('saida_resumo')
+pasta_saida = Path('saida_resumo_avaliacoes')
 
 renomear_colunas = {
     'Nota geral': 'NOTA GERAL',
@@ -174,3 +174,4 @@ arquivo_base_tratada = Path('data/5_estrelas_fevereiro_tratado.csv')
 df_saida = df.copy()
 df_saida.loc[df_valido.index, 'CONTRATACAO'] = df_valido['CONTRATACAO']
 df_saida.to_csv(arquivo_base_tratada, index=False, encoding='utf-8-sig')
+

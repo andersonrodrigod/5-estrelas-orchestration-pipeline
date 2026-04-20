@@ -1,0 +1,201 @@
+RESUMO DA EXECUCAO 04 - CLASSIFICACAO
+
+ARQUIVOS:
+Arquivo de entrada: data_exec_indiv\avaliacoes\03_base_com_nota.csv
+Arquivo de saida: data_exec_indiv\avaliacoes\04_base_com_classificacao.csv
+Regras explicadas: data\grupos_classificacao_explicado.txt
+Auditoria por regra: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_auditoria.csv
+Sobrescritas detalhadas: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
+Nao classificados detalhado: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_nao_classificados_detalhado.csv
+
+TOTAIS:
+Total de linhas na entrada: 1497449
+Total classificadas: 1497449
+Total nao classificadas: 0
+Total sobrescritas: 33588
+Total de regras aplicadas: 30
+
+REGRAS:
+As regras completas estao documentadas em: data\grupos_classificacao_explicado.txt
+Nesta execucao foram aplicadas 30 regras.
+
+REGRAS COM MAIS LINHAS ATINGIDAS:
+- Regra 18 - HAPCLINICA: 474873 linhas atingidas (12839 sobrescritas)
+- Regra 13 - TELECONSULTA ELETIVA: 300212 linhas atingidas (0 sobrescritas)
+- Regra 2 - HOSPITALAR: 243473 linhas atingidas (0 sobrescritas)
+- Regra 26 - VIDA IMAGEM: 163455 linhas atingidas (0 sobrescritas)
+- Regra 24 - LABORATORIO: 161811 linhas atingidas (796 sobrescritas)
+- Regra 14 - TELECONSULTA URGENCIA: 57594 linhas atingidas (0 sobrescritas)
+- Regra 16 - CRED_TRATAMENTO: 31903 linhas atingidas (1115 sobrescritas)
+- Regra 15 - MED PREV: 27756 linhas atingidas (2810 sobrescritas)
+- Regra 19 - ODONTOLOGIA: 11737 linhas atingidas (0 sobrescritas)
+- Regra 20 - ODONTOLOGIA: 11474 linhas atingidas (11474 sobrescritas)
+
+SOBRESCRITAS:
+Total de linhas sobrescritas: 33588
+Detalhamento completo em: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
+
+Principais sobrescritas:
+[11459 linhas] Regra 20 substituiu Regra 19
+De: ODONTOLOGIA
+Para: ODONTOLOGIA
+Lista anterior: lista_odontologia
+Lista nova: lista_odontologia_2
+Chave anterior: ODONTOLOGIA
+Chave nova: ODONTOLOGIA
+
+[4672 linhas] Regra 18 substituiu Regra 3
+De: QUALIVIDA
+Para: HAPCLINICA
+Lista anterior: lista_qualivida
+Lista nova: lista_hapclinica
+Chave anterior: QUALIVIDA
+Chave nova: HAPCLINICA
+
+[4549 linhas] Regra 23 substituiu Regra 21
+De: CRED_ATEND ELETIVO
+Para: CRED_ATEND ELETIVO
+Lista anterior: lista_cred_atend_eletivo
+Lista nova: lista_cred_atend_eletivo
+Chave anterior: CRED_ATEND_ELETIVO
+Chave nova: CRED_ATEND_ELETIVO
+
+[3276 linhas] Regra 18 substituiu Regra 8
+De: CASE
+Para: HAPCLINICA
+Lista anterior: lista_case
+Lista nova: lista_hapclinica
+Chave anterior: CASE
+Chave nova: HAPCLINICA
+
+[2326 linhas] Regra 18 substituiu Regra 7
+De: PRODUTO COORDENADO
+Para: HAPCLINICA
+Lista anterior: lista_produto_coordenado
+Lista nova: lista_hapclinica
+Chave anterior: PRODUTO_COORDENADO
+Chave nova: HAPCLINICA
+
+[1930 linhas] Regra 15 substituiu Regra 10
+De: TEA
+Para: MED PREV
+Lista anterior: lista_tea
+Lista nova: lista_med_prev
+Chave anterior: TEA
+Chave nova: MED_PREV
+
+[1106 linhas] Regra 16 substituiu Regra 10
+De: TEA
+Para: CRED_TRATAMENTO
+Lista anterior: lista_tea
+Lista nova: lista_cred_tratamento
+Chave anterior: TEA
+Chave nova: CRED_TRATAMENTO
+
+[1079 linhas] Regra 18 substituiu Regra 5
+De: NASCER BEM
+Para: HAPCLINICA
+Lista anterior: lista_nascer_bem
+Lista nova: lista_hapclinica
+Chave anterior: NASCER_BEM
+Chave nova: HAPCLINICA
+
+[1040 linhas] Regra 18 substituiu Regra 11
+De: GESTAR BEM
+Para: HAPCLINICA
+Lista anterior: lista_gestar_bem
+Lista nova: lista_hapclinica
+Chave anterior: GESTAR_BEM
+Chave nova: HAPCLINICA
+
+[796 linhas] Regra 24 substituiu Regra 10
+De: TEA
+Para: LABORATORIO
+Lista anterior: lista_tea
+Lista nova: lista_laboratorio
+Chave anterior: TEA
+Chave nova: LABORATORIO
+
+[504 linhas] Regra 15 substituiu Regra 3
+De: QUALIVIDA
+Para: MED PREV
+Lista anterior: lista_qualivida
+Lista nova: lista_med_prev
+Chave anterior: QUALIVIDA
+Chave nova: MED_PREV
+
+[214 linhas] Regra 15 substituiu Regra 7
+De: PRODUTO COORDENADO
+Para: MED PREV
+Lista anterior: lista_produto_coordenado
+Lista nova: lista_med_prev
+Chave anterior: PRODUTO_COORDENADO
+Chave nova: MED_PREV
+
+[188 linhas] Regra 18 substituiu Regra 4
+De: QUALIVIDA
+Para: HAPCLINICA
+Lista anterior: lista_qualivida
+Lista nova: lista_hapclinica
+Chave anterior: QUALIVIDA
+Chave nova: HAPCLINICA
+
+[167 linhas] Regra 18 substituiu Regra 6
+De: TELEMEDICINA
+Para: HAPCLINICA
+Lista anterior: lista_telemedicina
+Lista nova: lista_hapclinica
+Chave anterior: TELEMEDICINA
+Chave nova: HAPCLINICA
+
+[162 linhas] Regra 15 substituiu Regra 8
+De: CASE
+Para: MED PREV
+Lista anterior: lista_case
+Lista nova: lista_med_prev
+Chave anterior: CASE
+Chave nova: MED_PREV
+
+[50 linhas] Regra 18 substituiu Regra 10
+De: TEA
+Para: HAPCLINICA
+Lista anterior: lista_tea
+Lista nova: lista_hapclinica
+Chave anterior: TEA
+Chave nova: HAPCLINICA
+
+[41 linhas] Regra 18 substituiu Regra 9
+De: TRANSPLANTE
+Para: HAPCLINICA
+Lista anterior: lista_transplante
+Lista nova: lista_hapclinica
+Chave anterior: TRANSPLANTE
+Chave nova: HAPCLINICA
+
+[12 linhas] Regra 20 substituiu Regra 15
+De: MED PREV
+Para: ODONTOLOGIA
+Lista anterior: lista_med_prev
+Lista nova: lista_odontologia_2
+Chave anterior: MED_PREV
+Chave nova: ODONTOLOGIA
+
+[7 linhas] Regra 16 substituiu Regra 4
+De: QUALIVIDA
+Para: CRED_TRATAMENTO
+Lista anterior: lista_qualivida
+Lista nova: lista_cred_tratamento
+Chave anterior: QUALIVIDA
+Chave nova: CRED_TRATAMENTO
+
+[3 linhas] Regra 20 substituiu Regra 16
+De: CRED_TRATAMENTO
+Para: ODONTOLOGIA
+Lista anterior: lista_cred_tratamento
+Lista nova: lista_odontologia_2
+Chave anterior: CRED_TRATAMENTO
+Chave nova: ODONTOLOGIA
+
+
+NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
+- Nenhuma linha sem classificacao
