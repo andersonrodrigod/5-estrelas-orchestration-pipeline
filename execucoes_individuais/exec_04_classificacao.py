@@ -205,6 +205,7 @@ resumo_nao_classificados = (
 resumo_nao_classificados.columns = ['LOCAL', 'QUANTIDADE']
 colunas_nao_classificados_detalhado = [
     'CDUSUARIO',
+    'UF',
     'MES',
     'DIA',
     'ANO',

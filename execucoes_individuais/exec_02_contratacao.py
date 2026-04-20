@@ -10,6 +10,8 @@ arquivo_saida = Path('data_exec_indiv/02_base_com_contratacao.csv')
 pasta_resumo = Path('saida_resumo') / 'exec_02_contratacao'
 arquivo_resumo_json = pasta_resumo / 'exec_02_contratacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_02_contratacao_resumo.txt'
+arquivo_locais_sem_contratacao_csv = pasta_resumo / 'exec_02_locais_sem_contratacao.csv'
+arquivo_linhas_sem_contratacao_csv = pasta_resumo / 'exec_02_linhas_sem_contratacao.csv'
 
 print('Iniciando execucao 02 - contratacao...')
 print(f'Lendo arquivo da execucao 01: {arquivo_entrada}')
@@ -36,29 +38,59 @@ df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
 
 total_rede_propria = int((df['CONTRATACAO'] == 'rede propria').sum())
 total_rede_credenciada = int((df['CONTRATACAO'] == 'rede credenciada').sum())
-total_nao_encontrado = int(df['CONTRATACAO'].isna().sum())
+mascara_sem_contratacao = df['CONTRATACAO'].isna()
+total_nao_encontrado = int(mascara_sem_contratacao.sum())
 locais_sem_contratacao = (
-    df[df['CONTRATACAO'].isna()]['LOCAL']
+    df[mascara_sem_contratacao]['LOCAL']
     .fillna('VAZIO')
     .value_counts()
     .to_dict()
 )
+df_sem_contratacao = df[mascara_sem_contratacao].copy()
+df_locais_sem_contratacao = (
+    df_sem_contratacao
+    .assign(
+        UF=df_sem_contratacao['UF'].fillna('VAZIO'),
+        LOCAL=df_sem_contratacao['LOCAL'].fillna('VAZIO')
+    )
+    .groupby(['UF', 'LOCAL'], dropna=False)
+    .size()
+    .reset_index(name='QUANTIDADE')
+    .sort_values(['QUANTIDADE', 'UF', 'LOCAL'], ascending=[False, True, True])
+)
+df_linhas_sem_contratacao = df_sem_contratacao[
+    ['CDUSUARIO', 'UF', 'LOCAL', 'DIA', 'MES', 'ANO', 'ESPECIALIDADE']
+].copy()
 
 print(f'Total rede propria: {total_rede_propria}')
 print(f'Total rede credenciada: {total_rede_credenciada}')
 print(f'Total sem contratacao encontrada: {total_nao_encontrado}')
 print(f'Gravando arquivo da execucao 02: {arquivo_saida}')
+print(f'Gravando locais sem contratacao: {arquivo_locais_sem_contratacao_csv}')
+print(f'Gravando linhas sem contratacao: {arquivo_linhas_sem_contratacao_csv}')
 
 df = df.drop(columns=['LOCAL_COMPARACAO'])
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
 df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+df_locais_sem_contratacao.to_csv(
+    arquivo_locais_sem_contratacao_csv,
+    index=False,
+    encoding='utf-8-sig'
+)
+df_linhas_sem_contratacao.to_csv(
+    arquivo_linhas_sem_contratacao_csv,
+    index=False,
+    encoding='utf-8-sig'
+)
 
 resumo = {
     'execucao': 'exec_02_contratacao',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_insumos': str(arquivo_insumos),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_locais_sem_contratacao': str(arquivo_locais_sem_contratacao_csv),
+    'arquivo_linhas_sem_contratacao': str(arquivo_linhas_sem_contratacao_csv),
     'total_linhas_entrada': int(len(df)),
     'total_rede_propria': total_rede_propria,
     'total_rede_credenciada': total_rede_credenciada,

@@ -4,12 +4,10 @@ Arquivo de entrada: data_exec_indiv\01_base_limpa.csv
 Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
 Arquivo de saida: data_exec_indiv\02_base_com_contratacao.csv
 
-Total de linhas na entrada: 812091
-Total rede propria: 725636
-Total rede credenciada: 86451
-Total sem contratacao: 4
+Total de linhas na entrada: 1497449
+Total rede propria: 1392462
+Total rede credenciada: 104987
+Total sem contratacao: 0
 
 Locais sem contratacao:
-- IRMANDADE SENHOR DOS PASSOS E SANTA CASA DE M: 2
-- CENTRO CLINICO E ORTOPEDICO DE CEILANDIA LTDA: 1
-- CLINICA FISIOGYN LTDA: 1
+- Nenhum local sem contratacao

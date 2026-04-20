@@ -4,9 +4,9 @@
     "arquivo_grupos": "data\\grupos_classificacao.json",
     "arquivo_nomes": "data\\nomes_classificacao.json",
     "arquivo_saida": "data_exec_indiv\\04_base_com_classificacao.csv",
-    "total_linhas_entrada": 812091,
-    "total_classificadas": 809428,
-    "total_nao_classificadas": 2663,
-    "total_sobrescritas": 21567,
-    "total_regras": 29
+    "total_linhas_entrada": 1497449,
+    "total_classificadas": 1497449,
+    "total_nao_classificadas": 0,
+    "total_sobrescritas": 33111,
+    "total_regras": 30
 }

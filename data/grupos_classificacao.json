@@ -357,6 +357,23 @@
         "descricao_especialidade":  "sem filtro em ESPECIALIDADE"
     },
     {
+        "grupo_classificacao":  "HAPCLINICA",
+        "nome_lista":  "lista_hapclinica_tipo_3",
+        "palavra_filtro":  null,
+        "tipo_igual":  3,
+        "tipo_diferente":  null,
+        "contratacao_igual":  "rede propria",
+        "contratacao_diferente":  null,
+        "filtro_local":  null,
+        "filtro_local_diferente":  null,
+        "filtro_especialidade":  null,
+        "filtro_especialidade_diferente":  null,
+        "descricao_tipo":  "TIPO igual a 3",
+        "descricao_contratacao":  "CONTRATACAO igual a \u0027rede credenciada\u0027",
+        "descricao_local":  "sem filtro em LOCAL",
+        "descricao_especialidade":  "sem filtro em ESPECIALIDADE"
+    },
+    {
         "grupo_classificacao":  "CRED_ATEND_ELETIVO",
         "nome_lista":  "lista_cred_atend_eletivo",
         "palavra_filtro":  "ODONT",
