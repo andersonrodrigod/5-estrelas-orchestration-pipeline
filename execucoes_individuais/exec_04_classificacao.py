@@ -14,8 +14,12 @@ arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_resumo.txt'
 arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_auditoria.csv'
 arquivo_sobrescritas_csv = pasta_resumo / 'exec_04_classificacao_sobrescritas.csv'
-arquivo_nao_classificados_csv = pasta_resumo / 'exec_04_classificacao_nao_classificados.csv'
 arquivo_nao_classificados_detalhado_csv = pasta_resumo / 'exec_04_classificacao_nao_classificados_detalhado.csv'
+arquivo_regras_explicadas_txt = Path('data/grupos_classificacao_explicado.txt')
+
+coluna_ordem_regra = '_ORDEM_REGRA_CLASSIFICACAO'
+coluna_nome_lista = '_NOME_LISTA_CLASSIFICACAO'
+coluna_chave_grupo = '_CHAVE_GRUPO_CLASSIFICACAO'
 
 
 def carregar_json(caminho):
@@ -89,6 +93,15 @@ if 'CLASSIFICACAO' not in df.columns:
 
 df['CLASSIFICACAO'] = df['CLASSIFICACAO'].astype('string').str.strip()
 
+df[coluna_ordem_regra] = pd.NA
+df[coluna_nome_lista] = pd.NA
+df[coluna_chave_grupo] = pd.NA
+
+classificadas_antes_execucao = df['CLASSIFICACAO'].notna() & (df['CLASSIFICACAO'] != '')
+df.loc[classificadas_antes_execucao, coluna_ordem_regra] = 'ORIGINAL'
+df.loc[classificadas_antes_execucao, coluna_nome_lista] = 'BASE DE ENTRADA'
+df.loc[classificadas_antes_execucao, coluna_chave_grupo] = 'CLASSIFICACAO_PRE_EXISTENTE'
+
 auditoria_regras = []
 sobrescritas = []
 
@@ -156,24 +169,48 @@ for ordem, grupo in enumerate(grupos, start=1):
 
     if total_sobrescritas > 0:
         resumo_sobrescritas = (
-            sobrescritas_regra['CLASSIFICACAO']
-            .fillna('VAZIO')
-            .value_counts()
-            .reset_index()
+            sobrescritas_regra
+            .assign(
+                ORDEM_REGRA_ANTERIOR=sobrescritas_regra[coluna_ordem_regra].astype('string').fillna('DESCONHECIDA'),
+                ORDEM_REGRA_NOVA=ordem,
+                NOME_LISTA_ANTERIOR=sobrescritas_regra[coluna_nome_lista].astype('string').fillna('DESCONHECIDA'),
+                NOME_LISTA_NOVA=grupo['nome_lista'],
+                CHAVE_GRUPO_ANTERIOR=sobrescritas_regra[coluna_chave_grupo].astype('string').fillna('DESCONHECIDA'),
+                CHAVE_GRUPO_NOVA=grupo['grupo_classificacao'],
+                CLASSIFICACAO_ANTERIOR=sobrescritas_regra['CLASSIFICACAO'].fillna('VAZIO'),
+                CLASSIFICACAO_NOVA=nome_classificacao
+            )
+            .groupby([
+                'ORDEM_REGRA_ANTERIOR',
+                'ORDEM_REGRA_NOVA',
+                'NOME_LISTA_ANTERIOR',
+                'NOME_LISTA_NOVA',
+                'CHAVE_GRUPO_ANTERIOR',
+                'CHAVE_GRUPO_NOVA',
+                'CLASSIFICACAO_ANTERIOR',
+                'CLASSIFICACAO_NOVA'
+            ], dropna=False)
+            .size()
+            .reset_index(name='QUANTIDADE')
         )
-        resumo_sobrescritas.columns = ['CLASSIFICACAO_ANTERIOR', 'QUANTIDADE']
 
         for _, linha in resumo_sobrescritas.iterrows():
             sobrescritas.append({
-                'ORDEM_REGRA': ordem,
-                'NOME_LISTA': grupo['nome_lista'],
-                'CHAVE_GRUPO': grupo['grupo_classificacao'],
-                'CLASSIFICACAO_NOVA': nome_classificacao,
+                'ORDEM_REGRA_ANTERIOR': linha['ORDEM_REGRA_ANTERIOR'],
+                'ORDEM_REGRA_NOVA': int(linha['ORDEM_REGRA_NOVA']),
+                'NOME_LISTA_ANTERIOR': linha['NOME_LISTA_ANTERIOR'],
+                'NOME_LISTA_NOVA': linha['NOME_LISTA_NOVA'],
+                'CHAVE_GRUPO_ANTERIOR': linha['CHAVE_GRUPO_ANTERIOR'],
+                'CHAVE_GRUPO_NOVA': linha['CHAVE_GRUPO_NOVA'],
                 'CLASSIFICACAO_ANTERIOR': linha['CLASSIFICACAO_ANTERIOR'],
+                'CLASSIFICACAO_NOVA': linha['CLASSIFICACAO_NOVA'],
                 'QUANTIDADE': int(linha['QUANTIDADE'])
             })
 
     df.loc[filtro, 'CLASSIFICACAO'] = nome_classificacao
+    df.loc[filtro, coluna_ordem_regra] = ordem
+    df.loc[filtro, coluna_nome_lista] = grupo['nome_lista']
+    df.loc[filtro, coluna_chave_grupo] = grupo['grupo_classificacao']
 
     auditoria_regras.append({
         'ORDEM_REGRA': ordem,
@@ -188,7 +225,11 @@ for ordem, grupo in enumerate(grupos, start=1):
         'TOTAL_SOBRESCRITAS': total_sobrescritas
     })
 
-df_saida = df.copy()
+df_saida = df.drop(columns=[
+    coluna_ordem_regra,
+    coluna_nome_lista,
+    coluna_chave_grupo
+]).copy()
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
 df_saida.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
@@ -227,6 +268,10 @@ resumo = {
     'arquivo_grupos': str(arquivo_grupos),
     'arquivo_nomes': str(arquivo_nomes),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_regras_explicadas': str(arquivo_regras_explicadas_txt),
+    'arquivo_auditoria': str(arquivo_auditoria_csv),
+    'arquivo_sobrescritas': str(arquivo_sobrescritas_csv),
+    'arquivo_nao_classificados_detalhado': str(arquivo_nao_classificados_detalhado_csv),
     'total_linhas_entrada': int(len(df)),
     'total_classificadas': total_classificadas,
     'total_nao_classificadas': total_nao_classificadas,
@@ -240,36 +285,55 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
 linhas_txt = [
     'RESUMO DA EXECUCAO 04 - CLASSIFICACAO',
     '',
+    'ARQUIVOS:',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
-    f"Arquivo de grupos: {resumo['arquivo_grupos']}",
-    f"Arquivo de nomes: {resumo['arquivo_nomes']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Regras explicadas: {resumo['arquivo_regras_explicadas']}",
+    f"Auditoria por regra: {resumo['arquivo_auditoria']}",
+    f"Sobrescritas detalhadas: {resumo['arquivo_sobrescritas']}",
+    f"Nao classificados detalhado: {resumo['arquivo_nao_classificados_detalhado']}",
     '',
+    'TOTAIS:',
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total classificadas: {resumo['total_classificadas']}",
     f"Total nao classificadas: {resumo['total_nao_classificadas']}",
     f"Total sobrescritas: {resumo['total_sobrescritas']}",
     f"Total de regras aplicadas: {resumo['total_regras']}",
     '',
-    'REGRAS APLICADAS:'
+    'REGRAS:',
+    f"As regras completas estao documentadas em: {resumo['arquivo_regras_explicadas']}",
+    f"Nesta execucao foram aplicadas {resumo['total_regras']} regras.",
+    '',
+    'REGRAS COM MAIS LINHAS ATINGIDAS:'
 ]
 
-for item in auditoria_regras:
+for item in sorted(auditoria_regras, key=lambda regra: regra['TOTAL_ATINGIDAS'], reverse=True)[:10]:
     linhas_txt.append(
-        f"- ordem={item['ORDEM_REGRA']} | lista={item['NOME_LISTA']} | classificacao={item['CLASSIFICACAO']} | "
-        f"atingidas={item['TOTAL_ATINGIDAS']} | vazias={item['TOTAL_CLASSIFICADAS_VAZIAS']} | "
-        f"ja_classificadas={item['TOTAL_JA_CLASSIFICADAS']} | sobrescritas={item['TOTAL_SOBRESCRITAS']}"
+        f"- Regra {item['ORDEM_REGRA']} - {item['CLASSIFICACAO']}: "
+        f"{item['TOTAL_ATINGIDAS']} linhas atingidas "
+        f"({item['TOTAL_SOBRESCRITAS']} sobrescritas)"
     )
 
 linhas_txt.append('')
 linhas_txt.append('SOBRESCRITAS:')
 
 if sobrescritas:
-    for item in sobrescritas:
-        linhas_txt.append(
-            f"- ordem={item['ORDEM_REGRA']} | lista={item['NOME_LISTA']} | "
-            f"{item['CLASSIFICACAO_ANTERIOR']} -> {item['CLASSIFICACAO_NOVA']}: {item['QUANTIDADE']}"
-        )
+    linhas_txt.append(f"Total de linhas sobrescritas: {resumo['total_sobrescritas']}")
+    linhas_txt.append(f"Detalhamento completo em: {resumo['arquivo_sobrescritas']}")
+    linhas_txt.append('')
+    linhas_txt.append('Principais sobrescritas:')
+
+    for item in sorted(sobrescritas, key=lambda sobrescrita: sobrescrita['QUANTIDADE'], reverse=True)[:20]:
+        linhas_txt.extend([
+            f"[{item['QUANTIDADE']} linhas] Regra {item['ORDEM_REGRA_NOVA']} substituiu Regra {item['ORDEM_REGRA_ANTERIOR']}",
+            f"De: {item['CLASSIFICACAO_ANTERIOR']}",
+            f"Para: {item['CLASSIFICACAO_NOVA']}",
+            f"Lista anterior: {item['NOME_LISTA_ANTERIOR']}",
+            f"Lista nova: {item['NOME_LISTA_NOVA']}",
+            f"Chave anterior: {item['CHAVE_GRUPO_ANTERIOR']}",
+            f"Chave nova: {item['CHAVE_GRUPO_NOVA']}",
+            ''
+        ])
 else:
     linhas_txt.append('- Nenhuma sobrescrita encontrada')
 
@@ -288,10 +352,25 @@ with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
 df_auditoria = pd.DataFrame(auditoria_regras)
 df_auditoria.to_csv(arquivo_auditoria_csv, index=False, encoding='utf-8-sig')
 
-df_sobrescritas = pd.DataFrame(sobrescritas)
+colunas_sobrescritas = [
+    'ORDEM_REGRA_ANTERIOR',
+    'ORDEM_REGRA_NOVA',
+    'NOME_LISTA_ANTERIOR',
+    'NOME_LISTA_NOVA',
+    'CHAVE_GRUPO_ANTERIOR',
+    'CHAVE_GRUPO_NOVA',
+    'CLASSIFICACAO_ANTERIOR',
+    'CLASSIFICACAO_NOVA',
+    'QUANTIDADE'
+]
+df_sobrescritas = pd.DataFrame(sobrescritas, columns=colunas_sobrescritas)
+if not df_sobrescritas.empty:
+    df_sobrescritas = df_sobrescritas.sort_values(
+        ['QUANTIDADE', 'ORDEM_REGRA_NOVA'],
+        ascending=[False, True]
+    )
 df_sobrescritas.to_csv(arquivo_sobrescritas_csv, index=False, encoding='utf-8-sig')
 
-resumo_nao_classificados.to_csv(arquivo_nao_classificados_csv, index=False, encoding='utf-8-sig')
 df_nao_classificados_detalhado.to_csv(arquivo_nao_classificados_detalhado_csv, index=False, encoding='utf-8-sig')
 
 print('Execucao 04 finalizada.')

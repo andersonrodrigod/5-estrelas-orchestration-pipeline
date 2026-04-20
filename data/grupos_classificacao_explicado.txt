@@ -1,0 +1,359 @@
+REGRAS DE CLASSIFICACAO - EXPLICACAO PARA CONSULTA
+
+Arquivo base: data/grupos_classificacao.json
+Total de regras: 30
+
+Como ler este arquivo:
+- Cada bloco abaixo representa uma regra do grupos_classificacao.json.
+- A ordem importa: as regras sao executadas de cima para baixo.
+- Quando uma regra encontra uma linha que atende aos filtros, ela aplica a classificacao indicada.
+- Campos sem filtro no JSON foram omitidos aqui para deixar a leitura mais simples.
+- Quando aparecer | dentro de um filtro, leia como alternativas possiveis. Exemplo: A|B significa A ou B.
+- Em LOCAL e ESPECIALIDADE, a regra usa contem, nao igualdade exata.
+
+================================================================================
+
+REGRA 001 - CRED_ATEND EMERGENCIA
+
+Classificacao aplicada: CRED_ATEND EMERGENCIA
+Chave tecnica: CRED_ATEND_EMERGENCIA
+Nome da lista: lista_cred_atend_emergencia
+Filtros usados:
+- TIPO igual a 1
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 002 - HOSPITALAR
+
+Classificacao aplicada: HOSPITALAR
+Chave tecnica: HOSPITALAR
+Nome da lista: lista_hospitalar
+Filtros usados:
+- TIPO igual a 1
+- CONTRATACAO igual a 'rede propria'
+
+--------------------------------------------------------------------------------
+
+REGRA 003 - QUALIVIDA
+
+Classificacao aplicada: QUALIVIDA
+Chave tecnica: QUALIVIDA
+Nome da lista: lista_qualivida
+Palavra/padrao principal: QUALIVIDA|QUALIVITA
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'qualivida|qualivita'
+- ESPECIALIDADE contem 'qualivida|qualivita'
+
+--------------------------------------------------------------------------------
+
+REGRA 004 - QUALIVIDA
+
+Classificacao aplicada: QUALIVIDA
+Chave tecnica: QUALIVIDA
+Nome da lista: lista_qualivida
+Palavra/padrao principal: SINTA-SE|SINTASE|SINTA SE|VIVER BEM
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'sinta-se|sintase|sinta se|viver bem'
+
+--------------------------------------------------------------------------------
+
+REGRA 005 - NASCER BEM
+
+Classificacao aplicada: NASCER BEM
+Chave tecnica: NASCER_BEM
+Nome da lista: lista_nascer_bem
+Palavra/padrao principal: NB|RISCO
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'nb (palavra inteira)|risco'
+
+--------------------------------------------------------------------------------
+
+REGRA 006 - TELEMEDICINA
+
+Classificacao aplicada: TELEMEDICINA
+Chave tecnica: TELEMEDICINA
+Nome da lista: lista_telemedicina
+Palavra/padrao principal: TELEM
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'telemed|telemedicina|telem'
+
+--------------------------------------------------------------------------------
+
+REGRA 007 - PRODUTO COORDENADO
+
+Classificacao aplicada: PRODUTO COORDENADO
+Chave tecnica: PRODUTO_COORDENADO
+Nome da lista: lista_produto_coordenado
+Palavra/padrao principal: NOSSO MEDICO|NOTRELIFE|NUCLEO MF|PROD. COORD|PROD.COORD
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'nosso medico|notrelife|nucleo mf|prod. coord|prod.coord'
+
+--------------------------------------------------------------------------------
+
+REGRA 008 - CASE
+
+Classificacao aplicada: CASE
+Chave tecnica: CASE
+Nome da lista: lista_case
+Palavra/padrao principal: CASE
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'case'
+- ESPECIALIDADE contem 'case'
+
+--------------------------------------------------------------------------------
+
+REGRA 009 - TRANSPLANTE
+
+Classificacao aplicada: TRANSPLANTE
+Chave tecnica: TRANSPLANTE
+Nome da lista: lista_transplante
+Palavra/padrao principal: TRANSPL
+Filtros usados:
+- TIPO diferente de 6
+- ESPECIALIDADE contem 'transpl'
+
+--------------------------------------------------------------------------------
+
+REGRA 010 - TEA
+
+Classificacao aplicada: TEA
+Chave tecnica: TEA
+Nome da lista: lista_tea
+Palavra/padrao principal: TEA
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'tea'
+
+--------------------------------------------------------------------------------
+
+REGRA 011 - GESTAR BEM
+
+Classificacao aplicada: GESTAR BEM
+Chave tecnica: GESTAR_BEM
+Nome da lista: lista_gestar_bem
+Palavra/padrao principal: GESTAR|GESTAR BEM|PGS
+Filtros usados:
+- TIPO diferente de 6
+- LOCAL contem 'gestar|gestar bem|pgs'
+- ESPECIALIDADE contem 'gestar|gestar bem'
+
+--------------------------------------------------------------------------------
+
+REGRA 012 - TELECONSULTA CASE
+
+Classificacao aplicada: TELECONSULTA CASE
+Chave tecnica: TELECONSULTA CASE
+Nome da lista: lista_teleconsulta
+Palavra/padrao principal: PGC|TRANSPLANTE|CASE
+Filtros usados:
+- TIPO igual a 6
+- ESPECIALIDADE contem 'pgc|transplante|case'
+
+--------------------------------------------------------------------------------
+
+REGRA 013 - TELECONSULTA ELETIVA
+
+Classificacao aplicada: TELECONSULTA ELETIVA
+Chave tecnica: TELECONSULTA_ELETIVA
+Nome da lista: lista_teleconsulta_eletiva
+Filtros usados:
+- TIPO igual a 6
+- ESPECIALIDADE diferente de 'pgc|transplante|case'
+
+--------------------------------------------------------------------------------
+
+REGRA 014 - TELECONSULTA URGENCIA
+
+Classificacao aplicada: TELECONSULTA URGENCIA
+Chave tecnica: TELECONSULTA_URGENCIA
+Nome da lista: lista_teleconsulta_urgencia
+Filtros usados:
+- TIPO igual a 7
+
+--------------------------------------------------------------------------------
+
+REGRA 015 - MED PREV
+
+Classificacao aplicada: MED PREV
+Chave tecnica: MED_PREV
+Nome da lista: lista_med_prev
+Filtros usados:
+- TIPO igual a 4
+- CONTRATACAO igual a 'rede propria'
+
+--------------------------------------------------------------------------------
+
+REGRA 016 - CRED_TRATAMENTO
+
+Classificacao aplicada: CRED_TRATAMENTO
+Chave tecnica: CRED_TRATAMENTO
+Nome da lista: lista_cred_tratamento
+Filtros usados:
+- TIPO igual a 4
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 017 - MED PREV
+
+Classificacao aplicada: MED PREV
+Chave tecnica: MED_PREV
+Nome da lista: lista_med_prev_tipo_2
+Palavra/padrao principal: MED PREV|MEDPREV
+Filtros usados:
+- TIPO igual a 2
+- CONTRATACAO igual a 'rede propria'
+- ESPECIALIDADE contem 'med prev|medprev'
+
+--------------------------------------------------------------------------------
+
+REGRA 018 - HAPCLINICA
+
+Classificacao aplicada: HAPCLINICA
+Chave tecnica: HAPCLINICA
+Nome da lista: lista_hapclinica
+Filtros usados:
+- TIPO igual a 2
+- CONTRATACAO igual a 'rede propria'
+- ESPECIALIDADE diferente de 'med prev|medprev'
+
+--------------------------------------------------------------------------------
+
+REGRA 019 - ODONTOLOGIA
+
+Classificacao aplicada: ODONTOLOGIA
+Chave tecnica: ODONTOLOGIA
+Nome da lista: lista_odontologia
+Filtros usados:
+- TIPO igual a 5
+
+--------------------------------------------------------------------------------
+
+REGRA 020 - ODONTOLOGIA
+
+Classificacao aplicada: ODONTOLOGIA
+Chave tecnica: ODONTOLOGIA
+Nome da lista: lista_odontologia_2
+Palavra/padrao principal: ODONT
+Filtros usados:
+- ESPECIALIDADE contem 'odont'
+
+--------------------------------------------------------------------------------
+
+REGRA 021 - CRED_ATEND ELETIVO
+
+Classificacao aplicada: CRED_ATEND ELETIVO
+Chave tecnica: CRED_ATEND_ELETIVO
+Nome da lista: lista_cred_atend_eletivo
+Palavra/padrao principal: ODONT
+Filtros usados:
+- TIPO igual a 3
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 022 - HAPCLINICA
+
+Classificacao aplicada: HAPCLINICA
+Chave tecnica: HAPCLINICA
+Nome da lista: lista_hapclinica_tipo_3
+Filtros usados:
+- TIPO igual a 3
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 023 - CRED_ATEND ELETIVO
+
+Classificacao aplicada: CRED_ATEND ELETIVO
+Chave tecnica: CRED_ATEND_ELETIVO
+Nome da lista: lista_cred_atend_eletivo
+Palavra/padrao principal: ODONT
+Filtros usados:
+- TIPO igual a 3
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 024 - LABORATORIO
+
+Classificacao aplicada: LABORATORIO
+Chave tecnica: LABORATORIO
+Nome da lista: lista_laboratorio
+Filtros usados:
+- TIPO igual a 8
+- CONTRATACAO igual a 'rede propria'
+
+--------------------------------------------------------------------------------
+
+REGRA 025 - CRED_LABORATORIO
+
+Classificacao aplicada: CRED_LABORATORIO
+Chave tecnica: CRED_LABORATORIO
+Nome da lista: lista_cred_laboratorio
+Filtros usados:
+- TIPO igual a 8
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 026 - VIDA IMAGEM
+
+Classificacao aplicada: VIDA IMAGEM
+Chave tecnica: VIDA_IMAGEM
+Nome da lista: lista_vida_imagem
+Filtros usados:
+- TIPO igual a 9
+- CONTRATACAO igual a 'rede propria'
+
+--------------------------------------------------------------------------------
+
+REGRA 027 - CRED_EXAMES
+
+Classificacao aplicada: CRED_EXAMES
+Chave tecnica: CRED_EXAMES
+Nome da lista: lista_cred_exames
+Filtros usados:
+- TIPO igual a 9
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 028 - CRED_INTERNACAO
+
+Classificacao aplicada: CRED_INTERNACAO
+Chave tecnica: CRED_INTERNACAO
+Nome da lista: lista_cred_internacao
+Filtros usados:
+- TIPO igual a 10, 11, 12 ou 13
+- CONTRATACAO igual a 'rede credenciada'
+
+--------------------------------------------------------------------------------
+
+REGRA 029 - INTERNACAO
+
+Classificacao aplicada: INTERNACAO
+Chave tecnica: INTERNACAO
+Nome da lista: lista_internacao
+Filtros usados:
+- TIPO igual a 10, 11, 12 ou 13
+- CONTRATACAO igual a 'rede propria'
+
+--------------------------------------------------------------------------------
+
+REGRA 030 - INTERNACAO PGC
+
+Classificacao aplicada: INTERNACAO PGC
+Chave tecnica: INTERNACAO_PGC
+Nome da lista: lista_internacao_pgc
+Filtros usados:
+- TIPO igual a 14
+
+--------------------------------------------------------------------------------

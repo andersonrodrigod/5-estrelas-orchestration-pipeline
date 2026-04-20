@@ -1,71 +1,201 @@
 RESUMO DA EXECUCAO 04 - CLASSIFICACAO
 
+ARQUIVOS:
 Arquivo de entrada: data_exec_indiv\03_base_com_nota.csv
-Arquivo de grupos: data\grupos_classificacao.json
-Arquivo de nomes: data\nomes_classificacao.json
 Arquivo de saida: data_exec_indiv\04_base_com_classificacao.csv
+Regras explicadas: data\grupos_classificacao_explicado.txt
+Auditoria por regra: saida_resumo\exec_04_classificacao\exec_04_classificacao_auditoria.csv
+Sobrescritas detalhadas: saida_resumo\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
+Nao classificados detalhado: saida_resumo\exec_04_classificacao\exec_04_classificacao_nao_classificados_detalhado.csv
 
+TOTAIS:
 Total de linhas na entrada: 1497449
 Total classificadas: 1497449
 Total nao classificadas: 0
 Total sobrescritas: 33111
 Total de regras aplicadas: 30
 
-REGRAS APLICADAS:
-- ordem=1 | lista=lista_cred_atend_emergencia | classificacao=CRED_ATEND EMERGENCIA | atingidas=29833 | vazias=29833 | ja_classificadas=0 | sobrescritas=0
-- ordem=2 | lista=lista_hospitalar | classificacao=HOSPITALAR | atingidas=215114 | vazias=215114 | ja_classificadas=0 | sobrescritas=0
-- ordem=3 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=5176 | vazias=5176 | ja_classificadas=0 | sobrescritas=0
-- ordem=4 | lista=lista_qualivida | classificacao=QUALIVIDA | atingidas=197 | vazias=197 | ja_classificadas=0 | sobrescritas=0
-- ordem=5 | lista=lista_nascer_bem | classificacao=NASCER BEM | atingidas=1079 | vazias=1079 | ja_classificadas=0 | sobrescritas=0
-- ordem=6 | lista=lista_telemedicina | classificacao=TELEMEDICINA | atingidas=167 | vazias=167 | ja_classificadas=0 | sobrescritas=0
-- ordem=7 | lista=lista_produto_coordenado | classificacao=PRODUTO COORDENADO | atingidas=2540 | vazias=2540 | ja_classificadas=0 | sobrescritas=0
-- ordem=8 | lista=lista_case | classificacao=CASE | atingidas=3440 | vazias=3440 | ja_classificadas=0 | sobrescritas=0
-- ordem=9 | lista=lista_transplante | classificacao=TRANSPLANTE | atingidas=43 | vazias=41 | ja_classificadas=2 | sobrescritas=2
-- ordem=10 | lista=lista_tea | classificacao=TEA | atingidas=3900 | vazias=3900 | ja_classificadas=0 | sobrescritas=0
-- ordem=11 | lista=lista_gestar_bem | classificacao=GESTAR BEM | atingidas=1069 | vazias=1069 | ja_classificadas=0 | sobrescritas=0
-- ordem=12 | lista=lista_teleconsulta | classificacao=TELECONSULTA CASE | atingidas=1841 | vazias=1841 | ja_classificadas=0 | sobrescritas=0
-- ordem=13 | lista=lista_teleconsulta_eletiva | classificacao=TELECONSULTA ELETIVA | atingidas=300212 | vazias=300212 | ja_classificadas=0 | sobrescritas=0
-- ordem=14 | lista=lista_teleconsulta_urgencia | classificacao=TELECONSULTA URGENCIA | atingidas=57594 | vazias=57594 | ja_classificadas=0 | sobrescritas=0
-- ordem=15 | lista=lista_med_prev | classificacao=MED PREV | atingidas=27092 | vazias=24282 | ja_classificadas=2810 | sobrescritas=2810
-- ordem=16 | lista=lista_cred_tratamento | classificacao=CRED_TRATAMENTO | atingidas=32567 | vazias=31452 | ja_classificadas=1115 | sobrescritas=1115
-- ordem=17 | lista=lista_med_prev_tipo_2 | classificacao=MED PREV | atingidas=15 | vazias=15 | ja_classificadas=0 | sobrescritas=0
-- ordem=18 | lista=lista_hapclinica | classificacao=HAPCLINICA | atingidas=474670 | vazias=462034 | ja_classificadas=12636 | sobrescritas=12636
-- ordem=19 | lista=lista_odontologia | classificacao=ODONTOLOGIA | atingidas=11737 | vazias=11737 | ja_classificadas=0 | sobrescritas=0
-- ordem=20 | lista=lista_odontologia_2 | classificacao=ODONTOLOGIA | atingidas=11474 | vazias=0 | ja_classificadas=11474 | sobrescritas=11474
-- ordem=21 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=4275 | vazias=4275 | ja_classificadas=0 | sobrescritas=0
-- ordem=22 | lista=lista_hapclinica_tipo_3 | classificacao=HAPCLINICA | atingidas=684 | vazias=684 | ja_classificadas=0 | sobrescritas=0
-- ordem=23 | lista=lista_cred_atend_eletivo | classificacao=CRED_ATEND ELETIVO | atingidas=4275 | vazias=0 | ja_classificadas=4275 | sobrescritas=4275
-- ordem=24 | lista=lista_laboratorio | classificacao=LABORATORIO | atingidas=154749 | vazias=153953 | ja_classificadas=796 | sobrescritas=796
-- ordem=25 | lista=lista_cred_laboratorio | classificacao=CRED_LABORATORIO | atingidas=12481 | vazias=12478 | ja_classificadas=3 | sobrescritas=3
-- ordem=26 | lista=lista_vida_imagem | classificacao=VIDA IMAGEM | atingidas=153616 | vazias=153616 | ja_classificadas=0 | sobrescritas=0
-- ordem=27 | lista=lista_cred_exames | classificacao=CRED_EXAMES | atingidas=11863 | vazias=11863 | ja_classificadas=0 | sobrescritas=0
-- ordem=28 | lista=lista_cred_internacao | classificacao=CRED_INTERNACAO | atingidas=2070 | vazias=2070 | ja_classificadas=0 | sobrescritas=0
-- ordem=29 | lista=lista_internacao | classificacao=INTERNACAO | atingidas=6684 | vazias=6684 | ja_classificadas=0 | sobrescritas=0
-- ordem=30 | lista=lista_internacao_pgc | classificacao=INTERNACAO PGC | atingidas=103 | vazias=103 | ja_classificadas=0 | sobrescritas=0
+REGRAS:
+As regras completas estao documentadas em: data\grupos_classificacao_explicado.txt
+Nesta execucao foram aplicadas 30 regras.
+
+REGRAS COM MAIS LINHAS ATINGIDAS:
+- Regra 18 - HAPCLINICA: 474670 linhas atingidas (12636 sobrescritas)
+- Regra 13 - TELECONSULTA ELETIVA: 300212 linhas atingidas (0 sobrescritas)
+- Regra 2 - HOSPITALAR: 215114 linhas atingidas (0 sobrescritas)
+- Regra 24 - LABORATORIO: 154749 linhas atingidas (796 sobrescritas)
+- Regra 26 - VIDA IMAGEM: 153616 linhas atingidas (0 sobrescritas)
+- Regra 14 - TELECONSULTA URGENCIA: 57594 linhas atingidas (0 sobrescritas)
+- Regra 16 - CRED_TRATAMENTO: 32567 linhas atingidas (1115 sobrescritas)
+- Regra 1 - CRED_ATEND EMERGENCIA: 29833 linhas atingidas (0 sobrescritas)
+- Regra 15 - MED PREV: 27092 linhas atingidas (2810 sobrescritas)
+- Regra 25 - CRED_LABORATORIO: 12481 linhas atingidas (3 sobrescritas)
 
 SOBRESCRITAS:
-- ordem=9 | lista=lista_transplante | QUALIVIDA -> TRANSPLANTE: 2
-- ordem=15 | lista=lista_med_prev | TEA -> MED PREV: 1930
-- ordem=15 | lista=lista_med_prev | QUALIVIDA -> MED PREV: 504
-- ordem=15 | lista=lista_med_prev | PRODUTO COORDENADO -> MED PREV: 214
-- ordem=15 | lista=lista_med_prev | CASE -> MED PREV: 162
-- ordem=16 | lista=lista_cred_tratamento | TEA -> CRED_TRATAMENTO: 1106
-- ordem=16 | lista=lista_cred_tratamento | QUALIVIDA -> CRED_TRATAMENTO: 7
-- ordem=16 | lista=lista_cred_tratamento | TRANSPLANTE -> CRED_TRATAMENTO: 2
-- ordem=18 | lista=lista_hapclinica | QUALIVIDA -> HAPCLINICA: 4860
-- ordem=18 | lista=lista_hapclinica | CASE -> HAPCLINICA: 3266
-- ordem=18 | lista=lista_hapclinica | PRODUTO COORDENADO -> HAPCLINICA: 2235
-- ordem=18 | lista=lista_hapclinica | NASCER BEM -> HAPCLINICA: 1079
-- ordem=18 | lista=lista_hapclinica | GESTAR BEM -> HAPCLINICA: 938
-- ordem=18 | lista=lista_hapclinica | TELEMEDICINA -> HAPCLINICA: 167
-- ordem=18 | lista=lista_hapclinica | TEA -> HAPCLINICA: 50
-- ordem=18 | lista=lista_hapclinica | TRANSPLANTE -> HAPCLINICA: 41
-- ordem=20 | lista=lista_odontologia_2 | ODONTOLOGIA -> ODONTOLOGIA: 11459
-- ordem=20 | lista=lista_odontologia_2 | MED PREV -> ODONTOLOGIA: 12
-- ordem=20 | lista=lista_odontologia_2 | CRED_TRATAMENTO -> ODONTOLOGIA: 3
-- ordem=23 | lista=lista_cred_atend_eletivo | CRED_ATEND ELETIVO -> CRED_ATEND ELETIVO: 4275
-- ordem=24 | lista=lista_laboratorio | TEA -> LABORATORIO: 796
-- ordem=25 | lista=lista_cred_laboratorio | TEA -> CRED_LABORATORIO: 3
+Total de linhas sobrescritas: 33111
+Detalhamento completo em: saida_resumo\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
+
+Principais sobrescritas:
+[11459 linhas] Regra 20 substituiu Regra 19
+De: ODONTOLOGIA
+Para: ODONTOLOGIA
+Lista anterior: lista_odontologia
+Lista nova: lista_odontologia_2
+Chave anterior: ODONTOLOGIA
+Chave nova: ODONTOLOGIA
+
+[4672 linhas] Regra 18 substituiu Regra 3
+De: QUALIVIDA
+Para: HAPCLINICA
+Lista anterior: lista_qualivida
+Lista nova: lista_hapclinica
+Chave anterior: QUALIVIDA
+Chave nova: HAPCLINICA
+
+[4275 linhas] Regra 23 substituiu Regra 21
+De: CRED_ATEND ELETIVO
+Para: CRED_ATEND ELETIVO
+Lista anterior: lista_cred_atend_eletivo
+Lista nova: lista_cred_atend_eletivo
+Chave anterior: CRED_ATEND_ELETIVO
+Chave nova: CRED_ATEND_ELETIVO
+
+[3266 linhas] Regra 18 substituiu Regra 8
+De: CASE
+Para: HAPCLINICA
+Lista anterior: lista_case
+Lista nova: lista_hapclinica
+Chave anterior: CASE
+Chave nova: HAPCLINICA
+
+[2235 linhas] Regra 18 substituiu Regra 7
+De: PRODUTO COORDENADO
+Para: HAPCLINICA
+Lista anterior: lista_produto_coordenado
+Lista nova: lista_hapclinica
+Chave anterior: PRODUTO_COORDENADO
+Chave nova: HAPCLINICA
+
+[1930 linhas] Regra 15 substituiu Regra 10
+De: TEA
+Para: MED PREV
+Lista anterior: lista_tea
+Lista nova: lista_med_prev
+Chave anterior: TEA
+Chave nova: MED_PREV
+
+[1106 linhas] Regra 16 substituiu Regra 10
+De: TEA
+Para: CRED_TRATAMENTO
+Lista anterior: lista_tea
+Lista nova: lista_cred_tratamento
+Chave anterior: TEA
+Chave nova: CRED_TRATAMENTO
+
+[1079 linhas] Regra 18 substituiu Regra 5
+De: NASCER BEM
+Para: HAPCLINICA
+Lista anterior: lista_nascer_bem
+Lista nova: lista_hapclinica
+Chave anterior: NASCER_BEM
+Chave nova: HAPCLINICA
+
+[938 linhas] Regra 18 substituiu Regra 11
+De: GESTAR BEM
+Para: HAPCLINICA
+Lista anterior: lista_gestar_bem
+Lista nova: lista_hapclinica
+Chave anterior: GESTAR_BEM
+Chave nova: HAPCLINICA
+
+[796 linhas] Regra 24 substituiu Regra 10
+De: TEA
+Para: LABORATORIO
+Lista anterior: lista_tea
+Lista nova: lista_laboratorio
+Chave anterior: TEA
+Chave nova: LABORATORIO
+
+[504 linhas] Regra 15 substituiu Regra 3
+De: QUALIVIDA
+Para: MED PREV
+Lista anterior: lista_qualivida
+Lista nova: lista_med_prev
+Chave anterior: QUALIVIDA
+Chave nova: MED_PREV
+
+[214 linhas] Regra 15 substituiu Regra 7
+De: PRODUTO COORDENADO
+Para: MED PREV
+Lista anterior: lista_produto_coordenado
+Lista nova: lista_med_prev
+Chave anterior: PRODUTO_COORDENADO
+Chave nova: MED_PREV
+
+[188 linhas] Regra 18 substituiu Regra 4
+De: QUALIVIDA
+Para: HAPCLINICA
+Lista anterior: lista_qualivida
+Lista nova: lista_hapclinica
+Chave anterior: QUALIVIDA
+Chave nova: HAPCLINICA
+
+[167 linhas] Regra 18 substituiu Regra 6
+De: TELEMEDICINA
+Para: HAPCLINICA
+Lista anterior: lista_telemedicina
+Lista nova: lista_hapclinica
+Chave anterior: TELEMEDICINA
+Chave nova: HAPCLINICA
+
+[162 linhas] Regra 15 substituiu Regra 8
+De: CASE
+Para: MED PREV
+Lista anterior: lista_case
+Lista nova: lista_med_prev
+Chave anterior: CASE
+Chave nova: MED_PREV
+
+[50 linhas] Regra 18 substituiu Regra 10
+De: TEA
+Para: HAPCLINICA
+Lista anterior: lista_tea
+Lista nova: lista_hapclinica
+Chave anterior: TEA
+Chave nova: HAPCLINICA
+
+[41 linhas] Regra 18 substituiu Regra 9
+De: TRANSPLANTE
+Para: HAPCLINICA
+Lista anterior: lista_transplante
+Lista nova: lista_hapclinica
+Chave anterior: TRANSPLANTE
+Chave nova: HAPCLINICA
+
+[12 linhas] Regra 20 substituiu Regra 15
+De: MED PREV
+Para: ODONTOLOGIA
+Lista anterior: lista_med_prev
+Lista nova: lista_odontologia_2
+Chave anterior: MED_PREV
+Chave nova: ODONTOLOGIA
+
+[7 linhas] Regra 16 substituiu Regra 4
+De: QUALIVIDA
+Para: CRED_TRATAMENTO
+Lista anterior: lista_qualivida
+Lista nova: lista_cred_tratamento
+Chave anterior: QUALIVIDA
+Chave nova: CRED_TRATAMENTO
+
+[3 linhas] Regra 20 substituiu Regra 16
+De: CRED_TRATAMENTO
+Para: ODONTOLOGIA
+Lista anterior: lista_cred_tratamento
+Lista nova: lista_odontologia_2
+Chave anterior: CRED_TRATAMENTO
+Chave nova: ODONTOLOGIA
+
 
 NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
 - Nenhuma linha sem classificacao
