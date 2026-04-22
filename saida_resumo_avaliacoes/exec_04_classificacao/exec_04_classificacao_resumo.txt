@@ -12,31 +12,39 @@ TOTAIS:
 Total de linhas na entrada: 1497449
 Total classificadas: 1497449
 Total nao classificadas: 0
-Total sobrescritas: 17939
-Total de regras aplicadas: 30
+Total sobrescritas: 34632
+Total de regras aplicadas: 32
 
 REGRAS:
 As regras completas estao documentadas em: data\grupos_classificacao_explicado.txt
-Nesta execucao foram aplicadas 30 regras.
+Nesta execucao foram aplicadas 32 regras.
 
 REGRAS COM MAIS LINHAS ATINGIDAS:
-- Regra 18 - HAPCLINICA: 474873 linhas atingidas (0 sobrescritas)
-- Regra 13 - TELECONSULTA ELETIVA: 300212 linhas atingidas (0 sobrescritas)
+- Regra 20 - HAPCLINICA: 474888 linhas atingidas (0 sobrescritas)
+- Regra 15 - TELECONSULTA ELETIVA: 300212 linhas atingidas (0 sobrescritas)
 - Regra 2 - HOSPITALAR: 243473 linhas atingidas (0 sobrescritas)
-- Regra 26 - VIDA IMAGEM: 163455 linhas atingidas (0 sobrescritas)
-- Regra 24 - LABORATORIO: 161811 linhas atingidas (796 sobrescritas)
-- Regra 14 - TELECONSULTA URGENCIA: 57594 linhas atingidas (0 sobrescritas)
-- Regra 16 - CRED_TRATAMENTO: 31903 linhas atingidas (1115 sobrescritas)
-- Regra 15 - MED PREV: 27756 linhas atingidas (0 sobrescritas)
-- Regra 19 - ODONTOLOGIA: 11737 linhas atingidas (0 sobrescritas)
-- Regra 20 - ODONTOLOGIA: 11474 linhas atingidas (11474 sobrescritas)
+- Regra 28 - VIDA IMAGEM: 163455 linhas atingidas (383 sobrescritas)
+- Regra 26 - LABORATÓRIO: 161811 linhas atingidas (1039 sobrescritas)
+- Regra 16 - TELECONSULTA URGÊNCIA: 57594 linhas atingidas (0 sobrescritas)
+- Regra 18 - CRED_TRATAMENTO: 31903 linhas atingidas (1124 sobrescritas)
+- Regra 17 - MED PREV: 27756 linhas atingidas (0 sobrescritas)
+- Regra 21 - ODONTOLOGIA: 11737 linhas atingidas (0 sobrescritas)
+- Regra 3 - QUALIVIDA: 11722 linhas atingidas (0 sobrescritas)
 
 SOBRESCRITAS:
-Total de linhas sobrescritas: 17939
+Total de linhas sobrescritas: 34632
 Detalhamento completo em: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
 
 Principais sobrescritas:
-[11459 linhas] Regra 20 substituiu Regra 19
+[11722 linhas] Regra 4 substituiu Regra 3
+De: QUALIVIDA
+Para: QUALIVIDA
+Lista anterior: lista_qualivida_1
+Lista nova: lista_qualivida_2
+Chave anterior: QUALIVIDA
+Chave nova: QUALIVIDA
+
+[11459 linhas] Regra 22 substituiu Regra 21
 De: ODONTOLOGIA
 Para: ODONTOLOGIA
 Lista anterior: lista_odontologia
@@ -44,7 +52,7 @@ Lista nova: lista_odontologia_2
 Chave anterior: ODONTOLOGIA
 Chave nova: ODONTOLOGIA
 
-[4549 linhas] Regra 23 substituiu Regra 21
+[4549 linhas] Regra 25 substituiu Regra 23
 De: CRED_ATEND ELETIVO
 Para: CRED_ATEND ELETIVO
 Lista anterior: lista_cred_atend_eletivo
@@ -52,7 +60,15 @@ Lista nova: lista_cred_atend_eletivo
 Chave anterior: CRED_ATEND_ELETIVO
 Chave nova: CRED_ATEND_ELETIVO
 
-[1106 linhas] Regra 16 substituiu Regra 10
+[2174 linhas] Regra 6 substituiu Regra 4
+De: QUALIVIDA
+Para: QUALIVIDA
+Lista anterior: lista_qualivida_2
+Lista nova: lista_qualivida_4
+Chave anterior: QUALIVIDA
+Chave nova: QUALIVIDA
+
+[1106 linhas] Regra 18 substituiu Regra 12
 De: TEA
 Para: CRED_TRATAMENTO
 Lista anterior: lista_tea
@@ -60,15 +76,71 @@ Lista nova: lista_cred_tratamento
 Chave anterior: TEA
 Chave nova: CRED_TRATAMENTO
 
-[796 linhas] Regra 24 substituiu Regra 10
+[1061 linhas] Regra 13 substituiu Regra 7
+De: NASCER BEM
+Para: GESTAR BEM
+Lista anterior: lista_nascer_bem
+Lista nova: lista_gestar_bem
+Chave anterior: NASCER_BEM
+Chave nova: GESTAR_BEM
+
+[796 linhas] Regra 26 substituiu Regra 12
 De: TEA
-Para: LABORATORIO
+Para: LABORATÓRIO
 Lista anterior: lista_tea
 Lista nova: lista_laboratorio
 Chave anterior: TEA
 Chave nova: LABORATORIO
 
-[12 linhas] Regra 20 substituiu Regra 15
+[710 linhas] Regra 7 substituiu Regra 4
+De: QUALIVIDA
+Para: NASCER BEM
+Lista anterior: lista_qualivida_2
+Lista nova: lista_nascer_bem
+Chave anterior: QUALIVIDA
+Chave nova: NASCER_BEM
+
+[378 linhas] Regra 28 substituiu Regra 4
+De: QUALIVIDA
+Para: VIDA IMAGEM
+Lista anterior: lista_qualivida_2
+Lista nova: lista_vida_imagem
+Chave anterior: QUALIVIDA
+Chave nova: VIDA_IMAGEM
+
+[243 linhas] Regra 26 substituiu Regra 4
+De: QUALIVIDA
+Para: LABORATÓRIO
+Lista anterior: lista_qualivida_2
+Lista nova: lista_laboratorio
+Chave anterior: QUALIVIDA
+Chave nova: LABORATORIO
+
+[190 linhas] Regra 10 substituiu Regra 4
+De: QUALIVIDA
+Para: CASE
+Lista anterior: lista_qualivida_2
+Lista nova: lista_case
+Chave anterior: QUALIVIDA
+Chave nova: CASE
+
+[162 linhas] Regra 6 substituiu Regra 5
+De: QUALIVIDA
+Para: QUALIVIDA
+Lista anterior: lista_qualivida_3
+Lista nova: lista_qualivida_4
+Chave anterior: QUALIVIDA
+Chave nova: QUALIVIDA
+
+[28 linhas] Regra 27 substituiu Regra 7
+De: NASCER BEM
+Para: CRED_LABORATÓRIO
+Lista anterior: lista_nascer_bem
+Lista nova: lista_cred_laboratorio
+Chave anterior: NASCER_BEM
+Chave nova: CRED_LABORATORIO
+
+[12 linhas] Regra 22 substituiu Regra 17
 De: MED PREV
 Para: ODONTOLOGIA
 Lista anterior: lista_med_prev
@@ -76,44 +148,52 @@ Lista nova: lista_odontologia_2
 Chave anterior: MED_PREV
 Chave nova: ODONTOLOGIA
 
-[7 linhas] Regra 16 substituiu Regra 4
+[7 linhas] Regra 18 substituiu Regra 5
 De: QUALIVIDA
 Para: CRED_TRATAMENTO
-Lista anterior: lista_qualivida
+Lista anterior: lista_qualivida_3
 Lista nova: lista_cred_tratamento
 Chave anterior: QUALIVIDA
 Chave nova: CRED_TRATAMENTO
 
-[3 linhas] Regra 20 substituiu Regra 16
-De: CRED_TRATAMENTO
-Para: ODONTOLOGIA
-Lista anterior: lista_cred_tratamento
-Lista nova: lista_odontologia_2
-Chave anterior: CRED_TRATAMENTO
-Chave nova: ODONTOLOGIA
-
-[3 linhas] Regra 25 substituiu Regra 10
-De: TEA
-Para: CRED_LABORATORIO
-Lista anterior: lista_tea
+[7 linhas] Regra 27 substituiu Regra 6
+De: QUALIVIDA
+Para: CRED_LABORATÓRIO
+Lista anterior: lista_qualivida_4
 Lista nova: lista_cred_laboratorio
-Chave anterior: TEA
+Chave anterior: QUALIVIDA
 Chave nova: CRED_LABORATORIO
 
-[2 linhas] Regra 9 substituiu Regra 4
+[6 linhas] Regra 18 substituiu Regra 6
 De: QUALIVIDA
-Para: TRANSPLANTE
-Lista anterior: lista_qualivida
-Lista nova: lista_transplante
-Chave anterior: QUALIVIDA
-Chave nova: TRANSPLANTE
-
-[2 linhas] Regra 16 substituiu Regra 9
-De: TRANSPLANTE
 Para: CRED_TRATAMENTO
-Lista anterior: lista_transplante
+Lista anterior: lista_qualivida_4
 Lista nova: lista_cred_tratamento
-Chave anterior: TRANSPLANTE
+Chave anterior: QUALIVIDA
+Chave nova: CRED_TRATAMENTO
+
+[5 linhas] Regra 28 substituiu Regra 7
+De: NASCER BEM
+Para: VIDA IMAGEM
+Lista anterior: lista_nascer_bem
+Lista nova: lista_vida_imagem
+Chave anterior: NASCER_BEM
+Chave nova: VIDA_IMAGEM
+
+[4 linhas] Regra 27 substituiu Regra 4
+De: QUALIVIDA
+Para: CRED_LABORATÓRIO
+Lista anterior: lista_qualivida_2
+Lista nova: lista_cred_laboratorio
+Chave anterior: QUALIVIDA
+Chave nova: CRED_LABORATORIO
+
+[3 linhas] Regra 18 substituiu Regra 7
+De: NASCER BEM
+Para: CRED_TRATAMENTO
+Lista anterior: lista_nascer_bem
+Lista nova: lista_cred_tratamento
+Chave anterior: NASCER_BEM
 Chave nova: CRED_TRATAMENTO
 
 
