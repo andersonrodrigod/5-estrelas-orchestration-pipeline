@@ -6,8 +6,8 @@ Arquivo de saida: data_exec_indiv\negativas\02_base_com_contratacao.csv
 
 Total de linhas na entrada: 1448219
 Total rede propria: 1413350
-Total rede credenciada: 34844
-Total sem contratacao: 25
+Total rede credenciada: 34869
+Total sem contratacao: 0
 
 Locais sem contratacao:
-- HOSPITAL SANTA CATARINA: 25
+- Nenhum local sem contratacao

@@ -7,9 +7,7 @@
     "arquivo_linhas_sem_contratacao": "saida_resumo_negativas\\exec_02_contratacao\\exec_02_linhas_sem_contratacao.csv",
     "total_linhas_entrada": 1448219,
     "total_rede_propria": 1413350,
-    "total_rede_credenciada": 34844,
-    "total_sem_contratacao": 25,
-    "locais_sem_contratacao": {
-        "HOSPITAL SANTA CATARINA": 25
-    }
+    "total_rede_credenciada": 34869,
+    "total_sem_contratacao": 0,
+    "locais_sem_contratacao": {}
 }

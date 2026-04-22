@@ -1,0 +1,12 @@
+{
+    "execucao": "exec_05_2_separar_tipo_negativas",
+    "arquivo_entrada": "data_exec_indiv\\negativas\\04_base_com_local_editado.csv",
+    "arquivo_saida_tipo_1_a_3": "data_exec_indiv\\negativas\\05_2_base_tipo_1_a_3.csv",
+    "arquivo_saida_tipo_4_a_7": "data_exec_indiv\\negativas\\05_2_base_tipo_4_a_7.csv",
+    "arquivo_saida_tipo_8_ou_mais": "data_exec_indiv\\negativas\\05_2_base_tipo_8_ou_mais.csv",
+    "total_linhas_entrada": 1448219,
+    "total_tipo_1_a_3": 916890,
+    "total_tipo_4_a_7": 179250,
+    "total_tipo_8_ou_mais": 352079,
+    "total_tipo_fora_recorte": 0
+}

@@ -1,0 +1,13 @@
+RESUMO DA EXECUCAO 04 - LOCAL EDITADO NEGATIVAS
+
+Arquivo de entrada: data_exec_indiv\negativas\03_base_com_classificacao.csv
+Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+Arquivo de saida: data_exec_indiv\negativas\04_base_com_local_editado.csv
+
+Total de linhas na entrada: 1448219
+Registros atualizados: 1448219
+Registros nao alterados: 0
+Registros nao encontrados: 0
+
+PRINCIPAIS LOCAIS NAO ENCONTRADOS:
+- Nenhum local sem correspondencia

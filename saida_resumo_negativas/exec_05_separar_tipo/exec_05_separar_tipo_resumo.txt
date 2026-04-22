@@ -1,0 +1,10 @@
+RESUMO DA EXECUCAO 05 - SEPARAR POR TIPO NEGATIVAS
+
+Arquivo de entrada: data_exec_indiv\negativas\04_base_com_local_editado.csv
+Arquivo TIPO 1 a 7: data_exec_indiv\negativas\05_base_tipo_1_a_7.csv
+Arquivo TIPO 8 ou mais: data_exec_indiv\negativas\05_base_tipo_8_ou_mais.csv
+
+Total de linhas na entrada: 1448219
+Total TIPO 1 a 7: 1096140
+Total TIPO 8 ou mais: 352079
+Total fora do recorte: 0

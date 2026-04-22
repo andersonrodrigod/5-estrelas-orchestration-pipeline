@@ -68,6 +68,9 @@ def descrever_regra(grupo):
     if grupo['filtro_especialidade_diferente']:
         partes.append(f"ESPECIALIDADE diferente de {grupo['filtro_especialidade_diferente']}")
 
+    if grupo.get('aplicar_somente_vazios'):
+        partes.append("CLASSIFICACAO vazia")
+
     if not partes:
         return 'sem filtros'
 
@@ -161,9 +164,20 @@ for ordem, grupo in enumerate(grupos, start=1):
     vazias_antes = classificacao_antes.isna() | (classificacao_antes == '')
     total_vazias_antes = int(vazias_antes.sum())
     total_ja_classificadas = int((~vazias_antes).sum())
+    aplicar_somente_vazios = bool(grupo.get('aplicar_somente_vazios'))
+    filtro_aplicacao = filtro
+
+    if aplicar_somente_vazios:
+        filtro_aplicacao = filtro & (
+            df['CLASSIFICACAO'].isna() | (df['CLASSIFICACAO'] == '')
+        )
 
     mascara_sobrescritas = pd.Series(False, index=df.index)
-    mascara_sobrescritas.loc[classificacao_antes.index] = ~vazias_antes
+    classificacao_antes_aplicacao = df.loc[filtro_aplicacao, 'CLASSIFICACAO'].copy()
+    vazias_antes_aplicacao = (
+        classificacao_antes_aplicacao.isna() | (classificacao_antes_aplicacao == '')
+    )
+    mascara_sobrescritas.loc[classificacao_antes_aplicacao.index] = ~vazias_antes_aplicacao
     sobrescritas_regra = df.loc[mascara_sobrescritas].copy()
     total_sobrescritas = int(len(sobrescritas_regra))
 
@@ -207,10 +221,10 @@ for ordem, grupo in enumerate(grupos, start=1):
                 'QUANTIDADE': int(linha['QUANTIDADE'])
             })
 
-    df.loc[filtro, 'CLASSIFICACAO'] = nome_classificacao
-    df.loc[filtro, coluna_ordem_regra] = ordem
-    df.loc[filtro, coluna_nome_lista] = grupo['nome_lista']
-    df.loc[filtro, coluna_chave_grupo] = grupo['grupo_classificacao']
+    df.loc[filtro_aplicacao, 'CLASSIFICACAO'] = nome_classificacao
+    df.loc[filtro_aplicacao, coluna_ordem_regra] = ordem
+    df.loc[filtro_aplicacao, coluna_nome_lista] = grupo['nome_lista']
+    df.loc[filtro_aplicacao, coluna_chave_grupo] = grupo['grupo_classificacao']
 
     auditoria_regras.append({
         'ORDEM_REGRA': ordem,
@@ -374,4 +388,3 @@ df_sobrescritas.to_csv(arquivo_sobrescritas_csv, index=False, encoding='utf-8-si
 df_nao_classificados_detalhado.to_csv(arquivo_nao_classificados_detalhado_csv, index=False, encoding='utf-8-sig')
 
 print('Execucao 03 negativas finalizada.')
-
