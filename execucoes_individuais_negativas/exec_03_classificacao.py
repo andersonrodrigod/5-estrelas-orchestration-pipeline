@@ -1,22 +1,20 @@
 ﻿# -*- coding: utf-8 -*-
 import json
-import shutil
 from pathlib import Path
 
 import pandas as pd
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
+arquivo_entrada = Path('data_exec_indiv/negativas/02_base_com_contratacao.csv')
 arquivo_grupos = Path('data/grupos_classificacao.json')
 arquivo_nomes = Path('data/nomes_classificacao.json')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
+arquivo_saida = Path('data_exec_indiv/negativas/03_base_com_classificacao.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
-pasta_resumo_espelho = Path('saida_resumo') / 'exec_04_classificacao'
-arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_resumo.txt'
-arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_auditoria.csv'
-arquivo_sobrescritas_csv = pasta_resumo / 'exec_04_classificacao_sobrescritas.csv'
-arquivo_nao_classificados_detalhado_csv = pasta_resumo / 'exec_04_classificacao_nao_classificados_detalhado.csv'
+pasta_resumo = Path('saida_resumo_negativas') / 'exec_03_classificacao'
+arquivo_resumo_json = pasta_resumo / 'exec_03_classificacao_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_03_classificacao_resumo.txt'
+arquivo_auditoria_csv = pasta_resumo / 'exec_03_classificacao_auditoria.csv'
+arquivo_sobrescritas_csv = pasta_resumo / 'exec_03_classificacao_sobrescritas.csv'
+arquivo_nao_classificados_detalhado_csv = pasta_resumo / 'exec_03_classificacao_nao_classificados_detalhado.csv'
 arquivo_regras_explicadas_txt = Path('data/grupos_classificacao_explicado.txt')
 
 coluna_ordem_regra = '_ORDEM_REGRA_CLASSIFICACAO'
@@ -70,17 +68,14 @@ def descrever_regra(grupo):
     if grupo['filtro_especialidade_diferente']:
         partes.append(f"ESPECIALIDADE diferente de {grupo['filtro_especialidade_diferente']}")
 
-    if grupo.get('aplicar_somente_vazios'):
-        partes.append("CLASSIFICACAO vazia")
-
     if not partes:
         return 'sem filtros'
 
     return ' | '.join(str(parte) for parte in partes)
 
 
-print('Iniciando execucao 04 - classificacao...')
-print(f'Lendo arquivo da execucao 03: {arquivo_entrada}')
+print('Iniciando execucao 03 - classificacao negativas...')
+print(f'Lendo arquivo da execucao 02: {arquivo_entrada}')
 print(f'Lendo arquivo de grupos: {arquivo_grupos}')
 print(f'Lendo arquivo de nomes: {arquivo_nomes}')
 
@@ -166,20 +161,9 @@ for ordem, grupo in enumerate(grupos, start=1):
     vazias_antes = classificacao_antes.isna() | (classificacao_antes == '')
     total_vazias_antes = int(vazias_antes.sum())
     total_ja_classificadas = int((~vazias_antes).sum())
-    aplicar_somente_vazios = bool(grupo.get('aplicar_somente_vazios'))
-    filtro_aplicacao = filtro
-
-    if aplicar_somente_vazios:
-        filtro_aplicacao = filtro & (
-            df['CLASSIFICACAO'].isna() | (df['CLASSIFICACAO'] == '')
-        )
 
     mascara_sobrescritas = pd.Series(False, index=df.index)
-    classificacao_antes_aplicacao = df.loc[filtro_aplicacao, 'CLASSIFICACAO'].copy()
-    vazias_antes_aplicacao = (
-        classificacao_antes_aplicacao.isna() | (classificacao_antes_aplicacao == '')
-    )
-    mascara_sobrescritas.loc[classificacao_antes_aplicacao.index] = ~vazias_antes_aplicacao
+    mascara_sobrescritas.loc[classificacao_antes.index] = ~vazias_antes
     sobrescritas_regra = df.loc[mascara_sobrescritas].copy()
     total_sobrescritas = int(len(sobrescritas_regra))
 
@@ -223,10 +207,10 @@ for ordem, grupo in enumerate(grupos, start=1):
                 'QUANTIDADE': int(linha['QUANTIDADE'])
             })
 
-    df.loc[filtro_aplicacao, 'CLASSIFICACAO'] = nome_classificacao
-    df.loc[filtro_aplicacao, coluna_ordem_regra] = ordem
-    df.loc[filtro_aplicacao, coluna_nome_lista] = grupo['nome_lista']
-    df.loc[filtro_aplicacao, coluna_chave_grupo] = grupo['grupo_classificacao']
+    df.loc[filtro, 'CLASSIFICACAO'] = nome_classificacao
+    df.loc[filtro, coluna_ordem_regra] = ordem
+    df.loc[filtro, coluna_nome_lista] = grupo['nome_lista']
+    df.loc[filtro, coluna_chave_grupo] = grupo['grupo_classificacao']
 
     auditoria_regras.append({
         'ORDEM_REGRA': ordem,
@@ -279,7 +263,7 @@ total_nao_classificadas = int(filtro_nao_classificados.sum())
 total_sobrescritas_geral = int(sum(item['QUANTIDADE'] for item in sobrescritas))
 
 resumo = {
-    'execucao': 'exec_04_classificacao',
+    'execucao': 'exec_03_classificacao_negativas',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_grupos': str(arquivo_grupos),
     'arquivo_nomes': str(arquivo_nomes),
@@ -299,7 +283,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 04 - CLASSIFICACAO',
+    'RESUMO DA EXECUCAO 03 - CLASSIFICACAO NEGATIVAS',
     '',
     'ARQUIVOS:',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
@@ -389,15 +373,5 @@ df_sobrescritas.to_csv(arquivo_sobrescritas_csv, index=False, encoding='utf-8-si
 
 df_nao_classificados_detalhado.to_csv(arquivo_nao_classificados_detalhado_csv, index=False, encoding='utf-8-sig')
 
-pasta_resumo_espelho.mkdir(parents=True, exist_ok=True)
-for arquivo_resumo in [
-    arquivo_resumo_json,
-    arquivo_resumo_txt,
-    arquivo_auditoria_csv,
-    arquivo_sobrescritas_csv,
-    arquivo_nao_classificados_detalhado_csv
-]:
-    shutil.copy2(arquivo_resumo, pasta_resumo_espelho / arquivo_resumo.name)
-
-print('Execucao 04 finalizada.')
+print('Execucao 03 negativas finalizada.')
 

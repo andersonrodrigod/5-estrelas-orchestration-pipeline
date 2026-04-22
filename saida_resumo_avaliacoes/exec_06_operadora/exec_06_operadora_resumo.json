@@ -5,10 +5,10 @@
     "arquivo_insumos_ndi": "utils\\insumos\\Unidades ndi sp e rj.xlsx",
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\06_base_com_operadora.csv",
     "total_linhas_entrada": 1497449,
-    "total_classificadas_antes_hapvida": 870077,
-    "total_preenchidas_com_hapvida": 627372,
+    "total_classificadas_antes_hapvida": 870239,
+    "total_preenchidas_com_hapvida": 627210,
     "total_classificadas_final": 1497449,
-    "total_sobrescritos": 1631,
+    "total_sobrescritos": 1636,
     "total_locais_multiplas_operadoras": 18,
     "locais_multiplas_operadoras": [
         {
@@ -238,8 +238,8 @@
         {
             "REGRA": "CLASSIFICACAO contem TELE",
             "OPERADORA_APLICADA": "TELECONSULTA",
-            "TOTAL_ATINGIDAS": 359647,
-            "TOTAL_VAZIAS": 359647,
+            "TOTAL_ATINGIDAS": 359814,
+            "TOTAL_VAZIAS": 359814,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
@@ -253,8 +253,8 @@
             "REGRA": "UF igual a PR",
             "OPERADORA_APLICADA": "CLINIPAN",
             "TOTAL_ATINGIDAS": 32272,
-            "TOTAL_VAZIAS": 31657,
-            "TOTAL_SOBRESCRITAS": 615
+            "TOTAL_VAZIAS": 31653,
+            "TOTAL_SOBRESCRITAS": 619
         },
         {
             "REGRA": "UF igual a RS",
@@ -351,14 +351,14 @@
             "REGRA": "PLANILHA NDI SP E RJ",
             "OPERADORA_APLICADA": "DINAMICA",
             "TOTAL_ATINGIDAS": 400970,
-            "TOTAL_VAZIAS": 400537,
-            "TOTAL_SOBRESCRITAS": 433
+            "TOTAL_VAZIAS": 400536,
+            "TOTAL_SOBRESCRITAS": 434
         },
         {
             "REGRA": "OPERADORA vazia no final recebe HAPVIDA",
             "OPERADORA_APLICADA": "HAPVIDA",
-            "TOTAL_ATINGIDAS": 627372,
-            "TOTAL_VAZIAS": 627372,
+            "TOTAL_ATINGIDAS": 627210,
+            "TOTAL_VAZIAS": 627210,
             "TOTAL_SOBRESCRITAS": 0
         }
     ]

@@ -45,6 +45,10 @@ df = pd.read_csv(arquivo_entrada, low_memory=False)
 for coluna in colunas_grupo:
     df[coluna] = normalizar_texto(df[coluna])
 
+# FEATURE TEMPORARIA: preencher UF vazia ou marcada como "vazio" com CE.
+mascara_uf_vazia = df['UF'].isna() | (df['UF'] == '') | (df['UF'].str.lower() == 'vazio')
+df.loc[mascara_uf_vazia, 'UF'] = 'CE'
+
 # Garante que a nota geral esteja numerica para o calculo da media.
 df['NOTA GERAL'] = pd.to_numeric(df['NOTA GERAL'], errors='coerce')
 

@@ -1,0 +1,15 @@
+{
+    "execucao": "exec_02_contratacao_negativas",
+    "arquivo_entrada": "data_exec_indiv\\negativas\\01_base_limpa.csv",
+    "arquivo_insumos": "utils\\insumos\\insumos 5 estrelas.xlsx",
+    "arquivo_saida": "data_exec_indiv\\negativas\\02_base_com_contratacao.csv",
+    "arquivo_locais_sem_contratacao": "saida_resumo_negativas\\exec_02_contratacao\\exec_02_locais_sem_contratacao.csv",
+    "arquivo_linhas_sem_contratacao": "saida_resumo_negativas\\exec_02_contratacao\\exec_02_linhas_sem_contratacao.csv",
+    "total_linhas_entrada": 1448219,
+    "total_rede_propria": 1413350,
+    "total_rede_credenciada": 34844,
+    "total_sem_contratacao": 25,
+    "locais_sem_contratacao": {
+        "HOSPITAL SANTA CATARINA": 25
+    }
+}

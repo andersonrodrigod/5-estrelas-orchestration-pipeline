@@ -6,8 +6,8 @@ Arquivo de inspecao: saida_resumo_avaliacoes\exec_08_resultado_unidade\exec_08_r
 Arquivo de linhas com chave vazia: saida_resumo_avaliacoes\exec_08_resultado_unidade\exec_08_resultado_unidade_linhas_chave_vazia.csv
 
 Total de linhas na entrada: 1497449
-Total de grupos: 4462
+Total de grupos: 4470
 Total de linhas com resultado da unidade: 1497449
 Total de linhas sem resultado da unidade: 0
-Total de grupos com alguma chave vazia: 38
-Total de linhas com alguma chave vazia: 458
+Total de grupos com alguma chave vazia: 0
+Total de linhas com alguma chave vazia: 0

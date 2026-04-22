@@ -1,0 +1,18 @@
+RESUMO DA EXECUCAO 01 - LIMPEZA NEGATIVAS
+
+Arquivo de entrada: data\5_estrelas_negativo_marco.csv
+Arquivo de saida: data_exec_indiv\negativas\01_base_limpa.csv
+
+Total de linhas na entrada: 1448219
+Total de linhas na saida: 1448219
+Total de colunas na saida: 28
+
+COLUNAS OBRIGATORIAS:
+- CONTRATACAO
+- CLASSIFICACAO
+- LOCAL EDITADO
+
+COLUNAS CRIADAS:
+- CONTRATACAO
+- CLASSIFICACAO
+- LOCAL EDITADO

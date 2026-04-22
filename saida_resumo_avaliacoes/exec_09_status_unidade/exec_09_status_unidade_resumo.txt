@@ -5,6 +5,6 @@ Arquivo de saida: data_exec_indiv\avaliacoes\09_base_com_status_unidade.csv
 Arquivo de status: saida_resumo_avaliacoes\exec_09_status_unidade\exec_09_status_unidade_status.csv
 
 Total de linhas na entrada: 1497449
-Total dentro da meta: 1490177
-Total fora da meta: 7272
+Total dentro da meta: 1489996
+Total fora da meta: 7453
 Total sem status: 0

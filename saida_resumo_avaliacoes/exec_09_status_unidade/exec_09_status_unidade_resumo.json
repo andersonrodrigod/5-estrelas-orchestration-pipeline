@@ -4,7 +4,7 @@
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\09_base_com_status_unidade.csv",
     "arquivo_status_csv": "saida_resumo_avaliacoes\\exec_09_status_unidade\\exec_09_status_unidade_status.csv",
     "total_linhas_entrada": 1497449,
-    "total_dentro_meta": 1490177,
-    "total_fora_meta": 7272,
+    "total_dentro_meta": 1489996,
+    "total_fora_meta": 7453,
     "total_sem_status": 0
 }

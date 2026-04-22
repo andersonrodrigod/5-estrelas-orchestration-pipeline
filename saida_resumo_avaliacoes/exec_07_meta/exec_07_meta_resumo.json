@@ -9,7 +9,7 @@
     "grupos_encontrados": [
         {
             "GRUPO": "HAPCLINICA",
-            "QUANTIDADE": "475283"
+            "QUANTIDADE": "462444"
         },
         {
             "GRUPO": "TELECONSULTA ELETIVA",
@@ -37,7 +37,7 @@
         },
         {
             "GRUPO": "MED PREV",
-            "QUANTIDADE": "27759"
+            "QUANTIDADE": "24949"
         },
         {
             "GRUPO": "ODONTOLOGIA",
@@ -52,12 +52,28 @@
             "QUANTIDADE": "5419"
         },
         {
+            "GRUPO": "QUALIVIDA",
+            "QUANTIDADE": "5364"
+        },
+        {
             "GRUPO": "CRED_ATEND ELETIVO",
             "QUANTIDADE": "4549"
         },
         {
+            "GRUPO": "CASE",
+            "QUANTIDADE": "3440"
+        },
+        {
+            "GRUPO": "PRODUTO COORDENADO",
+            "QUANTIDADE": "2540"
+        },
+        {
             "GRUPO": "CRED_EXAMES",
             "QUANTIDADE": "2024"
+        },
+        {
+            "GRUPO": "TEA",
+            "QUANTIDADE": "1995"
         },
         {
             "GRUPO": "TELECONSULTA CASE",
@@ -68,24 +84,28 @@
             "QUANTIDADE": "1474"
         },
         {
+            "GRUPO": "NASCER BEM",
+            "QUANTIDADE": "1079"
+        },
+        {
+            "GRUPO": "GESTAR BEM",
+            "QUANTIDADE": "1069"
+        },
+        {
+            "GRUPO": "TELEMEDICINA",
+            "QUANTIDADE": "167"
+        },
+        {
             "GRUPO": "INTERNAÇÃO PGC",
             "QUANTIDADE": "103"
         },
         {
-            "GRUPO": "GESTAR BEM",
-            "QUANTIDADE": "29"
+            "GRUPO": "TRANSPLANTE",
+            "QUANTIDADE": "41"
         },
         {
             "GRUPO": "CRED_INTERNACAO",
             "QUANTIDADE": "28"
-        },
-        {
-            "GRUPO": "TEA",
-            "QUANTIDADE": "15"
-        },
-        {
-            "GRUPO": "CASE",
-            "QUANTIDADE": "2"
         }
     ],
     "classificacoes_nao_encontradas": []

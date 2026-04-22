@@ -2,6 +2,7 @@
     {
         "grupo_classificacao":  "CRED_ATEND_EMERGENCIA",
         "nome_lista":  "lista_cred_atend_emergencia",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  1,
         "tipo_diferente":  null,
@@ -19,6 +20,7 @@
     {
         "grupo_classificacao":  "HOSPITALAR",
         "nome_lista":  "lista_hospitalar",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  1,
         "tipo_diferente":  null,
@@ -36,6 +38,7 @@
     {
         "grupo_classificacao":  "QUALIVIDA",
         "nome_lista":  "lista_qualivida",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "QUALIVIDA|QUALIVITA",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -53,6 +56,7 @@
     {
         "grupo_classificacao":  "QUALIVIDA",
         "nome_lista":  "lista_qualivida",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "SINTA-SE|SINTASE|SINTA SE|VIVER BEM",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -70,6 +74,7 @@
     {
         "grupo_classificacao":  "NASCER_BEM",
         "nome_lista":  "lista_nascer_bem",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "NB|RISCO",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -87,6 +92,7 @@
     {
         "grupo_classificacao":  "TELEMEDICINA",
         "nome_lista":  "lista_telemedicina",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "TELEM",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -104,6 +110,7 @@
     {
         "grupo_classificacao":  "PRODUTO_COORDENADO",
         "nome_lista":  "lista_produto_coordenado",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "NOSSO MEDICO|NOTRELIFE|NUCLEO MF|PROD. COORD|PROD.COORD",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -121,6 +128,7 @@
     {
         "grupo_classificacao":  "CASE",
         "nome_lista":  "lista_case",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "CASE",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -138,6 +146,7 @@
     {
         "grupo_classificacao":  "TRANSPLANTE",
         "nome_lista":  "lista_transplante",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "TRANSPL",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -155,6 +164,7 @@
     {
         "grupo_classificacao":  "TEA",
         "nome_lista":  "lista_tea",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "TEA",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -172,6 +182,7 @@
     {
         "grupo_classificacao":  "GESTAR_BEM",
         "nome_lista":  "lista_gestar_bem",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "GESTAR|GESTAR BEM|PGS",
         "tipo_igual":  null,
         "tipo_diferente":  6,
@@ -189,6 +200,7 @@
     {
         "grupo_classificacao":  "TELECONSULTA CASE",
         "nome_lista":  "lista_teleconsulta",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "PGC|TRANSPLANTE|CASE",
         "tipo_igual":  6,
         "tipo_diferente":  null,
@@ -206,6 +218,7 @@
     {
         "grupo_classificacao":  "TELECONSULTA_ELETIVA",
         "nome_lista":  "lista_teleconsulta_eletiva",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  6,
         "tipo_diferente":  null,
@@ -223,6 +236,7 @@
     {
         "grupo_classificacao":  "TELECONSULTA_URGENCIA",
         "nome_lista":  "lista_teleconsulta_urgencia",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  7,
         "tipo_diferente":  null,
@@ -240,6 +254,7 @@
     {
         "grupo_classificacao":  "MED_PREV",
         "nome_lista":  "lista_med_prev",
+        "aplicar_somente_vazios":  true,
         "palavra_filtro":  null,
         "tipo_igual":  4,
         "tipo_diferente":  null,
@@ -257,6 +272,7 @@
     {
         "grupo_classificacao":  "CRED_TRATAMENTO",
         "nome_lista":  "lista_cred_tratamento",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  4,
         "tipo_diferente":  null,
@@ -274,6 +290,7 @@
     {
         "grupo_classificacao":  "MED_PREV",
         "nome_lista":  "lista_med_prev_tipo_2",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "MED PREV|MEDPREV",
         "tipo_igual":  2,
         "tipo_diferente":  null,
@@ -291,6 +308,7 @@
     {
         "grupo_classificacao":  "HAPCLINICA",
         "nome_lista":  "lista_hapclinica",
+        "aplicar_somente_vazios":  true,
         "palavra_filtro":  null,
         "tipo_igual":  2,
         "tipo_diferente":  null,
@@ -308,6 +326,7 @@
     {
         "grupo_classificacao":  "ODONTOLOGIA",
         "nome_lista":  "lista_odontologia",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  5,
         "tipo_diferente":  null,
@@ -325,6 +344,7 @@
     {
         "grupo_classificacao":  "ODONTOLOGIA",
         "nome_lista":  "lista_odontologia_2",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "ODONT",
         "tipo_igual":  null,
         "tipo_diferente":  null,
@@ -342,6 +362,7 @@
     {
         "grupo_classificacao":  "CRED_ATEND_ELETIVO",
         "nome_lista":  "lista_cred_atend_eletivo",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "ODONT",
         "tipo_igual":  3,
         "tipo_diferente":  null,
@@ -359,6 +380,7 @@
     {
         "grupo_classificacao":  "HAPCLINICA",
         "nome_lista":  "lista_hapclinica_tipo_3",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  3,
         "tipo_diferente":  null,
@@ -376,6 +398,7 @@
     {
         "grupo_classificacao":  "CRED_ATEND_ELETIVO",
         "nome_lista":  "lista_cred_atend_eletivo",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  "ODONT",
         "tipo_igual":  3,
         "tipo_diferente":  null,
@@ -393,6 +416,7 @@
     {
         "grupo_classificacao":  "LABORATORIO",
         "nome_lista":  "lista_laboratorio",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  8,
         "tipo_diferente":  null,
@@ -410,6 +434,7 @@
     {
         "grupo_classificacao":  "CRED_LABORATORIO",
         "nome_lista":  "lista_cred_laboratorio",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  8,
         "tipo_diferente":  null,
@@ -427,6 +452,7 @@
     {
         "grupo_classificacao":  "VIDA_IMAGEM",
         "nome_lista":  "lista_vida_imagem",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  9,
         "tipo_diferente":  null,
@@ -444,6 +470,7 @@
     {
         "grupo_classificacao":  "CRED_EXAMES",
         "nome_lista":  "lista_cred_exames",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  9,
         "tipo_diferente":  null,
@@ -461,6 +488,7 @@
     {
         "grupo_classificacao":  "CRED_INTERNACAO",
         "nome_lista":  "lista_cred_internacao",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  [
                            10,
@@ -483,6 +511,7 @@
     {
         "grupo_classificacao":  "INTERNACAO",
         "nome_lista":  "lista_internacao",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  [
                            10,
@@ -505,6 +534,7 @@
     {
         "grupo_classificacao":  "INTERNACAO_PGC",
         "nome_lista":  "lista_internacao_pgc",
+        "aplicar_somente_vazios":  false,
         "palavra_filtro":  null,
         "tipo_igual":  14,
         "tipo_diferente":  null,

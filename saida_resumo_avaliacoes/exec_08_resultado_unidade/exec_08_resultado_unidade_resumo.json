@@ -5,9 +5,9 @@
     "arquivo_inspecao_grupos": "saida_resumo_avaliacoes\\exec_08_resultado_unidade\\exec_08_resultado_unidade_inspecao_grupos.csv",
     "arquivo_linhas_chave_vazia": "saida_resumo_avaliacoes\\exec_08_resultado_unidade\\exec_08_resultado_unidade_linhas_chave_vazia.csv",
     "total_linhas_entrada": 1497449,
-    "total_grupos": 4462,
+    "total_grupos": 4470,
     "total_linhas_com_resultado": 1497449,
     "total_linhas_sem_resultado": 0,
-    "total_grupos_chave_vazia": 38,
-    "total_linhas_chave_vazia": 458
+    "total_grupos_chave_vazia": 0,
+    "total_linhas_chave_vazia": 0
 }

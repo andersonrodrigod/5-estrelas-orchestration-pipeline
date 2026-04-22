@@ -1,0 +1,10 @@
+RESUMO DA EXECUCAO 10 - SEPARAR POR TIPO
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\09_base_com_status_unidade.csv
+Arquivo TIPO 1 a 7: data_exec_indiv\avaliacoes\10_base_tipo_1_a_7.csv
+Arquivo TIPO 8 ou mais: data_exec_indiv\avaliacoes\10_base_tipo_8_ou_mais.csv
+
+Total de linhas na entrada: 1497449
+Total TIPO 1 a 7: 1155883
+Total TIPO 8 ou mais: 341566
+Total fora do recorte: 0

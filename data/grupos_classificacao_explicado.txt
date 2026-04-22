@@ -187,6 +187,7 @@ Nome da lista: lista_med_prev
 Filtros usados:
 - TIPO igual a 4
 - CONTRATACAO igual a 'rede propria'
+- CLASSIFICACAO vazia
 
 --------------------------------------------------------------------------------
 

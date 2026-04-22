@@ -1,0 +1,13 @@
+RESUMO DA EXECUCAO 02 - CONTRATACAO NEGATIVAS
+
+Arquivo de entrada: data_exec_indiv\negativas\01_base_limpa.csv
+Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+Arquivo de saida: data_exec_indiv\negativas\02_base_com_contratacao.csv
+
+Total de linhas na entrada: 1448219
+Total rede propria: 1413350
+Total rede credenciada: 34844
+Total sem contratacao: 25
+
+Locais sem contratacao:
+- HOSPITAL SANTA CATARINA: 25
