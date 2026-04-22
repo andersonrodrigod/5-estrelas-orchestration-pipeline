@@ -7,6 +7,7 @@ import pandas as pd
 
 arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
 arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
+arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
 pasta_saida_excel = Path('data_exec_indiv/separacao')
 pasta_resumo = Path('saida_resumo_separacao')
 
@@ -76,6 +77,29 @@ def normalizar_texto(valor):
 def normalizar_cabecalho(valor):
     texto = normalizar_texto(valor)
     return texto.replace(' ', '').replace('_', '')
+
+
+def carregar_json(caminho):
+    with open(caminho, 'r', encoding='utf-8-sig') as arquivo:
+        return json.load(arquivo)
+
+
+def criar_mapa_nomes_envio(nomes_classificacao):
+    mapa = {}
+
+    for chave, nome in nomes_classificacao.items():
+        mapa[normalizar_texto(chave)] = nome
+        mapa[normalizar_texto(nome)] = nome
+
+    return mapa
+
+
+def aplicar_nomes_envio(df, coluna_original, mapa_nomes_envio):
+    df_saida = df.copy()
+    classificacao_normalizada = df_saida[coluna_original].apply(normalizar_texto)
+    nomes_envio = classificacao_normalizada.map(mapa_nomes_envio)
+    df_saida[coluna_original] = nomes_envio.fillna(df_saida[coluna_original])
+    return df_saida
 
 
 def resolver_coluna_classificacao(df, nome_arquivo):
@@ -148,9 +172,12 @@ def salvar_excel_grupo(grupo, df_avaliacoes, df_negativas):
 print('Iniciando execucao - separacao por classificacao...')
 print(f'Lendo avaliacoes: {arquivo_avaliacoes}')
 print(f'Lendo negativas: {arquivo_negativas}')
+print(f'Lendo nomes de classificacao para envio: {arquivo_nomes_classificacao}')
 
 df_avaliacoes = pd.read_csv(arquivo_avaliacoes, low_memory=False)
 df_negativas = pd.read_csv(arquivo_negativas, low_memory=False)
+nomes_classificacao = carregar_json(arquivo_nomes_classificacao)
+mapa_nomes_envio = criar_mapa_nomes_envio(nomes_classificacao)
 
 coluna_avaliacoes = resolver_coluna_classificacao(df_avaliacoes, str(arquivo_avaliacoes))
 coluna_negativas = resolver_coluna_classificacao(df_negativas, str(arquivo_negativas))
@@ -183,6 +210,17 @@ for grupo in regras_grupos:
     negativas_filtradas = (
         df_negativas[df_negativas['__grupo'] == grupo]
         .drop(columns=['__classificacao_normalizada', '__grupo'])
+    )
+
+    avaliacoes_filtradas = aplicar_nomes_envio(
+        avaliacoes_filtradas,
+        coluna_avaliacoes,
+        mapa_nomes_envio
+    )
+    negativas_filtradas = aplicar_nomes_envio(
+        negativas_filtradas,
+        coluna_negativas,
+        mapa_nomes_envio
     )
 
     arquivo_excel = salvar_excel_grupo(grupo, avaliacoes_filtradas, negativas_filtradas)
@@ -237,6 +275,7 @@ resumo = {
     'execucao': 'exec_separacao',
     'arquivo_avaliacoes': str(arquivo_avaliacoes),
     'arquivo_negativas': str(arquivo_negativas),
+    'arquivo_nomes_classificacao': str(arquivo_nomes_classificacao),
     'pasta_saida_excel': str(pasta_saida_excel),
     'pasta_resumo': str(pasta_resumo),
     'arquivo_quantidades': str(arquivo_quantidades_csv),
