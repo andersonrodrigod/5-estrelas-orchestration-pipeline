@@ -9,13 +9,13 @@ arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 # Preencha com o valor desejado ou deixe None para nao filtrar a coluna.
 filtro_tipo = None
 filtro_contratacao = None
-filtro_local = 'qualivida'
-filtro_especialidade = None
+filtro_local = None
+filtro_especialidade = 'tea'
 filtro_classificacao = None
 
 # Preencha com o valor que deve ser excluido ou deixe None para nao aplicar.
 filtro_tipo_diferente = None
-filtro_contratacao_diferente = 6
+filtro_contratacao_diferente = None
 filtro_local_diferente = None
 filtro_especialidade_diferente = None
 filtro_classificacao_diferente = None
