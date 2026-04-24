@@ -26,6 +26,7 @@ arquivo_regras_explicadas_txt = Path('data/grupos_classificacao_explicado.txt')
 coluna_ordem_regra = '_ORDEM_REGRA_CLASSIFICACAO'
 coluna_nome_lista = '_NOME_LISTA_CLASSIFICACAO'
 coluna_chave_grupo = '_CHAVE_GRUPO_CLASSIFICACAO'
+SALVAR_ARQUIVO_SAIDA = False
 
 
 def carregar_json(caminho):
@@ -250,9 +251,11 @@ df_saida = df.drop(columns=[
     coluna_nome_lista,
     coluna_chave_grupo
 ]).copy()
-arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-salvar_csv_padronizado(df_saida, arquivo_saida)
+
+if SALVAR_ARQUIVO_SAIDA:
+    arquivo_saida.parent.mkdir(exist_ok=True)
+    salvar_csv_padronizado(df_saida, arquivo_saida)
 
 filtro_nao_classificados = df_saida['CLASSIFICACAO'].isna() | (df_saida['CLASSIFICACAO'] == '')
 df_nao_classificados = df_saida[filtro_nao_classificados].copy()
@@ -288,6 +291,7 @@ resumo = {
     'arquivo_grupos': str(arquivo_grupos),
     'arquivo_nomes': str(arquivo_nomes),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_saida_gerado': SALVAR_ARQUIVO_SAIDA,
     'arquivo_regras_explicadas': str(arquivo_regras_explicadas_txt),
     'arquivo_auditoria': str(arquivo_auditoria_csv),
     'arquivo_sobrescritas': str(arquivo_sobrescritas_csv),
@@ -308,6 +312,7 @@ linhas_txt = [
     'ARQUIVOS:',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Arquivo de saida gerado: {'SIM' if resumo['arquivo_saida_gerado'] else 'NAO'}",
     f"Regras explicadas: {resumo['arquivo_regras_explicadas']}",
     f"Auditoria por regra: {resumo['arquivo_auditoria']}",
     f"Sobrescritas detalhadas: {resumo['arquivo_sobrescritas']}",
@@ -319,6 +324,13 @@ linhas_txt = [
     f"Total nao classificadas: {resumo['total_nao_classificadas']}",
     f"Total sobrescritas: {resumo['total_sobrescritas']}",
     f"Total de regras aplicadas: {resumo['total_regras']}",
+    '',
+    'OBSERVACAO:',
+    (
+        'A base completa em data_exec_indiv foi pulada nesta execucao para acelerar a geracao dos resumos.'
+        if not resumo['arquivo_saida_gerado']
+        else 'A base completa em data_exec_indiv foi gerada normalmente.'
+    ),
     '',
     'REGRAS:',
     f"As regras completas estao documentadas em: {resumo['arquivo_regras_explicadas']}",
