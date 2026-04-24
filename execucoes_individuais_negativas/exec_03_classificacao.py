@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/negativas/02_base_com_contratacao.csv')
 arquivo_grupos = Path('data/grupos_classificacao.json')
@@ -85,7 +89,7 @@ print(f'Lendo arquivo de nomes: {arquivo_nomes}')
 grupos = carregar_json(arquivo_grupos)
 nomes_classificacao = carregar_json(arquivo_nomes)
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
 df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
 df['LOCAL'] = df['LOCAL'].astype('string').str.strip()
@@ -246,7 +250,7 @@ df_saida = df.drop(columns=[
 ]).copy()
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df_saida.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_saida, arquivo_saida)
 
 filtro_nao_classificados = df_saida['CLASSIFICACAO'].isna() | (df_saida['CLASSIFICACAO'] == '')
 df_nao_classificados = df_saida[filtro_nao_classificados].copy()
@@ -364,7 +368,7 @@ with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
 df_auditoria = pd.DataFrame(auditoria_regras)
-df_auditoria.to_csv(arquivo_auditoria_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_auditoria, arquivo_auditoria_csv)
 
 colunas_sobrescritas = [
     'ORDEM_REGRA_ANTERIOR',
@@ -383,8 +387,8 @@ if not df_sobrescritas.empty:
         ['QUANTIDADE', 'ORDEM_REGRA_NOVA'],
         ascending=[False, True]
     )
-df_sobrescritas.to_csv(arquivo_sobrescritas_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_sobrescritas, arquivo_sobrescritas_csv)
 
-df_nao_classificados_detalhado.to_csv(arquivo_nao_classificados_detalhado_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_nao_classificados_detalhado, arquivo_nao_classificados_detalhado_csv)
 
 print('Execucao 03 negativas finalizada.')

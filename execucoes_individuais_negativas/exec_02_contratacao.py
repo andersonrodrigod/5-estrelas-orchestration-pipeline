@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/negativas/01_base_limpa.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
@@ -16,7 +20,7 @@ arquivo_linhas_sem_contratacao_csv = pasta_resumo / 'exec_02_linhas_sem_contrata
 print('Iniciando execucao 02 - contratacao negativas...')
 print(f'Lendo arquivo da execucao 01: {arquivo_entrada}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 df['LOCAL'] = df['LOCAL'].astype('string').str.strip()
 df['LOCAL_COMPARACAO'] = df['LOCAL'].str.lower()
 
@@ -72,17 +76,9 @@ print(f'Gravando linhas sem contratacao: {arquivo_linhas_sem_contratacao_csv}')
 df = df.drop(columns=['LOCAL_COMPARACAO'])
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
-df_locais_sem_contratacao.to_csv(
-    arquivo_locais_sem_contratacao_csv,
-    index=False,
-    encoding='utf-8-sig'
-)
-df_linhas_sem_contratacao.to_csv(
-    arquivo_linhas_sem_contratacao_csv,
-    index=False,
-    encoding='utf-8-sig'
-)
+salvar_csv_padronizado(df, arquivo_saida)
+salvar_csv_padronizado(df_locais_sem_contratacao, arquivo_locais_sem_contratacao_csv)
+salvar_csv_padronizado(df_linhas_sem_contratacao, arquivo_linhas_sem_contratacao_csv)
 
 resumo = {
     'execucao': 'exec_02_contratacao_negativas',
@@ -126,4 +122,3 @@ with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
 print('Execucao 02 negativas finalizada.')
-

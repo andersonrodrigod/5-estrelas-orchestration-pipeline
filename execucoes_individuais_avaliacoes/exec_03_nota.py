@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/02_base_com_contratacao.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
@@ -15,7 +19,7 @@ colunas_notas = ['NOTA1', 'NOTA2', 'NOTA3', 'NOTA4', 'NOTA5']
 print('Iniciando execucao 03 - nota...')
 print(f'Lendo arquivo da execucao 02: {arquivo_entrada}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 
 # Garante que as colunas de nota estejam no formato numerico.
 for coluna in colunas_notas:
@@ -43,7 +47,7 @@ print(f'Gravando arquivo da execucao 03: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df, arquivo_saida)
 
 resumo = {
     'execucao': 'exec_03_nota',

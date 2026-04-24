@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
+import sys
 import unicodedata
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
 arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
@@ -174,8 +178,8 @@ print(f'Lendo avaliacoes: {arquivo_avaliacoes}')
 print(f'Lendo negativas: {arquivo_negativas}')
 print(f'Lendo nomes de classificacao para envio: {arquivo_nomes_classificacao}')
 
-df_avaliacoes = pd.read_csv(arquivo_avaliacoes, low_memory=False)
-df_negativas = pd.read_csv(arquivo_negativas, low_memory=False)
+df_avaliacoes = ler_csv_padronizado(arquivo_avaliacoes)
+df_negativas = ler_csv_padronizado(arquivo_negativas)
 nomes_classificacao = carregar_json(arquivo_nomes_classificacao)
 mapa_nomes_envio = criar_mapa_nomes_envio(nomes_classificacao)
 
@@ -267,9 +271,9 @@ total_enviado_negativas = int(df_negativas['__grupo'].notna().sum())
 total_enviado = total_enviado_avaliacoes + total_enviado_negativas
 total_nao_enviado = total_origem - total_enviado
 
-df_quantidades.to_csv(arquivo_quantidades_csv, index=False, encoding='utf-8-sig')
-df_classificacoes.to_csv(arquivo_classificacoes_csv, index=False, encoding='utf-8-sig')
-df_nao_enviadas.to_csv(arquivo_nao_enviadas_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_quantidades, arquivo_quantidades_csv)
+salvar_csv_padronizado(df_classificacoes, arquivo_classificacoes_csv)
+salvar_csv_padronizado(df_nao_enviadas, arquivo_nao_enviadas_csv)
 
 resumo = {
     'execucao': 'exec_separacao',

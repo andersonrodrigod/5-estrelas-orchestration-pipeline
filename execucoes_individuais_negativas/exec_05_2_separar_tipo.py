@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
+import sys
 import unicodedata
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
@@ -57,7 +61,7 @@ print('Iniciando execucao 05.2 - separar por tipo negativas...')
 print(f'Lendo arquivo da execucao 04: {arquivo_entrada}')
 print(f'Lendo nomes de classificacao para envio: {arquivo_nomes_classificacao}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 nomes_classificacao = carregar_json(arquivo_nomes_classificacao)
 mapa_nomes_envio = criar_mapa_nomes_envio(nomes_classificacao)
 df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
@@ -91,9 +95,9 @@ print(f'Gravando arquivo TIPO 8 ou mais: {arquivo_saida_tipo_8_ou_mais}')
 arquivo_saida_tipo_1_a_3.parent.mkdir(parents=True, exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
 
-df.loc[mascara_tipo_1_a_3].to_csv(arquivo_saida_tipo_1_a_3, index=False, encoding='utf-8-sig')
-df.loc[mascara_tipo_4_a_7].to_csv(arquivo_saida_tipo_4_a_7, index=False, encoding='utf-8-sig')
-df.loc[mascara_tipo_8_ou_mais].to_csv(arquivo_saida_tipo_8_ou_mais, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df.loc[mascara_tipo_1_a_3], arquivo_saida_tipo_1_a_3)
+salvar_csv_padronizado(df.loc[mascara_tipo_4_a_7], arquivo_saida_tipo_4_a_7)
+salvar_csv_padronizado(df.loc[mascara_tipo_8_ou_mais], arquivo_saida_tipo_8_ou_mais)
 
 resumo = {
     'execucao': 'exec_05_2_separar_tipo_negativas',
@@ -130,7 +134,7 @@ linhas_txt = [
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
-pd.DataFrame([{
+salvar_csv_padronizado(pd.DataFrame([{
     'EXECUCAO': resumo['execucao'],
     'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
     'ARQUIVO_TIPO_1_A_3': resumo['arquivo_saida_tipo_1_a_3'],
@@ -141,6 +145,6 @@ pd.DataFrame([{
     'TOTAL_TIPO_4_A_7': resumo['total_tipo_4_a_7'],
     'TOTAL_TIPO_8_OU_MAIS': resumo['total_tipo_8_ou_mais'],
     'TOTAL_TIPO_FORA_RECORTE': resumo['total_tipo_fora_recorte']
-}]).to_csv(arquivo_resumo_csv, index=False, encoding='utf-8-sig')
+}]), arquivo_resumo_csv)
 
 print('Execucao 05.2 negativas finalizada.')

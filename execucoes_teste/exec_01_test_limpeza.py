@@ -4,12 +4,16 @@ import sys
 
 import pandas as pd
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
+
 
 ARQUIVO_BASE_LIMPA = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
 COLUNAS_NOTAS = ['NOTA1', 'NOTA2', 'NOTA3', 'NOTA4', 'NOTA5']
 VALOR_MINIMO_NOTA = 1
 VALOR_MAXIMO_NOTA = 5
 LIMITE_EXEMPLOS = 20
+COLUNAS_SEM_ZERO_DECIMAL = ['NUM_BENEFICIARIO', 'TELEFONE']
 
 
 def registrar_problemas(problemas, tipo, coluna, linhas, valores):
@@ -24,6 +28,32 @@ def registrar_problemas(problemas, tipo, coluna, linhas, valores):
 
 def validar_colunas_notas(df):
     return [coluna for coluna in COLUNAS_NOTAS if coluna not in df.columns]
+
+
+def validar_tipos(df):
+    return [
+        f"Coluna {item['coluna']} com tipo {item['tipo_encontrado']} "
+        f"(esperado {item['tipo_esperado']})."
+        for item in validar_tipos_dataframe(df)
+    ]
+
+
+def validar_zero_decimal(df):
+    problemas = []
+
+    for coluna in COLUNAS_SEM_ZERO_DECIMAL:
+        if coluna not in df.columns:
+            continue
+
+        valores = df[coluna].astype('string').fillna('').str.strip()
+        mascara = (valores != '') & valores.str.endswith('.0')
+
+        for linha, valor in zip(df.index[mascara] + 2, valores[mascara]):
+            problemas.append(
+                f"Linha {int(linha)} com {coluna} terminando em .0: '{valor}'."
+            )
+
+    return problemas
 
 
 def validar_valores_notas(df):
@@ -76,12 +106,15 @@ def imprimir_problemas(problemas):
     print('')
 
     for problema in problemas[:LIMITE_EXEMPLOS]:
-        print(
-            f"- Linha {problema['linha_csv']} | "
-            f"Coluna {problema['coluna']} | "
-            f"Valor '{problema['valor']}' | "
-            f"Problema: {problema['tipo']}"
-        )
+        if isinstance(problema, dict):
+            print(
+                f"- Linha {problema['linha_csv']} | "
+                f"Coluna {problema['coluna']} | "
+                f"Valor '{problema['valor']}' | "
+                f"Problema: {problema['tipo']}"
+            )
+        else:
+            print(f'- {problema}')
 
 
 def executar():
@@ -92,7 +125,13 @@ def executar():
         print('Rode primeiro: python execucoes_individuais_avaliacoes\\exec_01_limpeza.py')
         return 1
 
-    df = pd.read_csv(ARQUIVO_BASE_LIMPA, dtype='string', keep_default_na=False)
+    df_bruto = pd.read_csv(
+        ARQUIVO_BASE_LIMPA,
+        dtype={'NUM_BENEFICIARIO': 'string', 'TELEFONE': 'string'},
+        keep_default_na=False,
+        low_memory=False,
+    )
+    df = ler_csv_padronizado(ARQUIVO_BASE_LIMPA)
 
     colunas_faltando = validar_colunas_notas(df)
     if colunas_faltando:
@@ -104,6 +143,8 @@ def executar():
         return 1
 
     problemas = validar_valores_notas(df)
+    problemas.extend(validar_tipos(df))
+    problemas.extend(validar_zero_decimal(df_bruto))
     if problemas:
         imprimir_problemas(problemas)
         return 1
@@ -115,6 +156,8 @@ def executar():
     print('Nenhum valor nao numerico encontrado.')
     print('Nenhum valor decimal encontrado.')
     print('Nenhum valor fora do intervalo 1 a 5 encontrado.')
+    print('Schema das colunas esta padronizado.')
+    print('NUM_BENEFICIARIO e TELEFONE estao sem .0 sobrando.')
     return 0
 
 

@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/07_base_com_meta.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/08_base_com_resultado_unidade.csv')
@@ -39,7 +43,7 @@ def identificar_colunas_vazias(linha):
 print('Iniciando execucao 08 - resultado da unidade...')
 print(f'Lendo arquivo da execucao 07: {arquivo_entrada}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 
 # Padroniza as chaves do agrupamento.
 for coluna in colunas_grupo:
@@ -108,9 +112,9 @@ print(f'Gravando arquivo da execucao 08: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
-df_inspecao_grupos.to_csv(arquivo_inspecao_grupos_csv, index=False, encoding='utf-8-sig')
-df_linhas_chave_vazia.to_csv(arquivo_linhas_chave_vazia_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df, arquivo_saida)
+salvar_csv_padronizado(df_inspecao_grupos, arquivo_inspecao_grupos_csv)
+salvar_csv_padronizado(df_linhas_chave_vazia, arquivo_linhas_chave_vazia_csv)
 
 resumo = {
     'execucao': 'exec_08_resultado_unidade',
@@ -148,7 +152,7 @@ linhas_txt = [
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
-pd.DataFrame([{
+salvar_csv_padronizado(pd.DataFrame([{
     'EXECUCAO': resumo['execucao'],
     'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
     'ARQUIVO_SAIDA': resumo['arquivo_saida'],
@@ -160,7 +164,7 @@ pd.DataFrame([{
     'TOTAL_LINHAS_SEM_RESULTADO': resumo['total_linhas_sem_resultado'],
     'TOTAL_GRUPOS_CHAVE_VAZIA': resumo['total_grupos_chave_vazia'],
     'TOTAL_LINHAS_CHAVE_VAZIA': resumo['total_linhas_chave_vazia']
-}]).to_csv(arquivo_resumo_csv, index=False, encoding='utf-8-sig')
+}]), arquivo_resumo_csv)
 
 print('Execucao 08 finalizada.')
 

@@ -5,6 +5,9 @@ import sys
 
 import pandas as pd
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
+
 
 ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/02_base_com_contratacao.csv')
 ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
@@ -22,7 +25,7 @@ LIMITE_EXEMPLOS = 20
 
 
 def carregar_csv(caminho):
-    return pd.read_csv(caminho, dtype='string', keep_default_na=False, low_memory=False)
+    return ler_csv_padronizado(caminho)
 
 
 def registrar_erro(erros, mensagem):
@@ -130,6 +133,14 @@ def validar_resumo_json(df, notas_numericas, resumo):
     return erros
 
 
+def validar_tipos(df_saida):
+    return [
+        f"Coluna {item['coluna']} com tipo {item['tipo_encontrado']} "
+        f"(esperado {item['tipo_esperado']})."
+        for item in validar_tipos_dataframe(df_saida)
+    ]
+
+
 def imprimir_erros(erros):
     print('TESTE FALHOU - exec_03_nota')
     print('')
@@ -179,6 +190,7 @@ def executar():
         with open(ARQUIVO_RESUMO_JSON, 'r', encoding='utf-8') as arquivo:
             resumo = json.load(arquivo)
         erros.extend(validar_resumo_json(df_saida, notas_numericas, resumo))
+        erros.extend(validar_tipos(df_saida))
 
     if erros:
         imprimir_erros(erros)
@@ -200,6 +212,7 @@ def executar():
     print('Quantidade notas validas bate com NOTA1 a NOTA5.')
     print('NOTA GERAL bate com a media recalculada.')
     print('Resumo JSON bate com o CSV.')
+    print('Schema das colunas esta padronizado.')
     return 0
 
 

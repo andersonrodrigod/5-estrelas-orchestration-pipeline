@@ -5,6 +5,9 @@ import sys
 
 import pandas as pd
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
+
 
 ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
 ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/02_base_com_contratacao.csv')
@@ -20,7 +23,7 @@ LIMITE_EXEMPLOS = 20
 
 
 def carregar_csv(caminho):
-    return pd.read_csv(caminho, dtype='string', keep_default_na=False, low_memory=False)
+    return ler_csv_padronizado(caminho)
 
 
 def registrar_erro(erros, mensagem):
@@ -88,6 +91,14 @@ def validar_resumo_json(df_saida, resumo):
     return erros
 
 
+def validar_tipos(df_saida):
+    return [
+        f"Coluna {item['coluna']} com tipo {item['tipo_encontrado']} "
+        f"(esperado {item['tipo_esperado']})."
+        for item in validar_tipos_dataframe(df_saida)
+    ]
+
+
 def imprimir_erros(erros):
     print('TESTE FALHOU - exec_02_contratacao')
     print('')
@@ -141,6 +152,7 @@ def executar():
         with open(ARQUIVO_RESUMO_JSON, 'r', encoding='utf-8') as arquivo:
             resumo = json.load(arquivo)
         erros.extend(validar_resumo_json(df_saida, resumo))
+        erros.extend(validar_tipos(df_saida))
 
     if erros:
         imprimir_erros(erros)
@@ -157,6 +169,7 @@ def executar():
     print('Quantidade de linhas preservada.')
     print('Valores de CONTRATACAO validos.')
     print('Resumo JSON bate com o CSV.')
+    print('Schema das colunas esta padronizado.')
     return 0
 
 

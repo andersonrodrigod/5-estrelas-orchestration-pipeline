@@ -1,9 +1,13 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 import unicodedata
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/06_base_com_operadora.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
@@ -59,7 +63,7 @@ print('Iniciando execucao 07 - meta...')
 print(f'Lendo arquivo da execucao 06: {arquivo_entrada}')
 print(f'Lendo arquivo de insumos: {arquivo_insumos}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 df_insumos = pd.read_excel(arquivo_insumos, sheet_name='insumos')
 
 df['CLASSIFICACAO'] = df['CLASSIFICACAO'].astype('string').str.strip()
@@ -107,7 +111,7 @@ print(f'Gravando arquivo da execucao 07: {arquivo_saida}')
 df_saida = df.drop(columns=['CHAVE_META', 'GRUPO_ENCONTRADO'])
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df_saida.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_saida, arquivo_saida)
 
 resumo = {
     'execucao': 'exec_07_meta',

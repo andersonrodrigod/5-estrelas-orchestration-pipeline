@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
@@ -46,7 +50,7 @@ print('Iniciando execucao 05 - local editado...')
 print(f'Lendo arquivo da execucao 04: {arquivo_entrada}')
 print(f'Lendo arquivo de insumos: {arquivo_insumos}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 df_insumos = pd.read_excel(arquivo_insumos, sheet_name='insumos')
 
 df['LOCAL'] = normalizar_texto(df['LOCAL'])
@@ -107,7 +111,7 @@ print(f'Gravando arquivo da execucao 05: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df, arquivo_saida)
 
 resumo = {
     'execucao': 'exec_05_local_editado',
@@ -171,10 +175,10 @@ df_resumo_csv = pd.DataFrame([
         'TOTAL_NAO_ENCONTRADOS': resumo['total_nao_encontrados']
     }
 ])
-df_resumo_csv.to_csv(arquivo_resumo_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_resumo_csv, arquivo_resumo_csv)
 
-resumo_atualizados.to_csv(arquivo_atualizados_csv, index=False, encoding='utf-8-sig')
-resumo_nao_encontrados.to_csv(arquivo_nao_encontrados_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(resumo_atualizados, arquivo_atualizados_csv)
+salvar_csv_padronizado(resumo_nao_encontrados, arquivo_nao_encontrados_csv)
 
 print('Execucao 05 finalizada.')
 

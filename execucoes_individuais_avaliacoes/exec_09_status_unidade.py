@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/08_base_com_resultado_unidade.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
@@ -16,7 +20,7 @@ arquivo_status_csv = pasta_resumo / 'exec_09_status_unidade_status.csv'
 print('Iniciando execucao 09 - status unidade...')
 print(f'Lendo arquivo da execucao 08: {arquivo_entrada}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 
 df['RESULTADO DA UNIDADE'] = pd.to_numeric(df['RESULTADO DA UNIDADE'], errors='coerce')
 df['META'] = pd.to_numeric(df['META'], errors='coerce')
@@ -50,8 +54,8 @@ print(f'Gravando arquivo da execucao 09: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
-resumo_status.to_csv(arquivo_status_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df, arquivo_saida)
+salvar_csv_padronizado(resumo_status, arquivo_status_csv)
 
 resumo = {
     'execucao': 'exec_09_status_unidade',

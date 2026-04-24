@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data/5_estrelas_marco.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
@@ -37,7 +41,7 @@ colunas_notas = ['NOTA1', 'NOTA2', 'NOTA3', 'NOTA4', 'NOTA5']
 print('Iniciando execucao 01 - limpeza...')
 print(f'Lendo arquivo original: {arquivo_entrada}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 df = df.rename(columns=renomear_colunas)
 
 for coluna in colunas_obrigatorias:
@@ -60,7 +64,7 @@ print(f'Gravando base de auditoria da classificacao: {arquivo_auditoria_classifi
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df_limpo.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_limpo, arquivo_saida)
 
 colunas_auditoria_classificacao = [
     'CDUSUARIO',
@@ -74,7 +78,7 @@ colunas_auditoria_classificacao = [
 ]
 
 df_auditoria_classificacao = df_limpo[colunas_auditoria_classificacao].copy()
-df_auditoria_classificacao.to_csv(arquivo_auditoria_classificacao, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_auditoria_classificacao, arquivo_auditoria_classificacao)
 
 resumo = {
     'execucao': 'exec_01_limpeza',

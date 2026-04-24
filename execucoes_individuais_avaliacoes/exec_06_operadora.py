@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
 arquivo_grupos_operadora = Path('data/grupos_operadora.json')
@@ -127,7 +131,7 @@ print(f'Lendo arquivo da execucao 05: {arquivo_entrada}')
 print(f'Lendo arquivo de grupos: {arquivo_grupos_operadora}')
 print(f'Lendo arquivo ndi: {arquivo_insumos_ndi}')
 
-df = pd.read_csv(arquivo_entrada, low_memory=False)
+df = ler_csv_padronizado(arquivo_entrada)
 grupos_operadora = carregar_json(arquivo_grupos_operadora)
 df_ndi = pd.read_excel(arquivo_insumos_ndi, sheet_name='Planilha2')
 
@@ -244,7 +248,7 @@ df['OPERADORA'] = normalizar_texto(df['OPERADORA']).str.upper()
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-df.to_csv(arquivo_saida, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df, arquivo_saida)
 
 df_operadora_distintos = (
     df[['LOCAL EDITADO', 'OPERADORA']]
@@ -333,7 +337,7 @@ else:
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
-pd.DataFrame([{
+salvar_csv_padronizado(pd.DataFrame([{
     'EXECUCAO': resumo['execucao'],
     'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
     'ARQUIVO_GRUPOS': resumo['arquivo_grupos_operadora'],
@@ -345,12 +349,12 @@ pd.DataFrame([{
     'TOTAL_CLASSIFICADAS_FINAL': resumo['total_classificadas_final'],
     'TOTAL_SOBRESCRITOS': resumo['total_sobrescritos'],
     'TOTAL_LOCAIS_MULTIPLAS_OPERADORAS': resumo['total_locais_multiplas_operadoras']
-}]).to_csv(arquivo_resumo_csv, index=False, encoding='utf-8-sig')
+}]), arquivo_resumo_csv)
 
-df_operadora_distintos.to_csv(arquivo_operadora_distintos_csv, index=False, encoding='utf-8-sig')
-df_nao_classificados.to_csv(arquivo_nao_classificados_csv, index=False, encoding='utf-8-sig')
-df_sobrescritos.to_csv(arquivo_sobrescritos_csv, index=False, encoding='utf-8-sig')
-df_hapvida_distintos.to_csv(arquivo_hapvida_distintos_csv, index=False, encoding='utf-8-sig')
+salvar_csv_padronizado(df_operadora_distintos, arquivo_operadora_distintos_csv)
+salvar_csv_padronizado(df_nao_classificados, arquivo_nao_classificados_csv)
+salvar_csv_padronizado(df_sobrescritos, arquivo_sobrescritos_csv)
+salvar_csv_padronizado(df_hapvida_distintos, arquivo_hapvida_distintos_csv)
 
 print(f'Total de linhas recebidas: {len(df)}')
 print(f'Total classificadas antes do HAPVIDA: {total_classificadas_antes_hapvida}')
