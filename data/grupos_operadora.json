@@ -44,6 +44,17 @@
         ]
     },
     {
+        "descricao": "UF igual a MG",
+        "valor_operadora": "NDI MG",
+        "filtros": [
+            {
+                "coluna": "UF",
+                "tipo_filtro": "igual",
+                "valor_filtro": "MG"
+            }
+        ]
+    },
+    {
         "descricao": "LOCAL EDITADO contem OCTAVIANO NEVES e UF igual a MG",
         "valor_operadora": "PROMED",
         "filtros": [

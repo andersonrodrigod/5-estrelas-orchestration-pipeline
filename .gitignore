@@ -1,6 +1,7 @@
 *.csv
 *.xls
 *.xlsx
+!utils/insumos/regras_operadora.xlsx
 *.xlsm
 __pycache__/
 *.pyc
