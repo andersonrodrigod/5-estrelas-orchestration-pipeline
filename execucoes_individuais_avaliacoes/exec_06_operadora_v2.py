@@ -16,10 +16,12 @@ pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_06_operadora_v2'
 arquivo_resumo_json = pasta_resumo / 'exec_06_operadora_v2_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_06_operadora_v2_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_06_operadora_v2_resumo.csv'
+arquivo_auditoria_csv = pasta_resumo / 'exec_06_operadora_v2_auditoria.csv'
 arquivo_operadora_distintos_csv = pasta_resumo / 'exec_06_operadora_v2_local_editado_operadora.csv'
 arquivo_nao_classificados_csv = pasta_resumo / 'exec_06_operadora_v2_nao_classificados.csv'
 arquivo_sobrescritos_csv = pasta_resumo / 'exec_06_operadora_v2_sobrescritos.csv'
 arquivo_hapvida_distintos_csv = pasta_resumo / 'exec_06_operadora_v2_hapvida_distintos.csv'
+coluna_regra_operadora = '_REGRA_OPERADORA'
 
 colunas_regras = [
     'OPERADORA',
@@ -266,20 +268,32 @@ def aplicar_regra(df_base, mascara, regra, sobrescritos):
     if total_sobrescritas > 0:
         df_sobrescritos = df_base.loc[
             mascara & ~(df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
-            ['LOCAL EDITADO', 'OPERADORA'],
+            ['LOCAL', 'LOCAL EDITADO', 'UF', 'OPERADORA', coluna_regra_operadora],
         ].copy()
 
         df_sobrescritos['OPERADORA_ANTERIOR'] = df_sobrescritos['OPERADORA']
-        df_sobrescritos['OPERADORA'] = valor_operadora
-        df_sobrescritos['REGRA'] = nome_regra
+        df_sobrescritos['OPERADORA_NOVA'] = valor_operadora
+        df_sobrescritos['REGRA_ANTERIOR'] = (
+            df_sobrescritos[coluna_regra_operadora].replace('', 'DESCONHECIDA')
+        )
+        df_sobrescritos['REGRA_NOVA'] = nome_regra
 
         sobrescritos.append(
             df_sobrescritos[
-                ['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR', 'REGRA']
+                [
+                    'LOCAL',
+                    'LOCAL EDITADO',
+                    'UF',
+                    'OPERADORA_ANTERIOR',
+                    'OPERADORA_NOVA',
+                    'REGRA_ANTERIOR',
+                    'REGRA_NOVA',
+                ]
             ]
         )
 
     df_base.loc[mascara, 'OPERADORA'] = valor_operadora
+    df_base.loc[mascara, coluna_regra_operadora] = nome_regra
 
     return {
         'ORDEM': int(regra['ordem']),
@@ -305,7 +319,9 @@ def regra_mapa_local_editado(regra):
 
 def aplicar_bloco_mapa_local_editado(df_base, df_bloco, sobrescritos):
     mapa_operadora = df_bloco.set_index('valor_1')['operadora']
+    mapa_regra = df_bloco.set_index('valor_1')['descricao']
     operadora_nova = df_base['LOCAL EDITADO'].map(mapa_operadora)
+    regra_nova = df_base['LOCAL EDITADO'].map(mapa_regra)
     mascara = operadora_nova.notna() & (operadora_nova != '')
     operadora_anterior = df_base.loc[mascara, 'OPERADORA'].copy()
     vazias_antes = operadora_anterior.isna() | (operadora_anterior == '')
@@ -314,14 +330,25 @@ def aplicar_bloco_mapa_local_editado(df_base, df_bloco, sobrescritos):
     if total_sobrescritas > 0:
         df_sobrescritos = df_base.loc[
             mascara & ~(df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
-            ['LOCAL EDITADO', 'OPERADORA'],
+            ['LOCAL', 'LOCAL EDITADO', 'UF', 'OPERADORA', coluna_regra_operadora],
         ].copy()
         df_sobrescritos['OPERADORA_ANTERIOR'] = df_sobrescritos['OPERADORA']
-        df_sobrescritos['OPERADORA'] = operadora_nova.loc[df_sobrescritos.index]
-        df_sobrescritos['REGRA'] = 'BLOCO PLANILHA NDI SP E RJ'
+        df_sobrescritos['OPERADORA_NOVA'] = operadora_nova.loc[df_sobrescritos.index]
+        df_sobrescritos['REGRA_ANTERIOR'] = (
+            df_sobrescritos[coluna_regra_operadora].replace('', 'DESCONHECIDA')
+        )
+        df_sobrescritos['REGRA_NOVA'] = regra_nova.loc[df_sobrescritos.index]
         sobrescritos.append(
             df_sobrescritos[
-                ['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR', 'REGRA']
+                [
+                    'LOCAL',
+                    'LOCAL EDITADO',
+                    'UF',
+                    'OPERADORA_ANTERIOR',
+                    'OPERADORA_NOVA',
+                    'REGRA_ANTERIOR',
+                    'REGRA_NOVA',
+                ]
             ]
         )
 
@@ -336,22 +363,17 @@ def aplicar_bloco_mapa_local_editado(df_base, df_bloco, sobrescritos):
     ].value_counts().to_dict()
 
     df_base.loc[mascara, 'OPERADORA'] = operadora_nova.loc[mascara]
+    df_base.loc[mascara, coluna_regra_operadora] = regra_nova.loc[mascara]
 
-    auditoria = []
-    for _, regra in df_bloco.iterrows():
-        local = regra['valor_1']
-        total_atingidas = int(contagem_local.get(local, 0))
-        auditoria.append({
-            'ORDEM': int(regra['ordem']),
-            'REGRA': regra['descricao'],
-            'OPERADORA_APLICADA': regra['operadora'],
-            'APLICAR_SOMENTE_VAZIOS': 'nao',
-            'TOTAL_ATINGIDAS': total_atingidas,
-            'TOTAL_VAZIAS': int(vazias_por_local.get(local, 0)),
-            'TOTAL_SOBRESCRITAS': int(sobrescritas_por_local.get(local, 0)),
-        })
-
-    return auditoria
+    return [{
+        'ORDEM': int(df_bloco['ordem'].min()),
+        'REGRA': 'BLOCO NDI SP E RJ',
+        'OPERADORA_APLICADA': 'NDI SP E RJ',
+        'APLICAR_SOMENTE_VAZIOS': 'nao',
+        'TOTAL_ATINGIDAS': int(mascara.sum()),
+        'TOTAL_VAZIAS': int(vazias_antes.sum()),
+        'TOTAL_SOBRESCRITAS': total_sobrescritas,
+    }]
 
 
 def regra_fechamento_hapvida(regra):
@@ -375,6 +397,7 @@ df['LOCAL EDITADO'] = normalizar_texto(df['LOCAL EDITADO']).str.upper()
 df['OPERADORA'] = normalizar_texto(df['OPERADORA']).str.upper()
 df['CONTRATACAO'] = normalizar_texto(df['CONTRATACAO']).str.lower()
 df['ESPECIALIDADE'] = normalizar_texto(df['ESPECIALIDADE'])
+df[coluna_regra_operadora] = ''
 
 if 'OPERADORA' not in df.columns:
     df['OPERADORA'] = None
@@ -435,7 +458,8 @@ df['OPERADORA'] = normalizar_texto(df['OPERADORA']).str.upper()
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-salvar_csv_padronizado(df, arquivo_saida)
+df_saida = df.drop(columns=[coluna_regra_operadora]).copy()
+salvar_csv_padronizado(df_saida, arquivo_saida)
 
 df_operadora_distintos = (
     df[['LOCAL EDITADO', 'OPERADORA']]
@@ -464,15 +488,32 @@ if sobrescritos:
     df_sobrescritos = pd.concat(sobrescritos, ignore_index=True)
     df_sobrescritos = (
         df_sobrescritos[
-            ['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR', 'REGRA']
+            [
+                'LOCAL',
+                'LOCAL EDITADO',
+                'UF',
+                'OPERADORA_ANTERIOR',
+                'OPERADORA_NOVA',
+                'REGRA_ANTERIOR',
+                'REGRA_NOVA',
+            ]
         ]
         .value_counts()
         .reset_index(name='QUANTIDADE')
-        .sort_values(['QUANTIDADE', 'LOCAL EDITADO'], ascending=[False, True])
+        .sort_values(['QUANTIDADE', 'LOCAL EDITADO', 'UF'], ascending=[False, True, True])
     )
 else:
     df_sobrescritos = pd.DataFrame(
-        columns=['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR', 'REGRA', 'QUANTIDADE']
+        columns=[
+            'LOCAL',
+            'LOCAL EDITADO',
+            'UF',
+            'OPERADORA_ANTERIOR',
+            'OPERADORA_NOVA',
+            'REGRA_ANTERIOR',
+            'REGRA_NOVA',
+            'QUANTIDADE',
+        ]
     )
 
 total_classificadas_antes_hapvida = int(len(df) - len(df_nao_classificados))
@@ -486,6 +527,7 @@ resumo = {
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_regras_operadora': str(arquivo_regras_operadora),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_auditoria': str(arquivo_auditoria_csv),
     'total_linhas_entrada': int(len(df)),
     'total_classificadas_antes_hapvida': total_classificadas_antes_hapvida,
     'total_preenchidas_com_hapvida': total_hapvida,
@@ -511,6 +553,7 @@ linhas_txt = [
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de regras: {resumo['arquivo_regras_operadora']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Auditoria por regra: {resumo['arquivo_auditoria']}",
     '',
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total classificadas antes do HAPVIDA: {resumo['total_classificadas_antes_hapvida']}",
@@ -549,6 +592,7 @@ salvar_csv_padronizado(pd.DataFrame([{
 }]), arquivo_resumo_csv)
 
 salvar_csv_padronizado(df_operadora_distintos, arquivo_operadora_distintos_csv)
+salvar_csv_padronizado(pd.DataFrame(regras_auditoria), arquivo_auditoria_csv)
 salvar_csv_padronizado(df_nao_classificados, arquivo_nao_classificados_csv)
 salvar_csv_padronizado(df_sobrescritos, arquivo_sobrescritos_csv)
 salvar_csv_padronizado(df_hapvida_distintos, arquivo_hapvida_distintos_csv)
