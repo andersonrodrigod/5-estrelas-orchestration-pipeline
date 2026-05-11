@@ -1,23 +1,19 @@
-RESUMO DA EXECUCAO 04 - CLASSIFICACAO
+RESUMO DA EXECUCAO 04 V2 - CLASSIFICACAO
 
 ARQUIVOS:
 Arquivo de entrada: data_exec_indiv\avaliacoes\03_base_com_nota.csv
-Arquivo de saida: data_exec_indiv\avaliacoes\04_base_com_classificacao.csv
-Regras explicadas: data\grupos_classificacao_explicado.txt
-Auditoria por regra: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_auditoria.csv
-Sobrescritas detalhadas: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
-Nao classificados detalhado: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_nao_classificados_detalhado.csv
+Arquivo de regras: utils\insumos\regra_classificacao.xlsx
+Arquivo de saida: data_exec_indiv\avaliacoes\04_base_com_classificacao_v2.csv
+Auditoria por regra: saida_resumo_avaliacoes\exec_04_classificacao_v2\exec_04_classificacao_v2_auditoria.csv
+Sobrescritas detalhadas: saida_resumo_avaliacoes\exec_04_classificacao_v2\exec_04_classificacao_v2_sobrescritas.csv
+Nao classificados detalhado: saida_resumo_avaliacoes\exec_04_classificacao_v2\exec_04_classificacao_v2_nao_classificados_detalhado.csv
 
 TOTAIS:
 Total de linhas na entrada: 1497449
 Total classificadas: 1497449
 Total nao classificadas: 0
 Total sobrescritas: 0
-Total de regras aplicadas: 34
-
-REGRAS:
-As regras completas estao documentadas em: data\grupos_classificacao_explicado.txt
-Nesta execucao foram aplicadas 34 regras.
+Total de regras ativas: 34
 
 REGRAS COM MAIS LINHAS ATINGIDAS:
 - Regra 22 - HAPCLINICA: 474888 linhas atingidas (0 sobrescritas)

@@ -2,6 +2,7 @@
 *.xls
 *.xlsx
 !utils/insumos/regras_operadora.xlsx
+!utils/insumos/regra_classificacao.xlsx
 *.xlsm
 __pycache__/
 *.pyc
