@@ -9,25 +9,76 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
-arquivo_grupos_operadora = Path('data/grupos_operadora.json')
-arquivo_insumos_ndi = Path('utils/insumos/Unidades ndi sp e rj.xlsx')
+arquivo_regras_operadora = Path('utils/insumos/regras_operadora.xlsx')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/06_base_com_operadora.csv')
 
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_06_operadora'
 arquivo_resumo_json = pasta_resumo / 'exec_06_operadora_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_06_operadora_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_06_operadora_resumo.csv'
+arquivo_auditoria_csv = pasta_resumo / 'exec_06_operadora_auditoria.csv'
 arquivo_operadora_distintos_csv = pasta_resumo / 'exec_06_operadora_local_editado_operadora.csv'
 arquivo_nao_classificados_csv = pasta_resumo / 'exec_06_operadora_nao_classificados.csv'
 arquivo_sobrescritos_csv = pasta_resumo / 'exec_06_operadora_sobrescritos.csv'
 arquivo_hapvida_distintos_csv = pasta_resumo / 'exec_06_operadora_hapvida_distintos.csv'
+coluna_regra_operadora = '_REGRA_OPERADORA'
+
+colunas_regras = [
+    'OPERADORA',
+    'APLICAR_SOMENTE_VAZIO',
+    'COLUNA_FILTRO_1',
+    'COMPARADOR_1',
+    'VALOR_1',
+    'COLUNA_FILTRO_2',
+    'COMPARADOR_2',
+    'VALOR_2',
+    'COLUNA_FILTRO_3',
+    'COMPARADOR_3',
+    'VALOR_3',
+    'ORDEM',
+    'STATUS_ATIVO',
+    'DESCRICAO',
+]
+
+mapa_colunas_regras = {
+    'OPERADORA': 'operadora',
+    'APLICAR_SOMENTE_VAZIO': 'aplicar_somente_vazios',
+    'COLUNA_FILTRO_1': 'coluna_1',
+    'COMPARADOR_1': 'comparador_1',
+    'VALOR_1': 'valor_1',
+    'COLUNA_FILTRO_2': 'coluna_2',
+    'COMPARADOR_2': 'comparador_2',
+    'VALOR_2': 'valor_2',
+    'COLUNA_FILTRO_3': 'coluna_3',
+    'COMPARADOR_3': 'comparador_3',
+    'VALOR_3': 'valor_3',
+    'ORDEM': 'ordem',
+    'STATUS_ATIVO': 'ativo',
+    'DESCRICAO': 'descricao',
+}
+
+comparadores_validos = {
+    'igual',
+    'contem',
+    'diferente',
+    'nao_contem',
+    'vazio',
+    'nao_vazio',
+}
 
 
 def normalizar_texto(serie):
     texto = serie.astype('string')
     texto = texto.str.replace('\xa0', ' ', regex=False)
     texto = texto.str.replace(r'\s+', ' ', regex=True)
-    return texto.str.strip()
+    return texto.str.strip().fillna('')
+
+
+def normalizar_flag(valor):
+    if pd.isna(valor):
+        return False
+
+    return str(valor).strip().lower() in {'sim', 's', 'true', '1', 'yes'}
 
 
 def transformar_em_lista_registros(df_base, colunas):
@@ -52,21 +103,161 @@ def transformar_em_lista_registros(df_base, colunas):
     return registros
 
 
-def carregar_json(caminho):
-    with open(caminho, 'r', encoding='utf-8-sig') as arquivo:
-        return json.load(arquivo)
+def carregar_regras_operadora(caminho):
+    df_regras = pd.read_excel(caminho, sheet_name='regras_operadora')
+
+    for coluna in colunas_regras:
+        if coluna not in df_regras.columns:
+            df_regras[coluna] = pd.NA
+
+    df_regras = df_regras[colunas_regras].copy()
+    df_regras = df_regras.rename(columns=mapa_colunas_regras)
+    df_regras['ativo'] = df_regras['ativo'].apply(normalizar_flag)
+    df_regras['aplicar_somente_vazios'] = (
+        df_regras['aplicar_somente_vazios'].apply(normalizar_flag)
+    )
+    df_regras['ordem'] = pd.to_numeric(df_regras['ordem'], errors='coerce')
+    df_regras = df_regras[df_regras['ativo']].copy()
+    df_regras = df_regras.sort_values('ordem', kind='stable')
+
+    for coluna in [
+        'descricao',
+        'operadora',
+        'coluna_1',
+        'comparador_1',
+        'valor_1',
+        'coluna_2',
+        'comparador_2',
+        'valor_2',
+        'coluna_3',
+        'comparador_3',
+        'valor_3',
+    ]:
+        df_regras[coluna] = normalizar_texto(df_regras[coluna])
+
+    df_regras['operadora'] = df_regras['operadora'].str.upper()
+    return df_regras.reset_index(drop=True)
 
 
-def aplicar_regra(df_base, mascara, valor_operadora, nome_regra, sobrescritos):
+def validar_regras(df_regras, colunas_base):
+    erros = []
+
+    if df_regras.empty:
+        return ['Nenhuma regra ativa encontrada em utils/insumos/regras_operadora.xlsx.']
+
+    ordens_invalidas = df_regras['ordem'].isna()
+    for indice in df_regras.index[ordens_invalidas][:20]:
+        erros.append(f'Linha {indice + 2} da planilha com ordem vazia ou invalida.')
+
+    operadoras_vazias = df_regras['operadora'].fillna('') == ''
+    for indice in df_regras.index[operadoras_vazias][:20]:
+        erros.append(f'Linha {indice + 2} da planilha com operadora vazia.')
+
+    for indice, regra in df_regras.iterrows():
+        for numero in range(1, 4):
+            coluna = regra[f'coluna_{numero}']
+            comparador = regra[f'comparador_{numero}']
+            valor = regra[f'valor_{numero}']
+            tem_algum_campo = any(
+                str(campo).strip() != ''
+                for campo in [coluna, comparador, valor]
+                if not pd.isna(campo)
+            )
+
+            if not tem_algum_campo:
+                continue
+
+            if coluna == '':
+                erros.append(
+                    f"Linha {indice + 2} com coluna_{numero} vazia "
+                    f"para a regra '{regra['descricao']}'."
+                )
+                continue
+
+            if coluna not in colunas_base:
+                erros.append(
+                    f"Linha {indice + 2} usa coluna inexistente '{coluna}' "
+                    f"na regra '{regra['descricao']}'."
+                )
+
+            if comparador not in comparadores_validos:
+                erros.append(
+                    f"Linha {indice + 2} usa comparador invalido '{comparador}' "
+                    f"na regra '{regra['descricao']}'."
+                )
+
+            if comparador not in {'vazio', 'nao_vazio'} and valor == '':
+                erros.append(
+                    f"Linha {indice + 2} usa comparador '{comparador}' "
+                    f"sem valor_filtro na regra '{regra['descricao']}'."
+                )
+
+    return erros
+
+
+def montar_mascara_filtro(df_base, coluna, comparador, valor):
+    serie = normalizar_texto(df_base[coluna])
+
+    if comparador == 'igual':
+        return serie == valor
+
+    if comparador == 'contem':
+        return serie.str.contains(valor, case=False, na=False, regex=False)
+
+    if comparador == 'diferente':
+        return serie != valor
+
+    if comparador == 'nao_contem':
+        return ~serie.str.contains(valor, case=False, na=False, regex=False)
+
+    if comparador == 'vazio':
+        return serie == ''
+
+    if comparador == 'nao_vazio':
+        return serie != ''
+
+    raise ValueError(f"Comparador nao suportado: {comparador}")
+
+
+def montar_mascara_regra(df_base, regra):
+    mascara = pd.Series(True, index=df_base.index)
+    total_filtros = 0
+
+    for numero in range(1, 4):
+        coluna = regra[f'coluna_{numero}']
+        comparador = regra[f'comparador_{numero}']
+        valor = regra[f'valor_{numero}']
+
+        if coluna == '' and comparador == '' and valor == '':
+            continue
+
+        total_filtros += 1
+        mascara = mascara & montar_mascara_filtro(df_base, coluna, comparador, valor)
+
+    if total_filtros == 0:
+        return mascara
+
+    return mascara
+
+
+def aplicar_regra(df_base, mascara, regra, sobrescritos):
+    valor_operadora = regra['operadora']
+    nome_regra = regra['descricao']
+
+    if regra['aplicar_somente_vazios']:
+        mascara = mascara & (df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == ''))
+
     total_atingidas = int(mascara.sum())
 
     if total_atingidas == 0:
         return {
+            'ORDEM': int(regra['ordem']),
             'REGRA': nome_regra,
             'OPERADORA_APLICADA': valor_operadora,
+            'APLICAR_SOMENTE_VAZIOS': 'sim' if regra['aplicar_somente_vazios'] else 'nao',
             'TOTAL_ATINGIDAS': 0,
             'TOTAL_VAZIAS': 0,
-            'TOTAL_SOBRESCRITAS': 0
+            'TOTAL_SOBRESCRITAS': 0,
         }
 
     operadora_anterior = df_base.loc[mascara, 'OPERADORA'].copy()
@@ -75,65 +266,132 @@ def aplicar_regra(df_base, mascara, valor_operadora, nome_regra, sobrescritos):
     total_sobrescritas = int((~vazias_antes).sum())
 
     if total_sobrescritas > 0:
-        df_sobrescritos = df_base.loc[mascara & ~(
-            df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')
-        ), ['LOCAL EDITADO', 'OPERADORA']].copy()
+        df_sobrescritos = df_base.loc[
+            mascara & ~(df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
+            ['CLASSIFICACAO', 'LOCAL', 'LOCAL EDITADO', 'UF', 'OPERADORA', coluna_regra_operadora],
+        ].copy()
 
         df_sobrescritos['OPERADORA_ANTERIOR'] = df_sobrescritos['OPERADORA']
-        df_sobrescritos['OPERADORA'] = valor_operadora
+        df_sobrescritos['OPERADORA_NOVA'] = valor_operadora
+        df_sobrescritos['REGRA_ANTERIOR'] = (
+            df_sobrescritos[coluna_regra_operadora].replace('', 'DESCONHECIDA')
+        )
+        df_sobrescritos['REGRA_NOVA'] = nome_regra
 
-        sobrescritos.append(df_sobrescritos[['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR']])
+        sobrescritos.append(
+            df_sobrescritos[
+                [
+                    'CLASSIFICACAO',
+                    'LOCAL',
+                    'LOCAL EDITADO',
+                    'UF',
+                    'OPERADORA_ANTERIOR',
+                    'OPERADORA_NOVA',
+                    'REGRA_ANTERIOR',
+                    'REGRA_NOVA',
+                ]
+            ]
+        )
 
     df_base.loc[mascara, 'OPERADORA'] = valor_operadora
+    df_base.loc[mascara, coluna_regra_operadora] = nome_regra
 
     return {
+        'ORDEM': int(regra['ordem']),
         'REGRA': nome_regra,
         'OPERADORA_APLICADA': valor_operadora,
+        'APLICAR_SOMENTE_VAZIOS': 'sim' if regra['aplicar_somente_vazios'] else 'nao',
         'TOTAL_ATINGIDAS': total_atingidas,
         'TOTAL_VAZIAS': total_vazias,
-        'TOTAL_SOBRESCRITAS': total_sobrescritas
+        'TOTAL_SOBRESCRITAS': total_sobrescritas,
     }
 
 
-def montar_mascara(df_base, regra):
-    if 'filtros' in regra:
-        mascara = pd.Series(True, index=df_base.index)
-
-        for filtro in regra['filtros']:
-            coluna = filtro['coluna']
-            tipo_filtro = filtro['tipo_filtro']
-            valor_filtro = filtro['valor_filtro']
-
-            if tipo_filtro == 'igual':
-                mascara = mascara & (df_base[coluna] == valor_filtro)
-            elif tipo_filtro == 'contem':
-                mascara = mascara & df_base[coluna].str.contains(valor_filtro, case=False, na=False)
-            else:
-                raise ValueError(f"Tipo de filtro nao suportado: {tipo_filtro}")
-
-        return mascara
-
-    coluna = regra['coluna']
-    tipo_filtro = regra['tipo_filtro']
-    valor_filtro = regra['valor_filtro']
-
-    if tipo_filtro == 'igual':
-        return df_base[coluna] == valor_filtro
-
-    if tipo_filtro == 'contem':
-        return df_base[coluna].str.contains(valor_filtro, case=False, na=False)
-
-    raise ValueError(f"Tipo de filtro nao suportado: {tipo_filtro}")
+def regra_mapa_local_editado(regra):
+    return (
+        regra['operadora'] == 'NDI SP E RJ'
+        and not regra['aplicar_somente_vazios']
+        and regra['coluna_1'] == 'LOCAL EDITADO'
+        and regra['comparador_1'] == 'igual'
+        and regra['valor_1'] != ''
+        and all(regra[f'coluna_{numero}'] == '' for numero in range(2, 4))
+    )
 
 
-print('Iniciando execucao 06 - operadora...')
+def aplicar_bloco_mapa_local_editado(df_base, df_bloco, sobrescritos):
+    mapa_operadora = df_bloco.set_index('valor_1')['operadora']
+    mapa_regra = df_bloco.set_index('valor_1')['descricao']
+    operadora_nova = df_base['LOCAL EDITADO'].map(mapa_operadora)
+    regra_nova = df_base['LOCAL EDITADO'].map(mapa_regra)
+    mascara = operadora_nova.notna() & (operadora_nova != '')
+    operadora_anterior = df_base.loc[mascara, 'OPERADORA'].copy()
+    vazias_antes = operadora_anterior.isna() | (operadora_anterior == '')
+    total_sobrescritas = int((~vazias_antes).sum())
+
+    if total_sobrescritas > 0:
+        df_sobrescritos = df_base.loc[
+            mascara & ~(df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
+            ['CLASSIFICACAO', 'LOCAL', 'LOCAL EDITADO', 'UF', 'OPERADORA', coluna_regra_operadora],
+        ].copy()
+        df_sobrescritos['OPERADORA_ANTERIOR'] = df_sobrescritos['OPERADORA']
+        df_sobrescritos['OPERADORA_NOVA'] = operadora_nova.loc[df_sobrescritos.index]
+        df_sobrescritos['REGRA_ANTERIOR'] = (
+            df_sobrescritos[coluna_regra_operadora].replace('', 'DESCONHECIDA')
+        )
+        df_sobrescritos['REGRA_NOVA'] = regra_nova.loc[df_sobrescritos.index]
+        sobrescritos.append(
+            df_sobrescritos[
+                [
+                    'CLASSIFICACAO',
+                    'LOCAL',
+                    'LOCAL EDITADO',
+                    'UF',
+                    'OPERADORA_ANTERIOR',
+                    'OPERADORA_NOVA',
+                    'REGRA_ANTERIOR',
+                    'REGRA_NOVA',
+                ]
+            ]
+        )
+
+    contagem_local = df_base['LOCAL EDITADO'].value_counts().to_dict()
+    vazias_por_local = df_base.loc[
+        mascara & (df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
+        'LOCAL EDITADO',
+    ].value_counts().to_dict()
+    sobrescritas_por_local = df_base.loc[
+        mascara & ~(df_base['OPERADORA'].isna() | (df_base['OPERADORA'] == '')),
+        'LOCAL EDITADO',
+    ].value_counts().to_dict()
+
+    df_base.loc[mascara, 'OPERADORA'] = operadora_nova.loc[mascara]
+    df_base.loc[mascara, coluna_regra_operadora] = regra_nova.loc[mascara]
+
+    return [{
+        'ORDEM': int(df_bloco['ordem'].min()),
+        'REGRA': 'BLOCO NDI SP E RJ',
+        'OPERADORA_APLICADA': 'NDI SP E RJ',
+        'APLICAR_SOMENTE_VAZIOS': 'nao',
+        'TOTAL_ATINGIDAS': int(mascara.sum()),
+        'TOTAL_VAZIAS': int(vazias_antes.sum()),
+        'TOTAL_SOBRESCRITAS': total_sobrescritas,
+    }]
+
+
+def regra_fechamento_hapvida(regra):
+    return (
+        regra['operadora'] == 'HAPVIDA'
+        and regra['aplicar_somente_vazios']
+        and all(regra[f'coluna_{numero}'] == '' for numero in range(1, 4))
+    )
+
+
+print('Iniciando execucao 06 - operadora por planilha de regras...')
 print(f'Lendo arquivo da execucao 05: {arquivo_entrada}')
-print(f'Lendo arquivo de grupos: {arquivo_grupos_operadora}')
-print(f'Lendo arquivo ndi: {arquivo_insumos_ndi}')
+print(f'Lendo regras de operadora: {arquivo_regras_operadora}')
 
 df = ler_csv_padronizado(arquivo_entrada)
-grupos_operadora = carregar_json(arquivo_grupos_operadora)
-df_ndi = pd.read_excel(arquivo_insumos_ndi, sheet_name='Planilha2')
+df_regras = carregar_regras_operadora(arquivo_regras_operadora)
 
 df['CLASSIFICACAO'] = normalizar_texto(df['CLASSIFICACAO']).str.upper()
 df['UF'] = normalizar_texto(df['UF']).str.upper()
@@ -141,114 +399,69 @@ df['LOCAL EDITADO'] = normalizar_texto(df['LOCAL EDITADO']).str.upper()
 df['OPERADORA'] = normalizar_texto(df['OPERADORA']).str.upper()
 df['CONTRATACAO'] = normalizar_texto(df['CONTRATACAO']).str.lower()
 df['ESPECIALIDADE'] = normalizar_texto(df['ESPECIALIDADE'])
-
-df_ndi['UNIDADE'] = normalizar_texto(df_ndi['UNIDADE']).str.upper()
-df_ndi['OPERA'] = normalizar_texto(df_ndi['OPERA']).str.upper()
-df_ndi = df_ndi.dropna(subset=['UNIDADE'])
-df_ndi = df_ndi.drop_duplicates(subset=['UNIDADE'], keep='first')
+df[coluna_regra_operadora] = ''
 
 if 'OPERADORA' not in df.columns:
     df['OPERADORA'] = None
 
+erros_regras = validar_regras(df_regras, set(df.columns))
+if erros_regras:
+    print('ERRO - regras_operadora.xlsx possui problemas:')
+    for erro in erros_regras[:50]:
+        print(f'- {erro}')
+    if len(erros_regras) > 50:
+        print(f'- ... mais {len(erros_regras) - 50} problema(s)')
+    sys.exit(1)
+
 regras_auditoria = []
 sobrescritos = []
+df_nao_classificados = pd.DataFrame(
+    columns=['UF', 'LOCAL EDITADO', 'CLASSIFICACAO', 'CONTRATACAO', 'ESPECIALIDADE']
+)
+df_hapvida_distintos = pd.DataFrame(columns=['LOCAL EDITADO', 'UF', 'QUANTIDADE'])
 
-# Regras simples vindas do JSON.
-for regra in grupos_operadora:
-    mascara_regra = montar_mascara(df, regra)
-    regras_auditoria.append(
-        aplicar_regra(
-            df,
-            mascara_regra,
-            regra['valor_operadora'],
-            regra['descricao'],
-            sobrescritos
+indice_regra = 0
+while indice_regra < len(df_regras):
+    regra = df_regras.iloc[indice_regra]
+
+    if regra_mapa_local_editado(regra):
+        inicio_bloco = indice_regra
+        while (
+            indice_regra < len(df_regras)
+            and regra_mapa_local_editado(df_regras.iloc[indice_regra])
+        ):
+            indice_regra += 1
+
+        df_bloco = df_regras.iloc[inicio_bloco:indice_regra].copy()
+        regras_auditoria.extend(
+            aplicar_bloco_mapa_local_editado(df, df_bloco, sobrescritos)
         )
-    )
+        continue
 
-# Regra especial do PA CONTORNO, apenas quando ainda estiver vazio.
-mascara_pa_contorno_vazio = (
-    (df['LOCAL EDITADO'] == 'PA CONTORNO') &
-    (df['OPERADORA'].isna() | (df['OPERADORA'] == ''))
-)
-regras_auditoria.append(
-    aplicar_regra(
-        df,
-        mascara_pa_contorno_vazio,
-        'NDI MG',
-        'LOCAL EDITADO igual a PA CONTORNO e OPERADORA vazia',
-        sobrescritos
-    )
-)
+    if regra_fechamento_hapvida(regra):
+        mascara_vazios_antes_hapvida = df['OPERADORA'].isna() | (df['OPERADORA'] == '')
+        df_nao_classificados = df.loc[
+            mascara_vazios_antes_hapvida,
+            ['UF', 'LOCAL EDITADO', 'CLASSIFICACAO', 'CONTRATACAO', 'ESPECIALIDADE'],
+        ].copy()
 
-# Regra por planilha externa NDI SP E RJ.
-mapa_ndi = df_ndi.set_index('UNIDADE')['OPERA']
-operadora_ndi = df['LOCAL EDITADO'].map(mapa_ndi)
-mascara_ndi = operadora_ndi.notna() & (operadora_ndi != '')
+        df_hapvida_distintos = (
+            df.loc[mascara_vazios_antes_hapvida, ['LOCAL EDITADO', 'UF']]
+            .value_counts()
+            .reset_index(name='QUANTIDADE')
+            .sort_values(['QUANTIDADE', 'LOCAL EDITADO'], ascending=[False, True])
+        )
 
-if int(mascara_ndi.sum()) > 0:
-    operadora_anterior_ndi = df.loc[mascara_ndi, 'OPERADORA'].copy()
-    vazias_ndi = operadora_anterior_ndi.isna() | (operadora_anterior_ndi == '')
-    total_sobrescritas_ndi = int((~vazias_ndi).sum())
-
-    if total_sobrescritas_ndi > 0:
-        df_sobrescritos_ndi = df.loc[mascara_ndi & ~(
-            df['OPERADORA'].isna() | (df['OPERADORA'] == '')
-        ), ['LOCAL EDITADO', 'OPERADORA']].copy()
-
-        df_sobrescritos_ndi['OPERADORA_ANTERIOR'] = df_sobrescritos_ndi['OPERADORA']
-        df_sobrescritos_ndi['OPERADORA'] = operadora_ndi.loc[df_sobrescritos_ndi.index]
-
-        sobrescritos.append(df_sobrescritos_ndi[['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR']])
-
-    df.loc[mascara_ndi, 'OPERADORA'] = operadora_ndi.loc[mascara_ndi]
-
-    regras_auditoria.append({
-        'REGRA': 'PLANILHA NDI SP E RJ',
-        'OPERADORA_APLICADA': 'DINAMICA',
-        'TOTAL_ATINGIDAS': int(mascara_ndi.sum()),
-        'TOTAL_VAZIAS': int(vazias_ndi.sum()),
-        'TOTAL_SOBRESCRITAS': total_sobrescritas_ndi
-    })
-else:
-    regras_auditoria.append({
-        'REGRA': 'PLANILHA NDI SP E RJ',
-        'OPERADORA_APLICADA': 'DINAMICA',
-        'TOTAL_ATINGIDAS': 0,
-        'TOTAL_VAZIAS': 0,
-        'TOTAL_SOBRESCRITAS': 0
-    })
-
-# Guarda quem ficou vazio antes do fechamento em HAPVIDA.
-mascara_vazios_antes_hapvida = df['OPERADORA'].isna() | (df['OPERADORA'] == '')
-df_nao_classificados = df.loc[
-    mascara_vazios_antes_hapvida,
-    ['UF', 'LOCAL EDITADO', 'CLASSIFICACAO', 'CONTRATACAO', 'ESPECIALIDADE']
-].copy()
-
-df_hapvida_distintos = (
-    df.loc[mascara_vazios_antes_hapvida, ['LOCAL EDITADO', 'UF']]
-    .value_counts()
-    .reset_index(name='QUANTIDADE')
-    .sort_values(['QUANTIDADE', 'LOCAL EDITADO'], ascending=[False, True])
-)
-
-# Fechamento final com HAPVIDA.
-regras_auditoria.append(
-    aplicar_regra(
-        df,
-        mascara_vazios_antes_hapvida,
-        'HAPVIDA',
-        'OPERADORA vazia no final recebe HAPVIDA',
-        sobrescritos
-    )
-)
+    mascara_regra = montar_mascara_regra(df, regra)
+    regras_auditoria.append(aplicar_regra(df, mascara_regra, regra, sobrescritos))
+    indice_regra += 1
 
 df['OPERADORA'] = normalizar_texto(df['OPERADORA']).str.upper()
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
-salvar_csv_padronizado(df, arquivo_saida)
+df_saida = df.drop(columns=[coluna_regra_operadora]).copy()
+salvar_csv_padronizado(df_saida, arquivo_saida)
 
 df_operadora_distintos = (
     df[['LOCAL EDITADO', 'OPERADORA']]
@@ -270,41 +483,69 @@ if not df_locais_multiplas_operadoras.empty:
     df_locais_multiplas_operadoras = df_locais_multiplas_operadoras.merge(
         df_operadora_distintos,
         on='LOCAL EDITADO',
-        how='left'
+        how='left',
     ).sort_values(['LOCAL EDITADO', 'OPERADORA'])
 
 if sobrescritos:
     df_sobrescritos = pd.concat(sobrescritos, ignore_index=True)
     df_sobrescritos = (
-        df_sobrescritos[['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR']]
+        df_sobrescritos[
+            [
+                'CLASSIFICACAO',
+                'LOCAL',
+                'LOCAL EDITADO',
+                'UF',
+                'OPERADORA_ANTERIOR',
+                'OPERADORA_NOVA',
+                'REGRA_ANTERIOR',
+                'REGRA_NOVA',
+            ]
+        ]
         .value_counts()
         .reset_index(name='QUANTIDADE')
-        .sort_values(['QUANTIDADE', 'LOCAL EDITADO'], ascending=[False, True])
+        .sort_values(['QUANTIDADE', 'LOCAL EDITADO', 'UF'], ascending=[False, True, True])
     )
 else:
-    df_sobrescritos = pd.DataFrame(columns=['LOCAL EDITADO', 'OPERADORA', 'OPERADORA_ANTERIOR', 'QUANTIDADE'])
+    df_sobrescritos = pd.DataFrame(
+        columns=[
+            'CLASSIFICACAO',
+            'LOCAL',
+            'LOCAL EDITADO',
+            'UF',
+            'OPERADORA_ANTERIOR',
+            'OPERADORA_NOVA',
+            'REGRA_ANTERIOR',
+            'REGRA_NOVA',
+            'QUANTIDADE',
+        ]
+    )
 
-total_classificadas_antes_hapvida = int((~mascara_vazios_antes_hapvida).sum())
-total_hapvida = int(mascara_vazios_antes_hapvida.sum())
-total_sobrescritos = int(df_sobrescritos['QUANTIDADE'].sum()) if not df_sobrescritos.empty else 0
+total_classificadas_antes_hapvida = int(len(df) - len(df_nao_classificados))
+total_hapvida = int(len(df_nao_classificados))
+total_sobrescritos = (
+    int(df_sobrescritos['QUANTIDADE'].sum()) if not df_sobrescritos.empty else 0
+)
 
 resumo = {
     'execucao': 'exec_06_operadora',
     'arquivo_entrada': str(arquivo_entrada),
-    'arquivo_grupos_operadora': str(arquivo_grupos_operadora),
-    'arquivo_insumos_ndi': str(arquivo_insumos_ndi),
+    'arquivo_regras_operadora': str(arquivo_regras_operadora),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_auditoria': str(arquivo_auditoria_csv),
     'total_linhas_entrada': int(len(df)),
     'total_classificadas_antes_hapvida': total_classificadas_antes_hapvida,
     'total_preenchidas_com_hapvida': total_hapvida,
     'total_classificadas_final': int(len(df)),
     'total_sobrescritos': total_sobrescritos,
-    'total_locais_multiplas_operadoras': int(df_locais_multiplas_operadoras['LOCAL EDITADO'].nunique()) if not df_locais_multiplas_operadoras.empty else 0,
+    'total_regras_ativas': int(len(df_regras)),
+    'total_locais_multiplas_operadoras': int(
+        df_locais_multiplas_operadoras['LOCAL EDITADO'].nunique()
+    ) if not df_locais_multiplas_operadoras.empty else 0,
     'locais_multiplas_operadoras': transformar_em_lista_registros(
         df_locais_multiplas_operadoras,
-        ['LOCAL EDITADO', 'TOTAL_OPERADORAS', 'OPERADORA', 'QUANTIDADE']
+        ['LOCAL EDITADO', 'TOTAL_OPERADORAS', 'OPERADORA', 'QUANTIDADE'],
     ),
-    'regras_aplicadas': regras_auditoria
+    'regras_aplicadas': regras_auditoria,
 }
 
 with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
@@ -314,23 +555,26 @@ linhas_txt = [
     'RESUMO DA EXECUCAO 06 - OPERADORA',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
-    f"Arquivo de grupos: {resumo['arquivo_grupos_operadora']}",
-    f"Arquivo ndi: {resumo['arquivo_insumos_ndi']}",
+    f"Arquivo de regras: {resumo['arquivo_regras_operadora']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Auditoria por regra: {resumo['arquivo_auditoria']}",
     '',
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total classificadas antes do HAPVIDA: {resumo['total_classificadas_antes_hapvida']}",
     f"Total preenchidas com HAPVIDA: {resumo['total_preenchidas_com_hapvida']}",
     f"Total classificadas no final: {resumo['total_classificadas_final']}",
     f"Total sobrescritos: {resumo['total_sobrescritos']}",
+    f"Total de regras ativas: {resumo['total_regras_ativas']}",
     f"Total de locais com mais de uma operadora: {resumo['total_locais_multiplas_operadoras']}",
     '',
-    'NAO CLASSIFICADAS ANTES DO HAPVIDA - LOCAL EDITADO E UF:'
+    'NAO CLASSIFICADAS ANTES DO HAPVIDA - LOCAL EDITADO E UF:',
 ]
 
 if not df_hapvida_distintos.empty:
     for _, linha in df_hapvida_distintos.iterrows():
-        linhas_txt.append(f"- {linha['LOCAL EDITADO']} - {linha['UF']}: {int(linha['QUANTIDADE'])}")
+        linhas_txt.append(
+            f"- {linha['LOCAL EDITADO']} - {linha['UF']}: {int(linha['QUANTIDADE'])}"
+        )
 else:
     linhas_txt.append('- Nenhum registro ficou vazio antes do HAPVIDA')
 
@@ -340,18 +584,19 @@ with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
 salvar_csv_padronizado(pd.DataFrame([{
     'EXECUCAO': resumo['execucao'],
     'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
-    'ARQUIVO_GRUPOS': resumo['arquivo_grupos_operadora'],
-    'ARQUIVO_NDI': resumo['arquivo_insumos_ndi'],
+    'ARQUIVO_REGRAS': resumo['arquivo_regras_operadora'],
     'ARQUIVO_SAIDA': resumo['arquivo_saida'],
     'TOTAL_LINHAS_ENTRADA': resumo['total_linhas_entrada'],
     'TOTAL_CLASSIFICADAS_ANTES_HAPVIDA': resumo['total_classificadas_antes_hapvida'],
     'TOTAL_PREENCHIDAS_COM_HAPVIDA': resumo['total_preenchidas_com_hapvida'],
     'TOTAL_CLASSIFICADAS_FINAL': resumo['total_classificadas_final'],
     'TOTAL_SOBRESCRITOS': resumo['total_sobrescritos'],
-    'TOTAL_LOCAIS_MULTIPLAS_OPERADORAS': resumo['total_locais_multiplas_operadoras']
+    'TOTAL_REGRAS_ATIVAS': resumo['total_regras_ativas'],
+    'TOTAL_LOCAIS_MULTIPLAS_OPERADORAS': resumo['total_locais_multiplas_operadoras'],
 }]), arquivo_resumo_csv)
 
 salvar_csv_padronizado(df_operadora_distintos, arquivo_operadora_distintos_csv)
+salvar_csv_padronizado(pd.DataFrame(regras_auditoria), arquivo_auditoria_csv)
 salvar_csv_padronizado(df_nao_classificados, arquivo_nao_classificados_csv)
 salvar_csv_padronizado(df_sobrescritos, arquivo_sobrescritos_csv)
 salvar_csv_padronizado(df_hapvida_distintos, arquivo_hapvida_distintos_csv)
@@ -360,5 +605,6 @@ print(f'Total de linhas recebidas: {len(df)}')
 print(f'Total classificadas antes do HAPVIDA: {total_classificadas_antes_hapvida}')
 print(f'Total preenchidas com HAPVIDA: {total_hapvida}')
 print(f'Total sobrescritos: {total_sobrescritos}')
+print(f'Total de regras ativas: {len(df_regras)}')
 print('Execucao 06 finalizada.')
 

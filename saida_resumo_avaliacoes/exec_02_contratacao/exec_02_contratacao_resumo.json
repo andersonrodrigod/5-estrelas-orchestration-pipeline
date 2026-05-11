@@ -6,8 +6,8 @@
     "arquivo_locais_sem_contratacao": "saida_resumo_avaliacoes\\exec_02_contratacao\\exec_02_locais_sem_contratacao.csv",
     "arquivo_linhas_sem_contratacao": "saida_resumo_avaliacoes\\exec_02_contratacao\\exec_02_linhas_sem_contratacao.csv",
     "total_linhas_entrada": 1497449,
-    "total_rede_propria": 1440363,
-    "total_rede_credenciada": 57086,
+    "total_rede_propria": 1440375,
+    "total_rede_credenciada": 57074,
     "total_sem_contratacao": 0,
     "locais_sem_contratacao": {}
 }

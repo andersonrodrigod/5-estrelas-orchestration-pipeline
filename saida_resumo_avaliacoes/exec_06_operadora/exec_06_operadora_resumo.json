@@ -1,28 +1,17 @@
 {
     "execucao": "exec_06_operadora",
     "arquivo_entrada": "data_exec_indiv\\avaliacoes\\05_base_com_local_editado.csv",
-    "arquivo_grupos_operadora": "data\\grupos_operadora.json",
-    "arquivo_insumos_ndi": "utils\\insumos\\Unidades ndi sp e rj.xlsx",
+    "arquivo_regras_operadora": "utils\\insumos\\regras_operadora.xlsx",
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\06_base_com_operadora.csv",
+    "arquivo_auditoria": "saida_resumo_avaliacoes\\exec_06_operadora\\exec_06_operadora_auditoria.csv",
     "total_linhas_entrada": 1497449,
-    "total_classificadas_antes_hapvida": 868991,
-    "total_preenchidas_com_hapvida": 628458,
+    "total_classificadas_antes_hapvida": 896008,
+    "total_preenchidas_com_hapvida": 601441,
     "total_classificadas_final": 1497449,
-    "total_sobrescritos": 1636,
-    "total_locais_multiplas_operadoras": 66,
+    "total_sobrescritos": 11822,
+    "total_regras_ativas": 420,
+    "total_locais_multiplas_operadoras": 61,
     "locais_multiplas_operadoras": [
-        {
-            "LOCAL EDITADO": "A+",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CLINIPAN",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "A+",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "47"
-        },
         {
             "LOCAL EDITADO": "ALMED SAUDE",
             "TOTAL_OPERADORAS": "2",
@@ -94,18 +83,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "43"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO SAO CAMILO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CLINIPAN",
-            "QUANTIDADE": "6"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO SAO CAMILO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "1"
         },
         {
             "LOCAL EDITADO": "CEPSI",
@@ -324,18 +301,6 @@
             "QUANTIDADE": "23"
         },
         {
-            "LOCAL EDITADO": "FISIOBEM",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CCG",
-            "QUANTIDADE": "33"
-        },
-        {
-            "LOCAL EDITADO": "FISIOBEM",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "10"
-        },
-        {
             "LOCAL EDITADO": "FISIODINAMICA",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
@@ -346,18 +311,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "4"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMAIS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CCG",
-            "QUANTIDADE": "18"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMAIS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "12"
         },
         {
             "LOCAL EDITADO": "FISIOMED FISIOTERAPIA",
@@ -444,6 +397,18 @@
             "QUANTIDADE": "2"
         },
         {
+            "LOCAL EDITADO": "HOSPITAL SANTA MONICA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SANTA MONICA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "463"
+        },
+        {
             "LOCAL EDITADO": "HOSPITAL SANTA TERESA",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
@@ -454,6 +419,18 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "2"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SAO FRANCISCO",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1084"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SAO FRANCISCO",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "1"
         },
         {
             "LOCAL EDITADO": "HOSPITAL VERA CRUZ",
@@ -600,6 +577,18 @@
             "QUANTIDADE": "625"
         },
         {
+            "LOCAL EDITADO": "LIFECENTER",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "2"
+        },
+        {
+            "LOCAL EDITADO": "LIFECENTER",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "1995"
+        },
+        {
             "LOCAL EDITADO": "MARTINS SAUDE",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
@@ -646,18 +635,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "CLINIPAN",
             "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "PHD PATOLOGIA HUMANA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CLINIPAN",
-            "QUANTIDADE": "18"
-        },
-        {
-            "LOCAL EDITADO": "PHD PATOLOGIA HUMANA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "3"
         },
         {
             "LOCAL EDITADO": "PROMEDICA",
@@ -720,24 +697,6 @@
             "QUANTIDADE": "44"
         },
         {
-            "LOCAL EDITADO": "SEM NOME",
-            "TOTAL_OPERADORAS": "3",
-            "OPERADORA": "CCG",
-            "QUANTIDADE": "33"
-        },
-        {
-            "LOCAL EDITADO": "SEM NOME",
-            "TOTAL_OPERADORAS": "3",
-            "OPERADORA": "CLINIPAN",
-            "QUANTIDADE": "51"
-        },
-        {
-            "LOCAL EDITADO": "SEM NOME",
-            "TOTAL_OPERADORAS": "3",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "4009"
-        },
-        {
             "LOCAL EDITADO": "SENSO PSICOLOGIA",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
@@ -750,18 +709,6 @@
             "QUANTIDADE": "194"
         },
         {
-            "LOCAL EDITADO": "UNICLIN",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "CCG",
-            "QUANTIDADE": "5"
-        },
-        {
-            "LOCAL EDITADO": "UNICLIN",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "1"
-        },
-        {
             "LOCAL EDITADO": "VERSATIL SAUDE",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
@@ -772,18 +719,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "92"
-        },
-        {
-            "LOCAL EDITADO": "VIDA IMAGEM AGAMENON MAGALHAES",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2046"
-        },
-        {
-            "LOCAL EDITADO": "VIDA IMAGEM AGAMENON MAGALHAES",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "3"
         },
         {
             "LOCAL EDITADO": "VIPFISIO",
@@ -812,129 +747,174 @@
     ],
     "regras_aplicadas": [
         {
+            "ORDEM": 1,
             "REGRA": "CLASSIFICACAO contem TELE",
             "OPERADORA_APLICADA": "TELECONSULTA",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 359814,
             "TOTAL_VAZIAS": 359814,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 2,
             "REGRA": "CLASSIFICACAO contem CRED",
             "OPERADORA_APLICADA": "REDE CREDENCIADA",
-            "TOTAL_ATINGIDAS": 44146,
-            "TOTAL_VAZIAS": 44146,
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 44134,
+            "TOTAL_VAZIAS": 44134,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 3,
             "REGRA": "UF igual a PR",
             "OPERADORA_APLICADA": "CLINIPAN",
-            "TOTAL_ATINGIDAS": 32272,
-            "TOTAL_VAZIAS": 31653,
-            "TOTAL_SOBRESCRITAS": 619
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 31533,
+            "TOTAL_VAZIAS": 31529,
+            "TOTAL_SOBRESCRITAS": 4
         },
         {
+            "ORDEM": 4,
             "REGRA": "UF igual a RS",
             "OPERADORA_APLICADA": "CCG",
-            "TOTAL_ATINGIDAS": 22040,
-            "TOTAL_VAZIAS": 21459,
-            "TOTAL_SOBRESCRITAS": 581
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 21381,
+            "TOTAL_VAZIAS": 21381,
+            "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 5,
+            "REGRA": "UF igual a MG",
+            "OPERADORA_APLICADA": "NDI MG",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 38613,
+            "TOTAL_VAZIAS": 38613,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 6,
             "REGRA": "LOCAL EDITADO contem OCTAVIANO NEVES e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 1404,
-            "TOTAL_VAZIAS": 1404,
-            "TOTAL_SOBRESCRITAS": 0
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1404
         },
         {
+            "ORDEM": 7,
             "REGRA": "LOCAL EDITADO contem VENDA NOVA e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 1586,
-            "TOTAL_VAZIAS": 1586,
-            "TOTAL_SOBRESCRITAS": 0
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1586
         },
         {
+            "ORDEM": 8,
             "REGRA": "LOCAL EDITADO contem PROCLIN ELDORADO e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 1310,
-            "TOTAL_VAZIAS": 1310,
-            "TOTAL_SOBRESCRITAS": 0
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1310
         },
         {
+            "ORDEM": 9,
             "REGRA": "LOCAL EDITADO contem HVC DAY UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 472,
-            "TOTAL_VAZIAS": 472,
-            "TOTAL_SOBRESCRITAS": 0
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 472
         },
         {
+            "ORDEM": 10,
             "REGRA": "HOSPITAL VERA CRUZ e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 3972,
-            "TOTAL_VAZIAS": 3972,
-            "TOTAL_SOBRESCRITAS": 0
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 3972
         },
         {
+            "ORDEM": 11,
             "REGRA": "LOCAL EDITADO contem BETIM e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 2641,
-            "TOTAL_VAZIAS": 2639,
-            "TOTAL_SOBRESCRITAS": 2
+            "TOTAL_VAZIAS": 1,
+            "TOTAL_SOBRESCRITAS": 2640
         },
         {
+            "ORDEM": 12,
             "REGRA": "LOCAL EDITADO contem RAJA e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 13,
             "REGRA": "LOCAL EDITADO igual a LIFE CENTER CONTAGEM e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 14,
             "REGRA": "LOCAL EDITADO igual a HOSPITAL LIFE CENTER e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 15,
             "REGRA": "LOCAL EDITADO contem EFIGENCIA e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 16,
             "REGRA": "LOCAL EDITADO igual a PA CONTORNO e UF igual a MG",
             "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
+            "ORDEM": 17,
             "REGRA": "LOCAL EDITADO igual a PA CONTORNO e OPERADORA vazia",
             "OPERADORA_APLICADA": "NDI MG",
+            "APLICAR_SOMENTE_VAZIOS": "sim",
             "TOTAL_ATINGIDAS": 0,
             "TOTAL_VAZIAS": 0,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
-            "REGRA": "PLANILHA NDI SP E RJ",
-            "OPERADORA_APLICADA": "DINAMICA",
+            "ORDEM": 18,
+            "REGRA": "BLOCO NDI SP E RJ",
+            "OPERADORA_APLICADA": "NDI SP E RJ",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
             "TOTAL_ATINGIDAS": 400970,
             "TOTAL_VAZIAS": 400536,
             "TOTAL_SOBRESCRITAS": 434
         },
         {
+            "ORDEM": 420,
             "REGRA": "OPERADORA vazia no final recebe HAPVIDA",
             "OPERADORA_APLICADA": "HAPVIDA",
-            "TOTAL_ATINGIDAS": 628458,
-            "TOTAL_VAZIAS": 628458,
+            "APLICAR_SOMENTE_VAZIOS": "sim",
+            "TOTAL_ATINGIDAS": 601441,
+            "TOTAL_VAZIAS": 601441,
             "TOTAL_SOBRESCRITAS": 0
         }
     ]
