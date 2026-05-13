@@ -7,10 +7,10 @@ arquivo_entrada = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv
 arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 
 # Preencha com o valor desejado ou deixe None para nao filtrar a coluna.
-filtro_tipo = None
+filtro_tipo = 6
 filtro_contratacao = None
 filtro_local = None
-filtro_especialidade = 'tea'
+filtro_especialidade = None
 filtro_classificacao = None
 
 # Preencha com o valor que deve ser excluido ou deixe None para nao aplicar.

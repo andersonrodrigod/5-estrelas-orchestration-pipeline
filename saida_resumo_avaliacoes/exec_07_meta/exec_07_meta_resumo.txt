@@ -1,0 +1,39 @@
+RESUMO DA EXECUCAO 07 - META
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\06_base_com_operadora.csv
+Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+Arquivo de saida: data_exec_indiv\avaliacoes\07_base_com_meta.csv
+
+Total de linhas na entrada: 1497449
+Total encontrados: 1497449
+Total nao encontrados: 0
+
+GRUPOS ENCONTRADOS:
+- HAPCLINICA: 456934
+- TELECONSULTA ELETIVA: 300212
+- HOSPITALAR: 243473
+- VIDA IMAGEM: 163072
+- LABORATÓRIO: 160783
+- TELECONSULTA URGÊNCIA: 57594
+- CRED_TRATAMENTO: 30699
+- MED PREV: 24238
+- QUALIVIDA: 11932
+- ODONTOLOGIA: 11737
+- INTERNAÇÃO: 8726
+- CRED_LABORATÓRIO: 5360
+- CRED_ATEND ELETIVO: 4549
+- TEA: 3900
+- CASE: 3812
+- PRODUTO COORDENADO: 2540
+- NASCER BEM: 2240
+- CRED_EXAMES: 2024
+- TELECONSULTA CASE: 1841
+- CRED_ATEND EMERGENCIA: 1474
+- TELEMEDICINA: 167
+- INTERNAÇÃO PGC: 103
+- CRED_INTERNACAO: 28
+- GESTAR BEM: 8
+- TRANSPLANTE: 3
+
+CLASSIFICACOES SEM CORRESPONDENCIA:
+- Nenhuma classificacao sem correspondencia

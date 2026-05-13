@@ -1,0 +1,118 @@
+RELATORIO DE COMPETENCIAS TECNICAS - PYTHON
+
+Profissional analisado: Anderson Rodrigo
+Base da analise: repositorios acessiveis pelo GitHub e projetos Python encontrados localmente em C:\Users\anderson.dossantos\Desktop\dev
+Data da analise: 11/05/2026
+
+RESUMO EXECUTIVO
+
+Com base nos projetos analisados, Anderson demonstra capacidade pratica para criar solucoes em Python voltadas a automacao operacional, tratamento de dados, construcao de pipelines, padronizacao de planilhas, integracao de arquivos CSV/XLSX, criacao de interfaces para usuarios internos e geracao automatizada de relatorios.
+
+O codigo mostra um perfil de desenvolvedor muito orientado a resolver problemas reais de negocio: pegar bases desorganizadas, limpar, validar, cruzar informacoes, aplicar regras, gerar arquivos finais e transformar processos manuais em rotinas repetiveis. Tambem ha sinais claros de evolucao tecnica, com projetos mais recentes usando estrutura modular, separacao por services/pipelines/controllers, testes automatizados, contratos de dados, logs e tratamento de erros.
+
+PRINCIPAIS COMPETENCIAS IDENTIFICADAS
+
+1. Automacao de processos com Python
+
+Anderson consegue transformar atividades manuais em fluxos automatizados. Ha projetos para coleta de dados, atualizacao de telefones, captura de informacoes em sistemas, manipulacao de telas com pyautogui/pyperclip e padronizacao de rotinas que antes dependeriam de acao humana repetitiva.
+
+Isso indica capacidade para criar automacoes administrativas, operacionais e analiticas, reduzindo retrabalho e aumentando velocidade em tarefas recorrentes.
+
+2. Tratamento, limpeza e padronizacao de dados
+
+Os projetos usam intensamente pandas para ler, limpar, transformar e exportar dados em CSV e Excel. O codigo mostra dominio de tarefas como:
+
+- normalizar telefones, datas, nomes, colunas e textos;
+- tratar valores vazios, duplicados e inconsistentes;
+- unir bases diferentes por chaves de contato, telefone, data e usuario;
+- gerar datasets finais a partir de arquivos brutos;
+- preservar regras especificas do negocio durante a transformacao.
+
+Essa competencia aparece especialmente nos projetos de internacoes, complicacoes cirurgicas, pesquisa de satisfacao e orquestracao de contatos.
+
+3. Criacao de pipelines de dados
+
+O projeto contact-orchestration-pipeline mostra uma arquitetura mais madura, com etapas claras de ingestao, validacao, normalizacao, integracao, criacao de dataset e orquestracao final. A estrutura possui modulos separados para services, pipelines, configuracoes, contratos, UI, logs e testes.
+
+Isso demonstra que Anderson e capaz de sair de scripts isolados e construir uma solucao organizada, reutilizavel e mais facil de manter.
+
+4. Automacao de relatorios e apresentacoes
+
+Os projetos slide_direto e ppt-report-automation mostram capacidade de gerar apresentacoes PowerPoint diretamente a partir de bases de dados, usando pandas, matplotlib, openpyxl e python-pptx.
+
+Anderson consegue criar solucoes que leem planilhas, calculam indicadores, geram tabelas/graficos e montam arquivos PPTX automaticamente. Isso e muito util para areas que precisam produzir relatorios recorrentes, apresentacoes gerenciais e materiais de acompanhamento operacional.
+
+5. Desenvolvimento de interfaces para uso interno
+
+Ha uso de customtkinter e tkinter para criar aplicativos desktop com menus, telas, seletores de arquivo e fluxos de execucao. Os projetos mostram separacao entre views e controllers em alguns casos, o que indica preocupacao em organizar melhor a interface e a regra de negocio.
+
+Isso mostra que Anderson nao cria apenas scripts para uso proprio: ele tambem consegue transformar rotinas em ferramentas mais acessiveis para outras pessoas utilizarem.
+
+6. Analise de dados e aprendizado de maquina
+
+O repositorio IA e o projeto Aprendizado de Maquina Comentarios indicam conhecimento em pandas, numpy, matplotlib, seaborn, scipy e scikit-learn. Ha exemplos de regressao, arvore de decisao, matriz de confusao, treino/teste, escala de variaveis e modelos de classificacao textual.
+
+No projeto de comentarios, o codigo usa TfidfVectorizer, LogisticRegression, LinearSVC, classification_report, confusion_matrix e joblib para treinar e salvar modelos. Isso mostra capacidade inicial/intermediaria para criar classificadores de texto e avaliar desempenho de modelos.
+
+7. Manipulacao avancada de Excel
+
+Os projetos usam openpyxl e pandas para trabalhar com arquivos XLSX, abas, formulas, formatacao, ordenacao, exclusao de duplicados, merges e criacao de planilhas finais. Ha tambem preocupacao com validacao de colunas obrigatorias e integridade dos merges.
+
+Isso indica dominio de automacao de Excel em contexto corporativo, principalmente para bases operacionais grandes e recorrentes.
+
+8. Testes, validacao e confiabilidade
+
+O projeto contact-orchestration-pipeline inclui uma pasta de testes com validacoes para services, contratos de pipeline, schema de resposta, governanca de configuracao, normalizacao, observabilidade, metricas e preflight. Isso mostra que Anderson ja trabalha com a ideia de proteger regras importantes por testes.
+
+Tambem ha tratamento de erros, codigos de erro, logs de execucao e funcoes de validacao, indicando preocupacao com rastreabilidade e confiabilidade.
+
+9. Organizacao progressiva de projetos
+
+O conjunto dos repositorios mostra uma evolucao clara: ha scripts mais simples e diretos, mas tambem projetos mais estruturados com pastas src, core, services, pipelines, controllers, views, tests e requirements.txt.
+
+Essa evolucao e positiva porque mostra aprendizado aplicado: Anderson nao apenas cria codigos para resolver um problema imediato, mas esta caminhando para solucoes mais profissionais, documentadas e reaproveitaveis.
+
+PROJETOS E EVIDENCIAS OBSERVADAS
+
+- contact-orchestration-pipeline: pipeline completo para ingestao, limpeza, integracao, criacao de dataset e orquestracao de contatos, com UI, logs, services, contratos e testes.
+- 5 Estrelas: conjunto de scripts para processamento de avaliacoes, classificacoes, notas, operadoras, locais, status e separacao de tipos, com testes especificos por etapa.
+- Trabalho: grande colecao de automacoes operacionais, aplicativos internos, pipelines de internacao/complicacao, tratamento de planilhas, pesquisa de satisfacao e aprendizado de maquina aplicado a comentarios.
+- slide_direto / ppt-report-automation: geracao automatizada de PowerPoint a partir de bases Excel, com indicadores, graficos e layout de apresentacao.
+- complicacoes-cirurgicas-data-processing: processamento de bases de complicacao cirurgica, normalizacao de telefones, validacao de merges, organizacao de colunas e aplicacao de formulas.
+- IA: estudos e praticas com pandas, numpy, matplotlib, seaborn, scipy e scikit-learn.
+
+O QUE ANDERSON E CAPAZ DE CRIAR
+
+Com base no codigo analisado, Anderson e capaz de criar:
+
+- automacoes em Python para reduzir trabalho manual em rotinas administrativas;
+- pipelines de dados para limpar, validar, cruzar e consolidar arquivos CSV/XLSX;
+- aplicativos desktop simples para usuarios internos executarem processos sem mexer diretamente no codigo;
+- ferramentas de padronizacao de planilhas e tratamento de bases operacionais;
+- rotinas de integracao entre arquivos de status, respostas, contatos, telefones e bases de atendimento;
+- relatorios automatizados em Excel e PowerPoint;
+- dashboards ou pre-processamentos para alimentar BI e apresentacoes gerenciais;
+- scripts de auditoria, contagem, classificacao e validacao de dados;
+- modelos basicos/intermediarios de machine learning para classificacao de textos e analise de comentarios;
+- projetos Python mais organizados, com estrutura em modulos, testes, logs e separacao de responsabilidades.
+
+PERFIL TECNICO
+
+O perfil observado e de alguem com forte capacidade pratica de automacao, analise e engenharia de dados aplicada ao dia a dia corporativo. Anderson parece ter facilidade para entender uma regra operacional, converter essa regra em codigo e entregar uma ferramenta que melhora o fluxo de trabalho.
+
+As maiores forcas estao em:
+
+- Python aplicado a problemas reais;
+- pandas e manipulacao de dados;
+- automacao de Excel, CSV e PowerPoint;
+- criacao de pipelines de tratamento de dados;
+- automacao de tarefas repetitivas;
+- interfaces internas com tkinter/customtkinter;
+- estruturacao crescente de projetos;
+- aprendizado de maquina aplicado a texto e classificacao.
+
+CONCLUSAO
+
+Anderson demonstra capacidade para atuar em projetos de automacao, dados e produtividade operacional. Seu codigo mostra que ele consegue criar solucoes completas: desde a leitura de uma base bruta, passando pela limpeza e aplicacao de regras, ate a entrega de arquivos finais, relatorios, apresentacoes ou interfaces para usuarios.
+
+O conjunto dos projetos indica um profissional com perfil pratico, orientado a resultado, capaz de aprender ferramentas novas e transformar necessidades do negocio em sistemas Python funcionais. Para uma equipe que precisa automatizar processos, organizar dados, criar relatorios recorrentes ou melhorar fluxos manuais, Anderson ja apresenta uma base tecnica muito util e com potencial claro de crescimento para engenharia de dados, automacao corporativa, analytics engineering e desenvolvimento de ferramentas internas.

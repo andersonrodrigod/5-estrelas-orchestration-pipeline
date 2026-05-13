@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -10,17 +10,17 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tip
 
 
 ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
-ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/06_base_com_operadora_v2.csv')
+ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/06_base_com_operadora.csv')
 ARQUIVO_REGRAS = Path('utils/insumos/regras_operadora.xlsx')
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_06_operadora_v2'
-ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_06_operadora_v2_resumo.json'
-ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_06_operadora_v2_resumo.txt'
-ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_06_operadora_v2_resumo.csv'
-ARQUIVO_AUDITORIA = PASTA_RESUMO / 'exec_06_operadora_v2_auditoria.csv'
-ARQUIVO_DISTINTOS = PASTA_RESUMO / 'exec_06_operadora_v2_local_editado_operadora.csv'
-ARQUIVO_NAO_CLASSIFICADOS = PASTA_RESUMO / 'exec_06_operadora_v2_nao_classificados.csv'
-ARQUIVO_SOBRESCRITOS = PASTA_RESUMO / 'exec_06_operadora_v2_sobrescritos.csv'
-ARQUIVO_HAPVIDA_DISTINTOS = PASTA_RESUMO / 'exec_06_operadora_v2_hapvida_distintos.csv'
+PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_06_operadora'
+ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_06_operadora_resumo.json'
+ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_06_operadora_resumo.txt'
+ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_06_operadora_resumo.csv'
+ARQUIVO_AUDITORIA = PASTA_RESUMO / 'exec_06_operadora_auditoria.csv'
+ARQUIVO_DISTINTOS = PASTA_RESUMO / 'exec_06_operadora_local_editado_operadora.csv'
+ARQUIVO_NAO_CLASSIFICADOS = PASTA_RESUMO / 'exec_06_operadora_nao_classificados.csv'
+ARQUIVO_SOBRESCRITOS = PASTA_RESUMO / 'exec_06_operadora_sobrescritos.csv'
+ARQUIVO_HAPVIDA_DISTINTOS = PASTA_RESUMO / 'exec_06_operadora_hapvida_distintos.csv'
 
 COLUNA_OPERADORA = 'OPERADORA'
 COLUNA_QUANTIDADE = 'QUANTIDADE'
@@ -241,7 +241,7 @@ def validar_tipos(df_saida):
 
 
 def imprimir_erros(erros):
-    print('TESTE FALHOU - exec_06_operadora_v2')
+    print('TESTE FALHOU - exec_06_operadora')
     print('')
     print(f'Total de problemas encontrados: {len(erros)}')
     print('')
@@ -258,13 +258,13 @@ def executar():
 
     arquivos_faltando = validar_arquivos_obrigatorios()
     if arquivos_faltando:
-        print('TESTE FALHOU - exec_06_operadora_v2')
+        print('TESTE FALHOU - exec_06_operadora')
         print('')
         print('Arquivos obrigatorios nao encontrados:')
         for arquivo in arquivos_faltando:
             print(f'- {arquivo}')
         print('')
-        print('Rode primeiro: python execucoes_individuais_avaliacoes\\exec_06_operadora_v2.py')
+        print('Rode primeiro: python execucoes_individuais_avaliacoes\\exec_06_operadora.py')
         return 1
 
     df_entrada = carregar_csv(ARQUIVO_ENTRADA)
@@ -297,7 +297,7 @@ def executar():
         return 1
 
     totais = calcular_totais(df_saida, df_sobrescritos, df_regras)
-    print('TESTE OK - exec_06_operadora_v2')
+    print('TESTE OK - exec_06_operadora')
     print(f'Arquivo de entrada: {ARQUIVO_ENTRADA}')
     print(f'Arquivo testado: {ARQUIVO_SAIDA}')
     print(f"Total de linhas analisadas: {totais['total_linhas_entrada']}")
@@ -315,3 +315,4 @@ def executar():
 
 if __name__ == '__main__':
     sys.exit(executar())
+

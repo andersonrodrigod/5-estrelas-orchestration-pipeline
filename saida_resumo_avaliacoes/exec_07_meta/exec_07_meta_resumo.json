@@ -1,0 +1,112 @@
+{
+    "execucao": "exec_07_meta",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\06_base_com_operadora.csv",
+    "arquivo_insumos": "utils\\insumos\\insumos 5 estrelas.xlsx",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\07_base_com_meta.csv",
+    "total_linhas_entrada": 1497449,
+    "total_encontrados": 1497449,
+    "total_nao_encontrados": 0,
+    "grupos_encontrados": [
+        {
+            "GRUPO": "HAPCLINICA",
+            "QUANTIDADE": "456934"
+        },
+        {
+            "GRUPO": "TELECONSULTA ELETIVA",
+            "QUANTIDADE": "300212"
+        },
+        {
+            "GRUPO": "HOSPITALAR",
+            "QUANTIDADE": "243473"
+        },
+        {
+            "GRUPO": "VIDA IMAGEM",
+            "QUANTIDADE": "163072"
+        },
+        {
+            "GRUPO": "LABORATÓRIO",
+            "QUANTIDADE": "160783"
+        },
+        {
+            "GRUPO": "TELECONSULTA URGÊNCIA",
+            "QUANTIDADE": "57594"
+        },
+        {
+            "GRUPO": "CRED_TRATAMENTO",
+            "QUANTIDADE": "30699"
+        },
+        {
+            "GRUPO": "MED PREV",
+            "QUANTIDADE": "24238"
+        },
+        {
+            "GRUPO": "QUALIVIDA",
+            "QUANTIDADE": "11932"
+        },
+        {
+            "GRUPO": "ODONTOLOGIA",
+            "QUANTIDADE": "11737"
+        },
+        {
+            "GRUPO": "INTERNAÇÃO",
+            "QUANTIDADE": "8726"
+        },
+        {
+            "GRUPO": "CRED_LABORATÓRIO",
+            "QUANTIDADE": "5360"
+        },
+        {
+            "GRUPO": "CRED_ATEND ELETIVO",
+            "QUANTIDADE": "4549"
+        },
+        {
+            "GRUPO": "TEA",
+            "QUANTIDADE": "3900"
+        },
+        {
+            "GRUPO": "CASE",
+            "QUANTIDADE": "3812"
+        },
+        {
+            "GRUPO": "PRODUTO COORDENADO",
+            "QUANTIDADE": "2540"
+        },
+        {
+            "GRUPO": "NASCER BEM",
+            "QUANTIDADE": "2240"
+        },
+        {
+            "GRUPO": "CRED_EXAMES",
+            "QUANTIDADE": "2024"
+        },
+        {
+            "GRUPO": "TELECONSULTA CASE",
+            "QUANTIDADE": "1841"
+        },
+        {
+            "GRUPO": "CRED_ATEND EMERGENCIA",
+            "QUANTIDADE": "1474"
+        },
+        {
+            "GRUPO": "TELEMEDICINA",
+            "QUANTIDADE": "167"
+        },
+        {
+            "GRUPO": "INTERNAÇÃO PGC",
+            "QUANTIDADE": "103"
+        },
+        {
+            "GRUPO": "CRED_INTERNACAO",
+            "QUANTIDADE": "28"
+        },
+        {
+            "GRUPO": "GESTAR BEM",
+            "QUANTIDADE": "8"
+        },
+        {
+            "GRUPO": "TRANSPLANTE",
+            "QUANTIDADE": "3"
+        }
+    ],
+    "classificacoes_nao_encontradas": []
+}
