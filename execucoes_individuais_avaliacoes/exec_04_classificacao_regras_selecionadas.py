@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import pandas as pd
@@ -10,18 +10,13 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 # Edite aqui as regras que voce quer executar, usando a coluna ORDEM da planilha.
-# Exemplo: [16, 17] executa primeiro a regra 16 e depois a regra 17.
-REGRAS_PARA_EXECUTAR = [16, 17]
+# O script gera um arquivo incremental para cada regra: [4], depois [4, 13],
+# depois [4, 13, 28] e assim por diante.
+REGRAS_PARA_EXECUTAR = [4, 13, 28, 29]
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
 arquivo_regras_classificacao = Path('utils/insumos/regra_classificacao.xlsx')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao_regras_selecionadas.csv')
-
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao_regras_selecionadas'
-arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_regras_selecionadas_resumo.json'
-arquivo_resumo_csv = pasta_resumo / 'exec_04_classificacao_regras_selecionadas_resumo.csv'
-arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_regras_selecionadas_auditoria.csv'
-arquivo_sobrescritas_csv = pasta_resumo / 'exec_04_classificacao_regras_selecionadas_sobrescritas.csv'
+pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
 
 coluna_ordem_regra = '_ORDEM_REGRA_CLASSIFICACAO'
 coluna_nome_lista = '_NOME_LISTA_CLASSIFICACAO'
@@ -66,6 +61,32 @@ mapa_colunas_regras = {
     'STATUS_ATIVO': 'ativo',
     'DESCRICAO': 'descricao',
 }
+
+colunas_sobrescritas = [
+    'ORDEM_REGRA_ANTERIOR',
+    'ORDEM_REGRA_NOVA',
+    'NOME_LISTA_ANTERIOR',
+    'NOME_LISTA_NOVA',
+    'CHAVE_GRUPO_ANTERIOR',
+    'CHAVE_GRUPO_NOVA',
+    'CLASSIFICACAO_ANTERIOR',
+    'CLASSIFICACAO_NOVA',
+    'LOCAL_LINHA_SOBRESCRITA',
+    'ESPECIALIDADE_LINHA_SOBRESCRITA',
+    'CONTRATACAO_LINHA_SOBRESCRITA',
+    'APLICAR_SOMENTE_VAZIOS_REGRA',
+    'PALAVRA_FILTRO_REGRA',
+    'COLUNA_FILTRO_1_REGRA',
+    'COMPARADOR_1_REGRA',
+    'VALOR_1_REGRA',
+    'COLUNA_FILTRO_2_REGRA',
+    'COMPARADOR_2_REGRA',
+    'VALOR_2_REGRA',
+    'COLUNA_FILTRO_3_REGRA',
+    'COMPARADOR_3_REGRA',
+    'VALOR_3_REGRA',
+    'QUANTIDADE',
+]
 
 
 def normalizar_texto(serie):
@@ -131,9 +152,20 @@ def selecionar_regras(df_regras, ordens):
         print('ERRO - ORDEM nao encontrada ou inativa: ' + str(nao_encontradas))
         sys.exit(1)
 
-    ordem_execucao = pd.Categorical(regras['ordem'].astype(int), categories=ordens_unicas, ordered=True)
+    ordem_execucao = pd.Categorical(
+        regras['ordem'].astype(int),
+        categories=ordens_unicas,
+        ordered=True,
+    )
     regras = regras.assign(_ORDEM_EXECUCAO=ordem_execucao)
     return regras.sort_values('_ORDEM_EXECUCAO').drop(columns=['_ORDEM_EXECUCAO'])
+
+
+def formatar_valor_regra(valor):
+    if pd.isna(valor) or str(valor).strip() == '':
+        return 'sem filtro'
+
+    return str(valor)
 
 
 def separar_lista(valor):
@@ -222,174 +254,149 @@ def montar_mascara_regra(df_base, regra):
     return mascara
 
 
-def descrever_regra(regra):
-    if regra['descricao'] != '':
-        return regra['descricao']
-
-    partes = []
-
-    for numero in range(1, 4):
-        coluna = regra[f'coluna_{numero}']
-        comparador = regra[f'comparador_{numero}']
-        valor = regra[f'valor_{numero}']
-
-        if coluna == '' and comparador == '' and valor == '':
-            continue
-
-        partes.append(f'{coluna} {comparador} {valor}'.strip())
-
-    if regra['aplicar_somente_vazios']:
-        partes.append('CLASSIFICACAO vazia')
-
-    return ' | '.join(partes) if partes else 'sem filtros'
+def slugificar(texto):
+    texto_normalizado = unicodedata.normalize('NFKD', str(texto))
+    texto_ascii = texto_normalizado.encode('ascii', 'ignore').decode('ascii')
+    texto_limpo = re.sub(r'[^a-zA-Z0-9]+', '_', texto_ascii)
+    return texto_limpo.strip('_').lower() or 'sem_nome'
 
 
-def registrar_sobrescritas(df_base, filtro_aplicacao, regra, sobrescritas):
-    classificacao_antes = df_base.loc[filtro_aplicacao, 'CLASSIFICACAO'].copy()
-    vazias_antes = classificacao_antes.isna() | (classificacao_antes == '')
-    sobrescritas_regra = df_base.loc[classificacao_antes.index[~vazias_antes]].copy()
+def preparar_base():
+    df = ler_csv_padronizado(arquivo_entrada)
+    df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
+    df['CONTRATACAO'] = normalizar_texto(df['CONTRATACAO']).str.lower()
+    df['LOCAL'] = normalizar_texto(df['LOCAL'])
+    df['ESPECIALIDADE'] = normalizar_texto(df['ESPECIALIDADE'])
 
-    if sobrescritas_regra.empty:
-        return 0
+    if 'CLASSIFICACAO' not in df.columns:
+        df['CLASSIFICACAO'] = None
 
-    resumo_sobrescritas = (
-        sobrescritas_regra
-        .assign(
-            ORDEM_REGRA_ANTERIOR=sobrescritas_regra[coluna_ordem_regra].astype('string').fillna('DESCONHECIDA'),
-            ORDEM_REGRA_NOVA=int(regra['ordem']),
-            NOME_LISTA_ANTERIOR=sobrescritas_regra[coluna_nome_lista].astype('string').fillna('DESCONHECIDA'),
-            NOME_LISTA_NOVA=regra['nome_lista'],
-            CHAVE_GRUPO_ANTERIOR=sobrescritas_regra[coluna_chave_grupo].astype('string').fillna('DESCONHECIDA'),
-            CHAVE_GRUPO_NOVA=regra['chave_grupo'],
-            CLASSIFICACAO_ANTERIOR=sobrescritas_regra['CLASSIFICACAO'].fillna('VAZIO'),
-            CLASSIFICACAO_NOVA=regra['classificacao'],
+    df['CLASSIFICACAO'] = normalizar_texto(df['CLASSIFICACAO'])
+    df[coluna_ordem_regra] = pd.NA
+    df[coluna_nome_lista] = pd.NA
+    df[coluna_chave_grupo] = pd.NA
+
+    classificadas_antes_execucao = df['CLASSIFICACAO'].notna() & (df['CLASSIFICACAO'] != '')
+    df.loc[classificadas_antes_execucao, coluna_ordem_regra] = 'ORIGINAL'
+    df.loc[classificadas_antes_execucao, coluna_nome_lista] = 'BASE DE ENTRADA'
+    df.loc[classificadas_antes_execucao, coluna_chave_grupo] = 'CLASSIFICACAO_PRE_EXISTENTE'
+    return df
+
+
+def aplicar_regras_e_retornar_sobrescritas_ultima(df_base, regras):
+    df = df_base.copy()
+    sobrescritas = []
+    ordem_ultima_regra = int(regras.iloc[-1]['ordem'])
+
+    for _, regra in regras.iterrows():
+        filtro = montar_mascara_regra(df, regra)
+        filtro_aplicacao = filtro
+
+        if regra['aplicar_somente_vazios']:
+            filtro_aplicacao = filtro & (
+                df['CLASSIFICACAO'].isna() | (df['CLASSIFICACAO'] == '')
+            )
+
+        classificacao_antes_aplicacao = df.loc[filtro_aplicacao, 'CLASSIFICACAO'].copy()
+        vazias_antes_aplicacao = (
+            classificacao_antes_aplicacao.isna() | (classificacao_antes_aplicacao == '')
         )
-        .groupby([
-            'ORDEM_REGRA_ANTERIOR',
-            'ORDEM_REGRA_NOVA',
-            'NOME_LISTA_ANTERIOR',
-            'NOME_LISTA_NOVA',
-            'CHAVE_GRUPO_ANTERIOR',
-            'CHAVE_GRUPO_NOVA',
-            'CLASSIFICACAO_ANTERIOR',
-            'CLASSIFICACAO_NOVA',
-        ], dropna=False)
-        .size()
-        .reset_index(name='QUANTIDADE')
-    )
+        sobrescritas_regra = df.loc[classificacao_antes_aplicacao.index[~vazias_antes_aplicacao]].copy()
 
-    sobrescritas.extend(resumo_sobrescritas.to_dict('records'))
-    return int(len(sobrescritas_regra))
+        if not sobrescritas_regra.empty:
+            resumo_sobrescritas = (
+                sobrescritas_regra
+                .assign(
+                    ORDEM_REGRA_ANTERIOR=sobrescritas_regra[coluna_ordem_regra]
+                    .astype('string')
+                    .fillna('DESCONHECIDA'),
+                    ORDEM_REGRA_NOVA=int(regra['ordem']),
+                    NOME_LISTA_ANTERIOR=sobrescritas_regra[coluna_nome_lista]
+                    .astype('string')
+                    .fillna('DESCONHECIDA'),
+                    NOME_LISTA_NOVA=regra['nome_lista'],
+                    CHAVE_GRUPO_ANTERIOR=sobrescritas_regra[coluna_chave_grupo]
+                    .astype('string')
+                    .fillna('DESCONHECIDA'),
+                    CHAVE_GRUPO_NOVA=regra['chave_grupo'],
+                    CLASSIFICACAO_ANTERIOR=sobrescritas_regra['CLASSIFICACAO'].fillna('VAZIO'),
+                    CLASSIFICACAO_NOVA=regra['classificacao'],
+                    LOCAL_LINHA_SOBRESCRITA=sobrescritas_regra['LOCAL'].fillna('VAZIO'),
+                    ESPECIALIDADE_LINHA_SOBRESCRITA=sobrescritas_regra['ESPECIALIDADE'].fillna('VAZIO'),
+                    CONTRATACAO_LINHA_SOBRESCRITA=sobrescritas_regra['CONTRATACAO'].fillna('VAZIO'),
+                    APLICAR_SOMENTE_VAZIOS_REGRA='true'
+                    if regra['aplicar_somente_vazios'] else 'false',
+                    PALAVRA_FILTRO_REGRA=formatar_valor_regra(regra['palavra_filtro']),
+                    COLUNA_FILTRO_1_REGRA=formatar_valor_regra(regra['coluna_1']),
+                    COMPARADOR_1_REGRA=formatar_valor_regra(regra['comparador_1']),
+                    VALOR_1_REGRA=formatar_valor_regra(regra['valor_1']),
+                    COLUNA_FILTRO_2_REGRA=formatar_valor_regra(regra['coluna_2']),
+                    COMPARADOR_2_REGRA=formatar_valor_regra(regra['comparador_2']),
+                    VALOR_2_REGRA=formatar_valor_regra(regra['valor_2']),
+                    COLUNA_FILTRO_3_REGRA=formatar_valor_regra(regra['coluna_3']),
+                    COMPARADOR_3_REGRA=formatar_valor_regra(regra['comparador_3']),
+                    VALOR_3_REGRA=formatar_valor_regra(regra['valor_3']),
+                )
+                .groupby(colunas_sobrescritas[:-1], dropna=False)
+                .size()
+                .reset_index(name='QUANTIDADE')
+            )
+
+            sobrescritas.extend(resumo_sobrescritas.to_dict('records'))
+
+        df.loc[filtro_aplicacao, 'CLASSIFICACAO'] = regra['classificacao']
+        df.loc[filtro_aplicacao, coluna_ordem_regra] = int(regra['ordem'])
+        df.loc[filtro_aplicacao, coluna_nome_lista] = regra['nome_lista']
+        df.loc[filtro_aplicacao, coluna_chave_grupo] = regra['chave_grupo']
+
+    return [
+        item for item in sobrescritas
+        if item['ORDEM_REGRA_NOVA'] == ordem_ultima_regra
+    ]
 
 
-print('Iniciando execucao 04 - regras selecionadas...')
+print('Iniciando execucao 04 - sobrescritas de regras selecionadas...')
 print(f'Regras selecionadas: {REGRAS_PARA_EXECUTAR}')
 print(f'Lendo base: {arquivo_entrada}')
 print(f'Lendo regras: {arquivo_regras_classificacao}')
 
-df = ler_csv_padronizado(arquivo_entrada)
-df_regras = carregar_regras_classificacao(arquivo_regras_classificacao)
-df_regras = selecionar_regras(df_regras, REGRAS_PARA_EXECUTAR)
+regras_todas = carregar_regras_classificacao(arquivo_regras_classificacao)
+regras_selecionadas = selecionar_regras(regras_todas, REGRAS_PARA_EXECUTAR)
+df_base = preparar_base()
+pasta_saida.mkdir(parents=True, exist_ok=True)
 
-df['TIPO'] = pd.to_numeric(df['TIPO'], errors='coerce')
-df['CONTRATACAO'] = normalizar_texto(df['CONTRATACAO']).str.lower()
-df['LOCAL'] = normalizar_texto(df['LOCAL'])
-df['ESPECIALIDADE'] = normalizar_texto(df['ESPECIALIDADE'])
-
-if 'CLASSIFICACAO' not in df.columns:
-    df['CLASSIFICACAO'] = None
-
-df['CLASSIFICACAO'] = normalizar_texto(df['CLASSIFICACAO'])
-df[coluna_ordem_regra] = pd.NA
-df[coluna_nome_lista] = pd.NA
-df[coluna_chave_grupo] = pd.NA
-
-classificadas_antes_execucao = df['CLASSIFICACAO'].notna() & (df['CLASSIFICACAO'] != '')
-df.loc[classificadas_antes_execucao, coluna_ordem_regra] = 'ORIGINAL'
-df.loc[classificadas_antes_execucao, coluna_nome_lista] = 'BASE DE ENTRADA'
-df.loc[classificadas_antes_execucao, coluna_chave_grupo] = 'CLASSIFICACAO_PRE_EXISTENTE'
-
-auditoria_regras = []
-sobrescritas = []
-
-for _, regra in df_regras.iterrows():
-    filtro = montar_mascara_regra(df, regra)
-    classificacao_antes = df.loc[filtro, 'CLASSIFICACAO'].copy()
-    vazias_antes = classificacao_antes.isna() | (classificacao_antes == '')
-    filtro_aplicacao = filtro
-
-    if regra['aplicar_somente_vazios']:
-        filtro_aplicacao = filtro & (
-            df['CLASSIFICACAO'].isna() | (df['CLASSIFICACAO'] == '')
+for total_regras in range(1, len(regras_selecionadas) + 1):
+    regras_prefixo = regras_selecionadas.iloc[:total_regras].copy()
+    ultima_regra = regras_prefixo.iloc[-1]
+    ordem_regra = int(ultima_regra['ordem'])
+    nome_lista_slug = slugificar(ultima_regra['nome_lista'])
+    grupo_slug = slugificar(ultima_regra['chave_grupo'])
+    arquivo_sobrescritas = (
+        pasta_saida
+        / (
+            f'exec_04_classificacao_sobrescritas_ate_regra_{ordem_regra:03d}'
+            f'__{nome_lista_slug}__{grupo_slug}.csv'
         )
-
-    total_sobrescritas = registrar_sobrescritas(
-        df,
-        filtro_aplicacao,
-        regra,
-        sobrescritas,
     )
 
-    df.loc[filtro_aplicacao, 'CLASSIFICACAO'] = regra['classificacao']
-    df.loc[filtro_aplicacao, coluna_ordem_regra] = int(regra['ordem'])
-    df.loc[filtro_aplicacao, coluna_nome_lista] = regra['nome_lista']
-    df.loc[filtro_aplicacao, coluna_chave_grupo] = regra['chave_grupo']
+    print(
+        f'Processando ate a regra {ordem_regra:03d}: '
+        f"{ultima_regra['nome_lista']} / {ultima_regra['chave_grupo']}"
+    )
 
-    auditoria_regras.append({
-        'ORDEM_REGRA': int(regra['ordem']),
-        'NOME_LISTA': regra['nome_lista'],
-        'CHAVE_GRUPO': regra['chave_grupo'],
-        'CLASSIFICACAO': regra['classificacao'],
-        'REGRA': descrever_regra(regra),
-        'APLICAR_SOMENTE_VAZIO': 'sim' if regra['aplicar_somente_vazios'] else 'nao',
-        'TOTAL_ATINGIDAS': int(filtro.sum()),
-        'TOTAL_CLASSIFICADAS_VAZIAS': int(vazias_antes.sum()),
-        'TOTAL_JA_CLASSIFICADAS': int((~vazias_antes).sum()),
-        'TOTAL_APLICADAS': int(filtro_aplicacao.sum()),
-        'TOTAL_SOBRESCRITAS': total_sobrescritas,
-    })
+    sobrescritas = aplicar_regras_e_retornar_sobrescritas_ultima(
+        df_base=df_base,
+        regras=regras_prefixo,
+    )
+    df_sobrescritas = pd.DataFrame(sobrescritas, columns=colunas_sobrescritas)
 
-df_saida = df.drop(columns=[
-    coluna_ordem_regra,
-    coluna_nome_lista,
-    coluna_chave_grupo,
-]).copy()
+    if not df_sobrescritas.empty:
+        df_sobrescritas = df_sobrescritas.sort_values(
+            ['QUANTIDADE', 'ORDEM_REGRA_NOVA'],
+            ascending=[False, True],
+        )
 
-arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(parents=True, exist_ok=True)
+    salvar_csv_padronizado(df_sobrescritas, arquivo_sobrescritas)
+    print(f'Arquivo gerado: {arquivo_sobrescritas}')
 
-salvar_csv_padronizado(df_saida, arquivo_saida)
-salvar_csv_padronizado(pd.DataFrame(auditoria_regras), arquivo_auditoria_csv)
-salvar_csv_padronizado(pd.DataFrame(sobrescritas), arquivo_sobrescritas_csv)
-
-resumo = {
-    'execucao': 'exec_04_classificacao_regras_selecionadas',
-    'regras_para_executar': REGRAS_PARA_EXECUTAR,
-    'arquivo_entrada': str(arquivo_entrada),
-    'arquivo_regras_classificacao': str(arquivo_regras_classificacao),
-    'arquivo_saida': str(arquivo_saida),
-    'arquivo_auditoria': str(arquivo_auditoria_csv),
-    'arquivo_sobrescritas': str(arquivo_sobrescritas_csv),
-    'total_linhas_entrada': int(len(df)),
-    'total_regras_executadas': int(len(df_regras)),
-    'total_sobrescritas': int(sum(item['QUANTIDADE'] for item in sobrescritas)),
-}
-
-with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
-    json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
-
-salvar_csv_padronizado(pd.DataFrame([{
-    'EXECUCAO': resumo['execucao'],
-    'REGRAS_PARA_EXECUTAR': ','.join(str(item) for item in REGRAS_PARA_EXECUTAR),
-    'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
-    'ARQUIVO_REGRAS': resumo['arquivo_regras_classificacao'],
-    'ARQUIVO_SAIDA': resumo['arquivo_saida'],
-    'TOTAL_LINHAS_ENTRADA': resumo['total_linhas_entrada'],
-    'TOTAL_REGRAS_EXECUTADAS': resumo['total_regras_executadas'],
-    'TOTAL_SOBRESCRITAS': resumo['total_sobrescritas'],
-}]), arquivo_resumo_csv)
-
-print(f'Arquivo gerado: {arquivo_saida}')
-print(f'Auditoria gerada: {arquivo_auditoria_csv}')
-print(f'Sobrescritas geradas: {arquivo_sobrescritas_csv}')
-print('Execucao 04 de regras selecionadas finalizada.')
+print('Execucao 04 de sobrescritas selecionadas finalizada.')
