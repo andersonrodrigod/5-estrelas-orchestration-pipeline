@@ -8,7 +8,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
-ARQUIVO_BASE_LIMPA = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
+ARQUIVO_BASE_LIMPA = Path('data/avaliacoes/01_base_limpa.csv')
 COLUNAS_NOTAS = ['NOTA1', 'NOTA2', 'NOTA3', 'NOTA4', 'NOTA5']
 VALOR_MINIMO_NOTA = 1
 VALOR_MAXIMO_NOTA = 5

@@ -1,16 +1,14 @@
 {
     "execucao": "exec_04_classificacao",
     "arquivo_entrada": "data_exec_indiv\\avaliacoes\\03_base_com_nota.csv",
-    "arquivo_grupos": "data\\grupos_classificacao.json",
-    "arquivo_nomes": "data\\nomes_classificacao.json",
+    "arquivo_regras_classificacao": "utils\\insumos\\regra_classificacao.xlsx",
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\04_base_com_classificacao.csv",
-    "arquivo_regras_explicadas": "data\\grupos_classificacao_explicado.txt",
     "arquivo_auditoria": "saida_resumo_avaliacoes\\exec_04_classificacao\\exec_04_classificacao_auditoria.csv",
     "arquivo_sobrescritas": "saida_resumo_avaliacoes\\exec_04_classificacao\\exec_04_classificacao_sobrescritas.csv",
     "arquivo_nao_classificados_detalhado": "saida_resumo_avaliacoes\\exec_04_classificacao\\exec_04_classificacao_nao_classificados_detalhado.csv",
     "total_linhas_entrada": 1497449,
     "total_classificadas": 1497449,
     "total_nao_classificadas": 0,
-    "total_sobrescritas": 0,
-    "total_regras": 34
+    "total_sobrescritas": 40020,
+    "total_regras_ativas": 34
 }
