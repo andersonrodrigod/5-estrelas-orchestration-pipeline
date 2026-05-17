@@ -1,0 +1,43 @@
+{
+    "execucao": "exec_00_verificacao_campos",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\01_base_limpa.csv",
+    "arquivo_resumo_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_resumo.csv",
+    "arquivo_valores_invalidos_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_valores_invalidos.csv",
+    "arquivo_local_especialidade_invalidos_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_local_especialidade_invalidos.csv",
+    "total_linhas_entrada": 1369852,
+    "total_local_especialidade_invalidos": 1924,
+    "colunas_verificadas": [
+        "LOCAL",
+        "ESPECIALIDADE",
+        "UF"
+    ],
+    "resumo_colunas": [
+        {
+            "COLUNA": "LOCAL",
+            "TOTAL_LINHAS": "1369852",
+            "TOTAL_VAZIOS": "0",
+            "TOTAL_APENAS_HIFEN": "5508",
+            "TOTAL_SEM_LETRAS": "5508",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "5508",
+            "OBSERVACAO": ""
+        },
+        {
+            "COLUNA": "ESPECIALIDADE",
+            "TOTAL_LINHAS": "1369852",
+            "TOTAL_VAZIOS": "0",
+            "TOTAL_APENAS_HIFEN": "1973",
+            "TOTAL_SEM_LETRAS": "1973",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "1973",
+            "OBSERVACAO": ""
+        },
+        {
+            "COLUNA": "UF",
+            "TOTAL_LINHAS": "1369852",
+            "TOTAL_VAZIOS": "2255",
+            "TOTAL_APENAS_HIFEN": "0",
+            "TOTAL_SEM_LETRAS": "0",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "0",
+            "OBSERVACAO": ""
+        }
+    ]
+}

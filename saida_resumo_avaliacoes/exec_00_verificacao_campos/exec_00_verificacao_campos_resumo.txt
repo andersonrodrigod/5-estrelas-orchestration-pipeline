@@ -1,0 +1,29 @@
+RESUMO DA EXECUCAO 00 - VERIFICACAO DE CAMPOS
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\01_base_limpa.csv
+Arquivo de resumo CSV: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_resumo.csv
+Valores invalidos agrupados: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_valores_invalidos.csv
+Linhas com LOCAL e ESPECIALIDADE invalidos: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_local_especialidade_invalidos.csv
+
+Total de linhas na entrada: 1369852
+Total com LOCAL e ESPECIALIDADE invalidos juntos: 1924
+
+COLUNAS VERIFICADAS:
+
+- Coluna: LOCAL
+  Total vazios: 0
+  Total apenas hifen: 5508
+  Total sem letras: 5508
+  Total apenas caracteres especiais: 5508
+
+- Coluna: ESPECIALIDADE
+  Total vazios: 0
+  Total apenas hifen: 1973
+  Total sem letras: 1973
+  Total apenas caracteres especiais: 1973
+
+- Coluna: UF
+  Total vazios: 2255
+  Total apenas hifen: 0
+  Total sem letras: 0
+  Total apenas caracteres especiais: 0

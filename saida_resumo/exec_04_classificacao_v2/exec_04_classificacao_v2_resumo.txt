@@ -9,26 +9,28 @@ Sobrescritas detalhadas: saida_resumo_avaliacoes\exec_04_classificacao_v2\exec_0
 Nao classificados detalhado: saida_resumo_avaliacoes\exec_04_classificacao_v2\exec_04_classificacao_v2_nao_classificados_detalhado.csv
 
 TOTAIS:
-Total de linhas na entrada: 1497449
-Total classificadas: 1497449
-Total nao classificadas: 0
+Total de linhas na entrada: 1369852
+Total classificadas: 1367927
+Total nao classificadas: 1925
 Total sobrescritas: 0
 Total de regras ativas: 34
 
 REGRAS COM MAIS LINHAS ATINGIDAS:
-- Regra 22 - HAPCLINICA: 474888 linhas atingidas (0 sobrescritas)
-- Regra 17 - TELECONSULTA ELETIVA: 302053 linhas atingidas (0 sobrescritas)
-- Regra 2 - HOSPITALAR: 243473 linhas atingidas (0 sobrescritas)
-- Regra 30 - VIDA IMAGEM: 163455 linhas atingidas (0 sobrescritas)
-- Regra 28 - LABORATÓRIO: 161811 linhas atingidas (0 sobrescritas)
-- Regra 18 - TELECONSULTA URGÊNCIA: 57594 linhas atingidas (0 sobrescritas)
-- Regra 20 - CRED_TRATAMENTO: 31903 linhas atingidas (0 sobrescritas)
-- Regra 19 - MED PREV: 27756 linhas atingidas (0 sobrescritas)
-- Regra 23 - ODONTOLOGIA: 11737 linhas atingidas (0 sobrescritas)
-- Regra 3 - QUALIVIDA: 11722 linhas atingidas (0 sobrescritas)
+- Regra 22 - HAPCLINICA: 433255 linhas atingidas (0 sobrescritas)
+- Regra 17 - TELECONSULTA ELETIVA: 277681 linhas atingidas (0 sobrescritas)
+- Regra 2 - HOSPITALAR: 236197 linhas atingidas (0 sobrescritas)
+- Regra 30 - VIDA IMAGEM: 141326 linhas atingidas (0 sobrescritas)
+- Regra 28 - LABORATÓRIO: 140274 linhas atingidas (0 sobrescritas)
+- Regra 18 - TELECONSULTA URGÊNCIA: 53234 linhas atingidas (0 sobrescritas)
+- Regra 20 - CRED_TRATAMENTO: 27968 linhas atingidas (0 sobrescritas)
+- Regra 19 - MED PREV: 27200 linhas atingidas (0 sobrescritas)
+- Regra 3 - QUALIVIDA: 11148 linhas atingidas (0 sobrescritas)
+- Regra 4 - QUALIVIDA: 11148 linhas atingidas (0 sobrescritas)
 
 SOBRESCRITAS:
 - Nenhuma sobrescrita encontrada
 
 NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
-- Nenhuma linha sem classificacao
+- -: 1917
+- CLINICA VILA REIS: 4
+- CLINICA SUZANO: 4

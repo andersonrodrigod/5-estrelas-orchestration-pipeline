@@ -16,6 +16,7 @@ arquivo_saida = Path('data_exec_indiv/avaliacoes/07_base_com_meta.csv')
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_07_meta'
 arquivo_resumo_json = pasta_resumo / 'exec_07_meta_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_07_meta_resumo.txt'
+arquivo_nao_encontrados_detalhado_csv = pasta_resumo / 'exec_07_meta_nao_encontrados_detalhado.csv'
 
 
 def normalizar_texto(serie):
@@ -109,15 +110,18 @@ print(f'Total sem grupo correspondente: {total_nao_encontrados}')
 print(f'Gravando arquivo da execucao 07: {arquivo_saida}')
 
 df_saida = df.drop(columns=['CHAVE_META', 'GRUPO_ENCONTRADO'])
+df_nao_encontrados_detalhado = df_saida.loc[mascara_nao_encontrados].copy()
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
 salvar_csv_padronizado(df_saida, arquivo_saida)
+salvar_csv_padronizado(df_nao_encontrados_detalhado, arquivo_nao_encontrados_detalhado_csv)
 
 resumo = {
     'execucao': 'exec_07_meta',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_insumos': str(arquivo_insumos),
     'arquivo_saida': str(arquivo_saida),
+    'arquivo_nao_encontrados_detalhado': str(arquivo_nao_encontrados_detalhado_csv),
     'total_linhas_entrada': int(len(df)),
     'total_encontrados': total_encontrados,
     'total_nao_encontrados': total_nao_encontrados,
@@ -140,6 +144,7 @@ linhas_txt = [
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de insumos: {resumo['arquivo_insumos']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
+    f"Nao encontrados detalhado: {resumo['arquivo_nao_encontrados_detalhado']}",
     '',
     f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
     f"Total encontrados: {resumo['total_encontrados']}",
