@@ -1,0 +1,283 @@
+{
+    "execucao": "exec_separacao",
+    "arquivo_avaliacoes": "data_exec_indiv\\avaliacoes\\13_base_power_bi.csv",
+    "arquivo_negativas": "data_exec_indiv\\negativas\\04_base_com_local_editado.csv",
+    "arquivo_nomes_classificacao": "data\\nomes_classificacao.json",
+    "pasta_saida_excel": "data_exec_indiv\\separacao",
+    "pasta_resumo": "saida_resumo_separacao",
+    "arquivo_quantidades": "saida_resumo_separacao\\exec_separacao_quantidades_por_arquivo.csv",
+    "arquivo_classificacoes": "saida_resumo_separacao\\exec_separacao_classificacoes_por_grupo.csv",
+    "arquivo_nao_enviadas": "saida_resumo_separacao\\exec_separacao_classificacoes_nao_enviadas.csv",
+    "total_avaliacoes_origem": 1369852,
+    "total_negativas_origem": 1362133,
+    "total_origem": 2731985,
+    "total_avaliacoes_enviadas": 244721,
+    "total_negativas_enviadas": 518595,
+    "total_enviado": 763316,
+    "total_nao_enviado": 1968669,
+    "arquivos_gerados": [
+        "data_exec_indiv\\separacao\\base de dados 5 estrelas fevereiro 25 - hospitalar.xlsx"
+    ],
+    "quantidades_por_arquivo": [
+        {
+            "GRUPO": "hospitalar",
+            "ARQUIVO": "data_exec_indiv\\separacao\\base de dados 5 estrelas fevereiro 25 - hospitalar.xlsx",
+            "AVALIACOES": 244721,
+            "NEGATIVAS": 518595,
+            "TOTAL": 763316
+        }
+    ],
+    "classificacoes_por_grupo": [
+        {
+            "GRUPO": "hospitalar",
+            "CLASSIFICACAO": "HOSPITALAR",
+            "AVALIACOES": 236197,
+            "NEGATIVAS": 507401,
+            "TOTAL": 743598
+        },
+        {
+            "GRUPO": "hospitalar",
+            "CLASSIFICACAO": "INTERNACAO",
+            "AVALIACOES": 8524,
+            "NEGATIVAS": 11194,
+            "TOTAL": 19718
+        }
+    ],
+    "classificacoes_nao_enviadas": [
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "AMBULÂNCIA",
+            "QUANTIDADE": 1917
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CASE",
+            "QUANTIDADE": 3267
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_ATEND ELETIVO",
+            "QUANTIDADE": 4374
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_ATEND EMERGENCIA",
+            "QUANTIDADE": 1382
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_EXAMES",
+            "QUANTIDADE": 1449
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_INTERNACAO",
+            "QUANTIDADE": 25
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_LABORATÓRIO",
+            "QUANTIDADE": 4541
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "CRED_TRATAMENTO",
+            "QUANTIDADE": 27963
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "GESTAR BEM",
+            "QUANTIDADE": 1646
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "HAPCLINICA",
+            "QUANTIDADE": 408281
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "INTERNAÇÃO PGC",
+            "QUANTIDADE": 84
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "LABORATÓRIO",
+            "QUANTIDADE": 139308
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "MED PREV",
+            "QUANTIDADE": 16457
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "NASCER BEM",
+            "QUANTIDADE": 8539
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "ODONTOLOGIA",
+            "QUANTIDADE": 10356
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "PRODUTO COORDENADO",
+            "QUANTIDADE": 2303
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "QUALIVIDA",
+            "QUANTIDADE": 10121
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TEA",
+            "QUANTIDADE": 10654
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TELECONSULTA CASE",
+            "QUANTIDADE": 1967
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TELECONSULTA ELETIVA",
+            "QUANTIDADE": 275714
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TELECONSULTA URGÊNCIA",
+            "QUANTIDADE": 53234
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TELEMEDICINA",
+            "QUANTIDADE": 171
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "TRANSPLANTE",
+            "QUANTIDADE": 52
+        },
+        {
+            "ORIGEM": "avaliacoes",
+            "CLASSIFICACAO": "VIDA IMAGEM",
+            "QUANTIDADE": 141326
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "AMBULÂNCIA",
+            "QUANTIDADE": 2347
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CASE",
+            "QUANTIDADE": 1052
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_ATEND ELETIVO",
+            "QUANTIDADE": 6251
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_ATEND EMERGÊNCIA",
+            "QUANTIDADE": 2279
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_EXAMES",
+            "QUANTIDADE": 923
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_INTERNAÇÃO",
+            "QUANTIDADE": 23
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_LABORATÓRIO",
+            "QUANTIDADE": 4334
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "CRED_TRATAMENTO",
+            "QUANTIDADE": 10391
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "GESTAR BEM",
+            "QUANTIDADE": 537
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "HAPCLINICA",
+            "QUANTIDADE": 368231
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "INTERNAÇÃO PGC",
+            "QUANTIDADE": 177
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "LABORATÓRIO",
+            "QUANTIDADE": 128432
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "MED PREV",
+            "QUANTIDADE": 11707
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "NASCER BEM",
+            "QUANTIDADE": 3942
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "ODONTOLOGIA",
+            "QUANTIDADE": 6676
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "PRODUTO COORDENADO",
+            "QUANTIDADE": 1109
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "QUALIVIDA",
+            "QUANTIDADE": 3808
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "TEA",
+            "QUANTIDADE": 5647
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "TELECONSULTA CASE",
+            "QUANTIDADE": 300
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "TELECONSULTA ELETIVA",
+            "QUANTIDADE": 140696
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "TELEMEDICINA",
+            "QUANTIDADE": 214
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "TRANSPLANTE",
+            "QUANTIDADE": 21
+        },
+        {
+            "ORIGEM": "negativas",
+            "CLASSIFICACAO": "VIDA IMAGEM",
+            "QUANTIDADE": 144441
+        }
+    ]
+}

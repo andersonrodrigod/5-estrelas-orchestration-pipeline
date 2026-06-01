@@ -138,6 +138,7 @@ def preparar_base():
     df['CONTRATACAO'] = normalizar_texto(df['CONTRATACAO']).str.lower()
     df['LOCAL'] = normalizar_texto(df['LOCAL'])
     df['ESPECIALIDADE'] = normalizar_texto(df['ESPECIALIDADE'])
+    df['PROCEDIMENTO'] = normalizar_texto(df['PROCEDIMENTO'])
 
     if 'CLASSIFICACAO' not in df.columns:
         df['CLASSIFICACAO'] = None
@@ -260,6 +261,7 @@ def registrar_sobrescritas(df_base, filtro_aplicacao, regra):
             CLASSIFICACAO_NOVA=regra['classificacao'],
             LOCAL_LINHA_SOBRESCRITA=sobrescritas_regra['LOCAL'].fillna('VAZIO'),
             ESPECIALIDADE_LINHA_SOBRESCRITA=sobrescritas_regra['ESPECIALIDADE'].fillna('VAZIO'),
+            PROCEDIMENTO_LINHA_SOBRESCRITA=sobrescritas_regra['PROCEDIMENTO'].fillna('VAZIO'),
             CONTRATACAO_LINHA_SOBRESCRITA=sobrescritas_regra['CONTRATACAO'].fillna('VAZIO'),
             APLICAR_SOMENTE_VAZIOS_REGRA='sim' if regra['aplicar_somente_vazios'] else 'nao',
             PALAVRA_FILTRO_REGRA=formatar_valor_regra(regra.get('palavra_filtro')),
@@ -284,6 +286,7 @@ def registrar_sobrescritas(df_base, filtro_aplicacao, regra):
             'CLASSIFICACAO_NOVA',
             'LOCAL_LINHA_SOBRESCRITA',
             'ESPECIALIDADE_LINHA_SOBRESCRITA',
+            'PROCEDIMENTO_LINHA_SOBRESCRITA',
             'CONTRATACAO_LINHA_SOBRESCRITA',
             'APLICAR_SOMENTE_VAZIOS_REGRA',
             'PALAVRA_FILTRO_REGRA',
@@ -324,6 +327,7 @@ def executar():
         'CLASSIFICACAO_NOVA',
         'LOCAL_LINHA_SOBRESCRITA',
         'ESPECIALIDADE_LINHA_SOBRESCRITA',
+        'PROCEDIMENTO_LINHA_SOBRESCRITA',
         'CONTRATACAO_LINHA_SOBRESCRITA',
         'APLICAR_SOMENTE_VAZIOS_REGRA',
         'PALAVRA_FILTRO_REGRA',

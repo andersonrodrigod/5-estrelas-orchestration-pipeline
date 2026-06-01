@@ -21,7 +21,10 @@ arquivo_nao_encontrados_csv = pasta_resumo / 'exec_05_local_editado_nao_encontra
 
 
 def normalizar_texto(serie):
-    return serie.astype('string').str.strip()
+    texto = serie.astype('string')
+    texto = texto.str.replace('\xa0', ' ', regex=False)
+    texto = texto.str.replace(r'\s+', ' ', regex=True)
+    return texto.str.strip()
 
 
 def transformar_em_lista_registros(df_base, colunas):
@@ -68,6 +71,13 @@ mapa_local_editado = df_insumos.set_index('LOCAL_COMPARACAO')['local editado']
 
 local_editado_antes = df['LOCAL EDITADO'].copy()
 local_editado_novo = df['LOCAL_COMPARACAO'].map(mapa_local_editado)
+
+# CODIGO TEMPORARIO: enquanto LOCAL vem vazio ou "-" para TIPO 15,
+# preencher LOCAL EDITADO como AMBULÂNCIA.
+tipo_numerico = pd.to_numeric(df['TIPO'], errors='coerce')
+local_vazio_ou_hifen = df['LOCAL_COMPARACAO'].fillna('').isin(['', '-'])
+tipo_15_local_vazio = tipo_numerico.eq(15) & local_vazio_ou_hifen
+local_editado_novo.loc[tipo_15_local_vazio] = 'AMBULÂNCIA'
 
 encontrados = local_editado_novo.notna() & (local_editado_novo != '')
 nao_encontrados = ~encontrados

@@ -1,6 +1,6 @@
 RESUMO DA EXECUCAO 00 - VERIFICACAO DE CAMPOS
 
-Arquivo de entrada: data_exec_indiv\avaliacoes\01_base_limpa.csv
+Arquivo de entrada: data\5_estrelas_abril.csv
 Arquivo de resumo CSV: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_resumo.csv
 Valores invalidos agrupados: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_valores_invalidos.csv
 Linhas com LOCAL e ESPECIALIDADE invalidos: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_local_especialidade_invalidos.csv

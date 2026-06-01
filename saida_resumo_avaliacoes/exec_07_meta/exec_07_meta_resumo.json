@@ -5,12 +5,12 @@
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\07_base_com_meta.csv",
     "arquivo_nao_encontrados_detalhado": "saida_resumo_avaliacoes\\exec_07_meta\\exec_07_meta_nao_encontrados_detalhado.csv",
     "total_linhas_entrada": 1369852,
-    "total_encontrados": 1367927,
-    "total_nao_encontrados": 1925,
+    "total_encontrados": 1367935,
+    "total_nao_encontrados": 1917,
     "grupos_encontrados": [
         {
             "GRUPO": "HAPCLINICA",
-            "QUANTIDADE": "415974"
+            "QUANTIDADE": "408281"
         },
         {
             "GRUPO": "TELECONSULTA ELETIVA",
@@ -22,11 +22,11 @@
         },
         {
             "GRUPO": "VIDA IMAGEM",
-            "QUANTIDADE": "140978"
+            "QUANTIDADE": "141326"
         },
         {
             "GRUPO": "LABORATÓRIO",
-            "QUANTIDADE": "139358"
+            "QUANTIDADE": "139308"
         },
         {
             "GRUPO": "TELECONSULTA URGÊNCIA",
@@ -34,19 +34,27 @@
         },
         {
             "GRUPO": "CRED_TRATAMENTO",
-            "QUANTIDADE": "27785"
+            "QUANTIDADE": "27963"
         },
         {
             "GRUPO": "MED PREV",
-            "QUANTIDADE": "22802"
+            "QUANTIDADE": "16457"
         },
         {
-            "GRUPO": "QUALIVIDA",
-            "QUANTIDADE": "11383"
+            "GRUPO": "TEA",
+            "QUANTIDADE": "10654"
         },
         {
             "GRUPO": "ODONTOLOGIA",
-            "QUANTIDADE": "10351"
+            "QUANTIDADE": "10356"
+        },
+        {
+            "GRUPO": "QUALIVIDA",
+            "QUANTIDADE": "10121"
+        },
+        {
+            "GRUPO": "NASCER BEM",
+            "QUANTIDADE": "8539"
         },
         {
             "GRUPO": "INTERNAÇÃO",
@@ -54,31 +62,27 @@
         },
         {
             "GRUPO": "CRED_LABORATÓRIO",
-            "QUANTIDADE": "4523"
+            "QUANTIDADE": "4541"
         },
         {
             "GRUPO": "CRED_ATEND ELETIVO",
             "QUANTIDADE": "4374"
         },
         {
-            "GRUPO": "TEA",
-            "QUANTIDADE": "3943"
-        },
-        {
             "GRUPO": "CASE",
-            "QUANTIDADE": "3266"
+            "QUANTIDADE": "3267"
         },
         {
             "GRUPO": "PRODUTO COORDENADO",
             "QUANTIDADE": "2303"
         },
         {
-            "GRUPO": "NASCER BEM",
-            "QUANTIDADE": "2133"
-        },
-        {
             "GRUPO": "TELECONSULTA CASE",
             "QUANTIDADE": "1967"
+        },
+        {
+            "GRUPO": "GESTAR BEM",
+            "QUANTIDADE": "1646"
         },
         {
             "GRUPO": "CRED_EXAMES",
@@ -97,22 +101,18 @@
             "QUANTIDADE": "84"
         },
         {
+            "GRUPO": "TRANSPLANTE",
+            "QUANTIDADE": "52"
+        },
+        {
             "GRUPO": "CRED_INTERNACAO",
             "QUANTIDADE": "25"
-        },
-        {
-            "GRUPO": "GESTAR BEM",
-            "QUANTIDADE": "5"
-        },
-        {
-            "GRUPO": "TRANSPLANTE",
-            "QUANTIDADE": "2"
         }
     ],
     "classificacoes_nao_encontradas": [
         {
-            "CLASSIFICACAO": "VAZIO",
-            "QUANTIDADE": "1925"
+            "CLASSIFICACAO": "AMBULÂNCIA",
+            "QUANTIDADE": "1917"
         }
     ]
 }

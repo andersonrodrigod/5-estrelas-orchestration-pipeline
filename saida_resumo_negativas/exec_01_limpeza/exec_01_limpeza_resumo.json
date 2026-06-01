@@ -1,9 +1,9 @@
 {
     "execucao": "exec_01_limpeza_negativas",
-    "arquivo_entrada": "data\\5_estrelas_negativo_marco.csv",
+    "arquivo_entrada": "data\\5_estrelas_abril_negativa.csv",
     "arquivo_saida": "data_exec_indiv\\negativas\\01_base_limpa.csv",
-    "total_linhas_entrada": 1448219,
-    "total_linhas_saida": 1448219,
+    "total_linhas_entrada": 1362133,
+    "total_linhas_saida": 1362133,
     "total_colunas_saida": 28,
     "colunas_criadas": [
         "CONTRATACAO",

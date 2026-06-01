@@ -87,12 +87,6 @@
             "QUANTIDADE": "5512"
         },
         {
-            "LOCAL": "-",
-            "LOCAL EDITADO": "sem nome",
-            "CONTRATACAO": "rede credenciada",
-            "QUANTIDADE": "5508"
-        },
-        {
             "LOCAL": "CLINICA ZONA SUL",
             "LOCAL EDITADO": "CLINICA ZONA SUL",
             "CONTRATACAO": "rede propria",
@@ -201,8 +195,8 @@
             "QUANTIDADE": "4255"
         },
         {
-            "LOCAL": "CENTRO CLINICO PRESTES MAIA",
-            "LOCAL EDITADO": "CENTRO CLINICO PRESTES MAIA",
+            "LOCAL": "CENTRO CLINICO PRESTES MAIA",
+            "LOCAL EDITADO": "CENTRO CLINICO PRESTES MAIA",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "4232"
         },
@@ -373,6 +367,12 @@
             "LOCAL EDITADO": "VIDA IMAGEM PARANGABA",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "3605"
+        },
+        {
+            "LOCAL": "-",
+            "LOCAL EDITADO": "sem nome",
+            "CONTRATACAO": "rede credenciada",
+            "QUANTIDADE": "3591"
         },
         {
             "LOCAL": "HOSPITAL PAULO SACRAMENTO",
@@ -1131,6 +1131,12 @@
             "QUANTIDADE": "1921"
         },
         {
+            "LOCAL": "-",
+            "LOCAL EDITADO": "AMBULÂNCIA",
+            "CONTRATACAO": "rede credenciada",
+            "QUANTIDADE": "1917"
+        },
+        {
             "LOCAL": "HOSPITAL BAURU",
             "LOCAL EDITADO": "HOSPITAL BAURU",
             "CONTRATACAO": "rede propria",
@@ -1222,7 +1228,7 @@
         },
         {
             "LOCAL": "CC PRESTES MAIA",
-            "LOCAL EDITADO": "CENTRO CLINICO PRESTES MAIA",
+            "LOCAL EDITADO": "CENTRO CLINICO PRESTES MAIA",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "1792"
         },
@@ -2356,7 +2362,7 @@
         },
         {
             "LOCAL": "NOTRE DAME INTERMEDICA SAUDE S.A.",
-            "LOCAL EDITADO": "NOTRE DAME INTERMEDICA SAUDE S.A.",
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "740"
         },
@@ -3387,6 +3393,12 @@
             "QUANTIDADE": "331"
         },
         {
+            "LOCAL": "CLINICA PRUDENTE DE MORAES",
+            "LOCAL EDITADO": "CLINICA PRUDENTE DE MORAES",
+            "CONTRATACAO": "rede propria",
+            "QUANTIDADE": "329"
+        },
+        {
             "LOCAL": "CC GUARULHOS 1",
             "LOCAL EDITADO": "CENTRO CLINICO GUARULHOS I",
             "CONTRATACAO": "rede propria",
@@ -4179,12 +4191,6 @@
             "QUANTIDADE": "189"
         },
         {
-            "LOCAL": "CLINICA PRUDENTE DE MORAES",
-            "LOCAL EDITADO": "CLINICA PRUDENTE DE MORAES",
-            "CONTRATACAO": "rede propria",
-            "QUANTIDADE": "189"
-        },
-        {
             "LOCAL": "NB 01-HAPCLINICA GAR",
             "LOCAL EDITADO": "NB 01-HAPCLINICA GAR",
             "CONTRATACAO": "rede propria",
@@ -4486,7 +4492,7 @@
         },
         {
             "LOCAL": "PRONTO ATEND CLINICA GUAIBA",
-            "LOCAL EDITADO": "PA CLINICA GUAIBA",
+            "LOCAL EDITADO": "PA CLINICA GUAIBA",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "152"
         },
@@ -4583,12 +4589,6 @@
         {
             "LOCAL": "CLINICA BAIRRO NOVO",
             "LOCAL EDITADO": "CLINICA BAIRRO NOVO",
-            "CONTRATACAO": "rede propria",
-            "QUANTIDADE": "140"
-        },
-        {
-            "LOCAL": "CLINICA PRUDENTE DE MORAES",
-            "LOCAL EDITADO": "CLINICA PRUDENTE DE MORAES",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "140"
         },
@@ -5782,7 +5782,7 @@
         },
         {
             "LOCAL": "NOTRE DAME INTERMEDICA SAUDE",
-            "LOCAL EDITADO": "NOTRE DAME INTERMEDICA SAUDE",
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "69"
         },
@@ -9412,7 +9412,7 @@
         },
         {
             "LOCAL": "NOTRE DAME INTERMEDICA SAUDE SA",
-            "LOCAL EDITADO": "NOTRE DAME INTERMEDICA SAUDE SA",
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "16"
         },
@@ -12154,7 +12154,7 @@
         },
         {
             "LOCAL": "DIAG CC INTERLAGOS",
-            "LOCAL EDITADO": "DIAG  CENTRO CLINICO INTERLAGOS",
+            "LOCAL EDITADO": "DIAG CENTRO CLINICO INTERLAGOS",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "6"
         },
@@ -18328,7 +18328,7 @@
         },
         {
             "LOCAL": "DIAG CC COTIA I",
-            "LOCAL EDITADO": "DIAG  CENTRO CLINICO COTIA I",
+            "LOCAL EDITADO": "DIAG CENTRO CLINICO COTIA I",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "1"
         },
@@ -20026,7 +20026,7 @@
         },
         {
             "LOCAL": "NOTRE DAME INTERMEDICA SAUDE S",
-            "LOCAL EDITADO": "NOTRE DAME INTERMEDICA SAUDE S",
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
             "CONTRATACAO": "rede propria",
             "QUANTIDADE": "1"
         },

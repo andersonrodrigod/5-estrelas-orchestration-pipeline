@@ -1,6 +1,6 @@
 {
     "execucao": "exec_00_verificacao_campos",
-    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\01_base_limpa.csv",
+    "arquivo_entrada": "data\\5_estrelas_abril.csv",
     "arquivo_resumo_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_resumo.csv",
     "arquivo_valores_invalidos_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_valores_invalidos.csv",
     "arquivo_local_especialidade_invalidos_csv": "saida_resumo_avaliacoes\\exec_00_verificacao_campos\\exec_00_verificacao_campos_local_especialidade_invalidos.csv",

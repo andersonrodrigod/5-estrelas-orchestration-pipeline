@@ -5,125 +5,29 @@
     "arquivo_saida": "data_exec_indiv\\avaliacoes\\06_base_com_operadora.csv",
     "arquivo_auditoria": "saida_resumo_avaliacoes\\exec_06_operadora\\exec_06_operadora_auditoria.csv",
     "total_linhas_entrada": 1369852,
-    "total_classificadas_antes_hapvida": 819963,
-    "total_preenchidas_com_hapvida": 549889,
+    "total_classificadas_antes_hapvida": 829758,
+    "total_preenchidas_com_hapvida": 540094,
     "total_classificadas_final": 1369852,
     "total_sobrescritos": 11195,
-    "total_regras_ativas": 420,
-    "total_locais_multiplas_operadoras": 77,
+    "total_regras_ativas": 421,
+    "total_locais_multiplas_operadoras": 15,
     "locais_multiplas_operadoras": [
         {
             "LOCAL EDITADO": "ARAGON CLIN REAB",
             "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
+            "OPERADORA": "ODONTOLOGIA",
+            "QUANTIDADE": "5"
         },
         {
             "LOCAL EDITADO": "ARAGON CLIN REAB",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "79"
-        },
-        {
-            "LOCAL EDITADO": "ASR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "ASR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "12"
-        },
-        {
-            "LOCAL EDITADO": "BRONSTEIN",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "BRONSTEIN",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "32"
-        },
-        {
-            "LOCAL EDITADO": "CECCATO FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CECCATO FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "83"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO COTIA SC",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO COTIA SC",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO MARIANA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "18"
-        },
-        {
-            "LOCAL EDITADO": "CENTRO MEDICO MARIANA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "24"
-        },
-        {
-            "LOCAL EDITADO": "CICLOS PSICO TERAPIAS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "CICLOS PSICO TERAPIAS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "17"
-        },
-        {
-            "LOCAL EDITADO": "CLIN FISIOTERAPIA REAB",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "CLIN FISIOTERAPIA REAB",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "64"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA ALLIANCE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA ALLIANCE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "178"
+            "QUANTIDADE": "75"
         },
         {
             "LOCAL EDITADO": "CLINICA CUIDAR",
             "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
+            "OPERADORA": "ODONTOLOGIA",
             "QUANTIDADE": "18"
         },
         {
@@ -131,66 +35,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "11"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA DE PSICOLOGIA HARMONIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA DE PSICOLOGIA HARMONIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "11"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA FISIOMAX",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA FISIOMAX",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "79"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA RENASCER",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA RENASCER",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "54"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA SAO LUCAS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA SAO LUCAS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "151"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA SERFIS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CLINICA SERFIS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "19"
         },
         {
             "LOCAL EDITADO": "CLINICA SUZANO",
@@ -215,282 +59,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "155"
-        },
-        {
-            "LOCAL EDITADO": "COFRAT",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "COFRAT",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "43"
-        },
-        {
-            "LOCAL EDITADO": "COTE ORTOPEDIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "COTE ORTOPEDIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "42"
-        },
-        {
-            "LOCAL EDITADO": "CREFISIO POLICLINICA DE SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "CREFISIO POLICLINICA DE SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "140"
-        },
-        {
-            "LOCAL EDITADO": "DECORDIS ITABORAI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "11"
-        },
-        {
-            "LOCAL EDITADO": "DECORDIS ITABORAI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "67"
-        },
-        {
-            "LOCAL EDITADO": "DELBONI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "DELBONI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "115"
-        },
-        {
-            "LOCAL EDITADO": "EL CHAGAS FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "EL CHAGAS FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "147"
-        },
-        {
-            "LOCAL EDITADO": "EQUILIBRIO PSICOLOGIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "EQUILIBRIO PSICOLOGIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "47"
-        },
-        {
-            "LOCAL EDITADO": "ESPACO ALTERNATIVO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "ESPACO ALTERNATIVO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "109"
-        },
-        {
-            "LOCAL EDITADO": "ESPACO SANTE FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "ESPACO SANTE FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "44"
-        },
-        {
-            "LOCAL EDITADO": "FISIO VITALITY",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "FISIO VITALITY",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "21"
-        },
-        {
-            "LOCAL EDITADO": "FISIODINAMICA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIODINAMICA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "13"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "13"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "35"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "778"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED SAUDE E BEM ESTAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIOMED SAUDE E BEM ESTAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "221"
-        },
-        {
-            "LOCAL EDITADO": "FISIOREMANSO CLINICA DE SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIOREMANSO CLINICA DE SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "FISIOT REAB CARDIOVASC",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FISIOT REAB CARDIOVASC",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "20"
-        },
-        {
-            "LOCAL EDITADO": "FISIOTERAPIA INTEGRADA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "FISIOTERAPIA INTEGRADA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "7"
-        },
-        {
-            "LOCAL EDITADO": "FISIOTERAPIA SANTA TEREZINHA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "14"
-        },
-        {
-            "LOCAL EDITADO": "FISIOTERAPIA SANTA TEREZINHA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "147"
-        },
-        {
-            "LOCAL EDITADO": "FLEX SAUDE E BEM ESTAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FLEX SAUDE E BEM ESTAR",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "50"
-        },
-        {
-            "LOCAL EDITADO": "FREITAS E FOGACA FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "FREITAS E FOGACA FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "40"
-        },
-        {
-            "LOCAL EDITADO": "GAVEACOR GALEAO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "GAVEACOR GALEAO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "6"
-        },
-        {
-            "LOCAL EDITADO": "GEF",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "GEF",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "6"
         },
         {
             "LOCAL EDITADO": "HOSPITAL HUMANIZA",
@@ -568,7 +136,7 @@
             "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1368"
+            "QUANTIDADE": "2194"
         },
         {
             "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
@@ -589,162 +157,6 @@
             "QUANTIDADE": "4009"
         },
         {
-            "LOCAL EDITADO": "INSTITUTO HERMES PARDINI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "4"
-        },
-        {
-            "LOCAL EDITADO": "INSTITUTO HERMES PARDINI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "170"
-        },
-        {
-            "LOCAL EDITADO": "INSTITUTO PATRICIA LACOMBE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "5"
-        },
-        {
-            "LOCAL EDITADO": "INSTITUTO PATRICIA LACOMBE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "31"
-        },
-        {
-            "LOCAL EDITADO": "INSTITUTO VIDA UNIDADE JANDIRA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "INSTITUTO VIDA UNIDADE JANDIRA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "54"
-        },
-        {
-            "LOCAL EDITADO": "IRDAW",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "IRDAW",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "135"
-        },
-        {
-            "LOCAL EDITADO": "LABORATORIO GONZAGA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "LABORATORIO GONZAGA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "9"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED BONSUCESSO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED BONSUCESSO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "8"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED CENTRO NITEROI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED CENTRO NITEROI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "15"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED LABORATORIOS MEDICOS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "LABORMED LABORATORIOS MEDICOS",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "9"
-        },
-        {
-            "LOCAL EDITADO": "LABPASTEUR HARMONY",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "LABPASTEUR HARMONY",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "10"
-        },
-        {
-            "LOCAL EDITADO": "LAR REABILITACAO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "4"
-        },
-        {
-            "LOCAL EDITADO": "LAR REABILITACAO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "642"
-        },
-        {
-            "LOCAL EDITADO": "MACEDO FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "7"
-        },
-        {
-            "LOCAL EDITADO": "MACEDO FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "7"
-        },
-        {
-            "LOCAL EDITADO": "MALIL PERFORMANCE FISIO ITU",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "MALIL PERFORMANCE FISIO ITU",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "25"
-        },
-        {
-            "LOCAL EDITADO": "MARTINS SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "MARTINS SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "50"
-        },
-        {
             "LOCAL EDITADO": "MED PREV CACHOEIRINHA",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "CCG",
@@ -755,54 +167,6 @@
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "HAPVIDA",
             "QUANTIDADE": "1030"
-        },
-        {
-            "LOCAL EDITADO": "MEDBIO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "MEDBIO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "MOVIMENTO VIDA FISIOT",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "MOVIMENTO VIDA FISIOT",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "22"
-        },
-        {
-            "LOCAL EDITADO": "NEXXUS FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "NEXXUS FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "32"
-        },
-        {
-            "LOCAL EDITADO": "NUTRICILLA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "NUTRICILLA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "28"
         },
         {
             "LOCAL EDITADO": "PENDENCIA ESPECIAL CCG",
@@ -817,124 +181,16 @@
             "QUANTIDADE": "1"
         },
         {
-            "LOCAL EDITADO": "SELFF CLINICA PSICOLOGICA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "11"
-        },
-        {
-            "LOCAL EDITADO": "SELFF CLINICA PSICOLOGICA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "62"
-        },
-        {
             "LOCAL EDITADO": "SEM NOME",
             "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "5507"
+            "OPERADORA": "ODONTOLOGIA",
+            "QUANTIDADE": "3590"
         },
         {
             "LOCAL EDITADO": "SEM NOME",
             "TOTAL_OPERADORAS": "2",
             "OPERADORA": "REDE CREDENCIADA",
             "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "SOXYL FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "SOXYL FISIOTERAPIA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "3"
-        },
-        {
-            "LOCAL EDITADO": "TSB FISIOTERAPIA E ACUPUNTURA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "TSB FISIOTERAPIA E ACUPUNTURA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "289"
-        },
-        {
-            "LOCAL EDITADO": "UNIEF UNIDADE PROGRESSO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "9"
-        },
-        {
-            "LOCAL EDITADO": "UNIEF UNIDADE PROGRESSO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "39"
-        },
-        {
-            "LOCAL EDITADO": "UNIFI FISIOTERAPIA INTENSIVA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "UNIFI FISIOTERAPIA INTENSIVA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "84"
-        },
-        {
-            "LOCAL EDITADO": "VERSATIL SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "VERSATIL SAUDE",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "62"
-        },
-        {
-            "LOCAL EDITADO": "VIDA FISIOTERAPIA E MEDICINA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "VIDA FISIOTERAPIA E MEDICINA",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "190"
-        },
-        {
-            "LOCAL EDITADO": "VIDA FISIOTERAPIA ITAPEVI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "2"
-        },
-        {
-            "LOCAL EDITADO": "VIDA FISIOTERAPIA ITAPEVI",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "65"
-        },
-        {
-            "LOCAL EDITADO": "VIPFISIO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "HAPVIDA",
-            "QUANTIDADE": "1"
-        },
-        {
-            "LOCAL EDITADO": "VIPFISIO",
-            "TOTAL_OPERADORAS": "2",
-            "OPERADORA": "REDE CREDENCIADA",
-            "QUANTIDADE": "90"
         }
     ],
     "regras_aplicadas": [
@@ -952,8 +208,8 @@
             "REGRA": "CLASSIFICACAO contem CRED",
             "OPERADORA_APLICADA": "REDE CREDENCIADA",
             "APLICAR_SOMENTE_VAZIOS": "nao",
-            "TOTAL_ATINGIDAS": 39538,
-            "TOTAL_VAZIAS": 39538,
+            "TOTAL_ATINGIDAS": 39734,
+            "TOTAL_VAZIAS": 39734,
             "TOTAL_SOBRESCRITAS": 0
         },
         {
@@ -1096,17 +352,26 @@
             "REGRA": "BLOCO NDI SP E RJ",
             "OPERADORA_APLICADA": "NDI SP E RJ",
             "APLICAR_SOMENTE_VAZIOS": "nao",
-            "TOTAL_ATINGIDAS": 366533,
-            "TOTAL_VAZIAS": 366207,
+            "TOTAL_ATINGIDAS": 365776,
+            "TOTAL_VAZIAS": 365450,
             "TOTAL_SOBRESCRITAS": 326
         },
         {
             "ORDEM": 420,
+            "REGRA": "CLASSIFICACAO igual a ODONTOLOGIA",
+            "OPERADORA_APLICADA": "ODONTOLOGIA",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 10356,
+            "TOTAL_VAZIAS": 10356,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 421,
             "REGRA": "OPERADORA vazia no final recebe HAPVIDA",
             "OPERADORA_APLICADA": "HAPVIDA",
             "APLICAR_SOMENTE_VAZIOS": "sim",
-            "TOTAL_ATINGIDAS": 549889,
-            "TOTAL_VAZIAS": 549889,
+            "TOTAL_ATINGIDAS": 540094,
+            "TOTAL_VAZIAS": 540094,
             "TOTAL_SOBRESCRITAS": 0
         }
     ]

@@ -1,0 +1,21 @@
+RESUMO DA EXECUCAO 13 - POWER BI
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\09_base_com_status_unidade.csv
+Arquivo de saida: data_exec_indiv\avaliacoes\13_base_power_bi.csv
+Mapeamento de colunas: saida_resumo_avaliacoes\exec_13_power_bi\exec_13_power_bi_colunas.csv
+Ajustes de classificacao: saida_resumo_avaliacoes\exec_13_power_bi\exec_13_power_bi_classificacao_ajustes.csv
+
+Total de linhas na entrada: 1369852
+Total de linhas na saida: 1369852
+Total de colunas na entrada: 44
+Total de colunas na saida: 43
+
+Colunas removidas:
+- Quantidade notas validas
+
+Data:
+- data_atendimento formatada como dd/mm/aaaa
+
+Classificacoes ajustadas para o padrao historico:
+- CRED_ATEND EMERGÊNCIA -> CRED_ATEND EMERGENCIA
+- CRED_INTERNAÇÃO -> CRED_INTERNACAO

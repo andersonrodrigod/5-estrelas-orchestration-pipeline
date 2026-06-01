@@ -1,0 +1,16 @@
+{
+    "execucao": "exec_09_2_sem_ambulancia",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\09_base_com_status_unidade.csv",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\09_2_base_sem_ambulancia.csv",
+    "arquivo_excluidas_csv": "saida_resumo_avaliacoes\\exec_09_2_sem_ambulancia\\exec_09_2_sem_ambulancia_excluidas.csv",
+    "classificacao_excluir": "AMBULANCIA",
+    "total_linhas_entrada": 1369852,
+    "total_linhas_excluidas": 1917,
+    "total_linhas_saida": 1367935,
+    "classificacoes_excluidas": [
+        {
+            "CLASSIFICACAO": "AMBULÂNCIA",
+            "QUANTIDADE": 1917
+        }
+    ]
+}

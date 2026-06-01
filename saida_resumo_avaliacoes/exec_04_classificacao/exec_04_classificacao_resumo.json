@@ -7,8 +7,8 @@
     "arquivo_sobrescritas": "saida_resumo_avaliacoes\\exec_04_classificacao\\exec_04_classificacao_sobrescritas.csv",
     "arquivo_nao_classificados_detalhado": "saida_resumo_avaliacoes\\exec_04_classificacao\\exec_04_classificacao_nao_classificados_detalhado.csv",
     "total_linhas_entrada": 1369852,
-    "total_classificadas": 1367927,
-    "total_nao_classificadas": 1925,
-    "total_sobrescritas": 35433,
-    "total_regras_ativas": 34
+    "total_classificadas": 1369852,
+    "total_nao_classificadas": 0,
+    "total_sobrescritas": 41018,
+    "total_regras_ativas": 38
 }

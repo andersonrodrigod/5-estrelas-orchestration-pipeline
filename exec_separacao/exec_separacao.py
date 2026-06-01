@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 import sys
 import unicodedata
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 import pandas as pd
+from openpyxl import Workbook
+from openpyxl.cell import WriteOnlyCell
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
+# Avaliacoes ja saem no layout historico usado pelo Power BI a partir da execucao 13.
+arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/13_base_power_bi.csv')
 arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
 pasta_saida_excel = Path('data_exec_indiv/separacao')
@@ -25,6 +30,9 @@ prefixo_saida = 'base de dados 5 estrelas fevereiro 25 - '
 coluna_classificacao = 'CLASSIFICACAO'
 
 regras_grupos = {
+    'ambulancia': [
+        'AMBULANCIA',
+    ],
     'diagnostico': [
         'VIDA IMAGEM',
         'LABORATORIO',
@@ -65,6 +73,71 @@ regras_grupos = {
         'TELECONSULTA CASE',
         'TELECONSULTA URG\u00caNCIA',
     ],
+}
+
+grupos_filtrados = [
+    grupo.strip()
+    for grupo in os.environ.get('GRUPOS_SEPARACAO', '').split(';')
+    if grupo.strip()
+]
+
+if grupos_filtrados:
+    grupos_inexistentes = [
+        grupo
+        for grupo in grupos_filtrados
+        if grupo not in regras_grupos
+    ]
+
+    if grupos_inexistentes:
+        raise ValueError(
+            'Grupo(s) informado(s) em GRUPOS_SEPARACAO nao existem: '
+            + ', '.join(grupos_inexistentes)
+        )
+
+    regras_grupos = {
+        grupo: regras_grupos[grupo]
+        for grupo in grupos_filtrados
+    }
+
+colunas_numericas_avaliacoes = {
+    'nota1',
+    'nota2',
+    'nota3',
+    'nota4',
+    'nota5',
+    'mes',
+    'dia',
+    'ano',
+    'tipo',
+    'nota geral',
+    'Meta',
+    'resultado da unidade',
+}
+
+colunas_texto_forcado_avaliacoes = {
+    'cdatendimento',
+    'num_beneficiario',
+    'cdempresa',
+    'cdusuario',
+    'telefone',
+    'data_atendimento',
+}
+
+colunas_numericas_negativas = {
+    'NOTA',
+    'MES',
+    'DIA',
+    'ANO',
+    'TIPO',
+}
+
+colunas_texto_forcado_negativas = {
+    'CDATENDIMENTO',
+    'NUM_BENEFICIARIO',
+    'CDEMPRESA',
+    'CDUSUARIO',
+    'TELEFONE',
+    'DATA_ATENDIMENTO',
 }
 
 
@@ -163,12 +236,82 @@ def resumo_nao_enviadas(df, origem, coluna_original):
     return resumo.sort_values(['ORIGEM', 'CLASSIFICACAO'])
 
 
+def valor_vazio(valor):
+    return valor is None or pd.isna(valor) or str(valor).strip() == ''
+
+
+def converter_numero(valor):
+    if valor_vazio(valor):
+        return None
+
+    texto = str(valor).strip().replace(',', '.')
+
+    try:
+        numero = Decimal(texto)
+    except InvalidOperation:
+        return str(valor)
+
+    if numero == numero.to_integral_value():
+        return int(numero)
+
+    return float(numero)
+
+
+def criar_celula_texto(ws, valor):
+    celula = WriteOnlyCell(ws, value='' if valor_vazio(valor) else str(valor))
+    celula.number_format = '@'
+    return celula
+
+
+def criar_celula_excel(ws, coluna, valor, colunas_numericas, colunas_texto_forcado):
+    if coluna in colunas_numericas:
+        return converter_numero(valor)
+
+    if coluna in colunas_texto_forcado:
+        return criar_celula_texto(ws, valor)
+
+    if valor_vazio(valor):
+        return None
+
+    return str(valor)
+
+
+def escrever_aba_dataframe(workbook, nome_aba, df, colunas_numericas, colunas_texto_forcado):
+    ws = workbook.create_sheet(title=nome_aba)
+    cabecalho = list(df.columns)
+    ws.append(cabecalho)
+
+    for linha in df.itertuples(index=False, name=None):
+        ws.append([
+            criar_celula_excel(
+                ws,
+                coluna,
+                valor,
+                colunas_numericas,
+                colunas_texto_forcado,
+            )
+            for coluna, valor in zip(cabecalho, linha)
+        ])
+
+
 def salvar_excel_grupo(grupo, df_avaliacoes, df_negativas):
     caminho_saida = pasta_saida_excel / f'{prefixo_saida}{grupo}.xlsx'
-
-    with pd.ExcelWriter(caminho_saida, engine='openpyxl') as writer:
-        df_avaliacoes.to_excel(writer, sheet_name='avaliacoes', index=False)
-        df_negativas.to_excel(writer, sheet_name='negativas', index=False)
+    workbook = Workbook(write_only=True)
+    escrever_aba_dataframe(
+        workbook,
+        'avaliacoes',
+        df_avaliacoes,
+        colunas_numericas_avaliacoes,
+        colunas_texto_forcado_avaliacoes,
+    )
+    escrever_aba_dataframe(
+        workbook,
+        'negativas',
+        df_negativas,
+        colunas_numericas_negativas,
+        colunas_texto_forcado_negativas,
+    )
+    workbook.save(caminho_saida)
 
     return caminho_saida
 
@@ -216,11 +359,8 @@ for grupo in regras_grupos:
         .drop(columns=['__classificacao_normalizada', '__grupo'])
     )
 
-    avaliacoes_filtradas = aplicar_nomes_envio(
-        avaliacoes_filtradas,
-        coluna_avaliacoes,
-        mapa_nomes_envio
-    )
+    # A execucao 13 ja ajusta a CLASSIFICACAO das avaliacoes para o padrao
+    # historico do Power BI. Reaplicar nomes aqui recolocaria acentos.
     negativas_filtradas = aplicar_nomes_envio(
         negativas_filtradas,
         coluna_negativas,

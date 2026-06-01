@@ -8,7 +8,7 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data/5_estrelas_negativo_marco.csv')
+arquivo_entrada = Path('data/5_estrelas_abril_negativa.csv')
 arquivo_saida = Path('data_exec_indiv/negativas/01_base_limpa.csv')
 pasta_resumo = Path('saida_resumo_negativas') / 'exec_01_limpeza'
 arquivo_resumo_json = pasta_resumo / 'exec_01_limpeza_resumo.json'

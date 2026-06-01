@@ -11,8 +11,7 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tip
 
 ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
 ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
-ARQUIVO_GRUPOS = Path('data/grupos_classificacao.json')
-ARQUIVO_NOMES = Path('data/nomes_classificacao.json')
+ARQUIVO_REGRAS = Path('utils/insumos/regra_classificacao.xlsx')
 PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_04_classificacao_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_04_classificacao_resumo.txt'
@@ -54,12 +53,47 @@ def normalizar_texto(serie):
     return serie.astype('string').fillna('').str.strip()
 
 
+def normalizar_flag(valor):
+    if pd.isna(valor):
+        return False
+
+    return str(valor).strip().lower() in {'sim', 's', 'true', '1', 'yes'}
+
+
+def carregar_regras_classificacao(caminho):
+    colunas = [
+        'ORDEM',
+        'CHAVE_GRUPO',
+        'CLASSIFICACAO',
+        'NOME_LISTA',
+        'STATUS_ATIVO',
+    ]
+    df_regras = pd.read_excel(caminho, sheet_name='regras_classificacao')
+
+    faltando = [coluna for coluna in colunas if coluna not in df_regras.columns]
+    if faltando:
+        raise ValueError(
+            'Colunas ausentes em regra_classificacao.xlsx: '
+            + ', '.join(faltando)
+        )
+
+    df_regras = df_regras[colunas].copy()
+    df_regras['STATUS_ATIVO'] = df_regras['STATUS_ATIVO'].apply(normalizar_flag)
+    df_regras = df_regras[df_regras['STATUS_ATIVO']].copy()
+    df_regras['ORDEM'] = pd.to_numeric(df_regras['ORDEM'], errors='coerce')
+    df_regras = df_regras.sort_values('ORDEM', kind='stable')
+
+    for coluna in ['CHAVE_GRUPO', 'CLASSIFICACAO', 'NOME_LISTA']:
+        df_regras[coluna] = normalizar_texto(df_regras[coluna])
+
+    return df_regras.reset_index(drop=True)
+
+
 def validar_arquivos_obrigatorios():
     arquivos = [
         ARQUIVO_ENTRADA,
         ARQUIVO_SAIDA,
-        ARQUIVO_GRUPOS,
-        ARQUIVO_NOMES,
+        ARQUIVO_REGRAS,
         ARQUIVO_RESUMO_JSON,
         ARQUIVO_RESUMO_TXT,
         ARQUIVO_AUDITORIA,
@@ -69,15 +103,8 @@ def validar_arquivos_obrigatorios():
     return [arquivo for arquivo in arquivos if not arquivo.exists()]
 
 
-def obter_nome_classificacao(chave_grupo, mapa_nomes):
-    return mapa_nomes.get(chave_grupo, chave_grupo.replace('_', ' '))
-
-
-def obter_classificacoes_esperadas(grupos, nomes_classificacao):
-    return {
-        obter_nome_classificacao(grupo['grupo_classificacao'], nomes_classificacao)
-        for grupo in grupos
-    }
+def obter_classificacoes_esperadas(df_regras):
+    return set(df_regras['CLASSIFICACAO'].dropna().astype('string').str.strip())
 
 
 def validar_coluna_classificacao(df_saida):
@@ -128,7 +155,7 @@ def validar_classificacoes_esperadas(df_saida, classificacoes_esperadas):
     return erros
 
 
-def calcular_totais_resumo(df_saida, df_sobrescritas, grupos):
+def calcular_totais_resumo(df_saida, df_sobrescritas, df_regras):
     classificacoes = normalizar_texto(df_saida[COLUNA_CLASSIFICACAO])
     nao_classificadas = classificacoes == ''
 
@@ -145,13 +172,13 @@ def calcular_totais_resumo(df_saida, df_sobrescritas, grupos):
         'total_classificadas': int((~nao_classificadas).sum()),
         'total_nao_classificadas': int(nao_classificadas.sum()),
         'total_sobrescritas': total_sobrescritas,
-        'total_regras': int(len(grupos)),
+        'total_regras_ativas': int(len(df_regras)),
     }
 
 
-def validar_resumo_json(df_saida, df_sobrescritas, grupos, resumo):
+def validar_resumo_json(df_saida, df_sobrescritas, df_regras, resumo):
     erros = []
-    totais_esperados = calcular_totais_resumo(df_saida, df_sobrescritas, grupos)
+    totais_esperados = calcular_totais_resumo(df_saida, df_sobrescritas, df_regras)
 
     for campo, valor_esperado in totais_esperados.items():
         valor_resumo = resumo.get(campo)
@@ -165,7 +192,7 @@ def validar_resumo_json(df_saida, df_sobrescritas, grupos, resumo):
     return erros
 
 
-def validar_auditoria(df_auditoria, grupos, nomes_classificacao):
+def validar_auditoria(df_auditoria, df_regras):
     erros = []
     colunas_faltando = [
         coluna for coluna in COLUNAS_AUDITORIA if coluna not in df_auditoria.columns
@@ -176,45 +203,49 @@ def validar_auditoria(df_auditoria, grupos, nomes_classificacao):
     if colunas_faltando:
         return erros
 
-    if len(df_auditoria) != len(grupos):
+    if len(df_auditoria) != len(df_regras):
         registrar_erro(
             erros,
-            f'Auditoria deveria ter {len(grupos)} regra(s), '
+            f'Auditoria deveria ter {len(df_regras)} regra(s), '
             f'mas tem {len(df_auditoria)}.'
         )
 
-    ordens = pd.to_numeric(df_auditoria['ORDEM_REGRA'], errors='coerce')
-    ordens_esperadas = list(range(1, len(grupos) + 1))
-    if ordens.dropna().astype(int).tolist() != ordens_esperadas:
+    ordens = pd.to_numeric(df_auditoria['ORDEM_REGRA'], errors='coerce').astype('Int64')
+    ordens_esperadas = df_regras['ORDEM'].astype('Int64').tolist()
+    if ordens.dropna().astype('Int64').tolist() != ordens_esperadas:
         registrar_erro(
             erros,
-            'Auditoria nao possui ORDEM_REGRA sequencial conforme grupos_classificacao.json.'
+            'Auditoria nao possui ORDEM_REGRA conforme regra_classificacao.xlsx.'
         )
 
-    for indice, grupo in enumerate(grupos):
+    for indice, regra in df_regras.iterrows():
         if indice >= len(df_auditoria):
             break
 
         linha = df_auditoria.iloc[indice]
-        classificacao_esperada = obter_nome_classificacao(
-            grupo['grupo_classificacao'],
-            nomes_classificacao,
-        )
 
-        if linha['CHAVE_GRUPO'] != grupo['grupo_classificacao']:
+        if str(linha['CHAVE_GRUPO']).strip() != regra['CHAVE_GRUPO']:
             registrar_erro(
                 erros,
-                f"Regra {indice + 1} com CHAVE_GRUPO divergente: "
-                f"esperado '{grupo['grupo_classificacao']}', "
+                f"Regra {int(regra['ORDEM'])} com CHAVE_GRUPO divergente: "
+                f"esperado '{regra['CHAVE_GRUPO']}', "
                 f"encontrado '{linha['CHAVE_GRUPO']}'."
             )
 
-        if linha['CLASSIFICACAO'] != classificacao_esperada:
+        if str(linha['CLASSIFICACAO']).strip() != regra['CLASSIFICACAO']:
             registrar_erro(
                 erros,
-                f"Regra {indice + 1} com CLASSIFICACAO divergente: "
-                f"esperado '{classificacao_esperada}', "
+                f"Regra {int(regra['ORDEM'])} com CLASSIFICACAO divergente: "
+                f"esperado '{regra['CLASSIFICACAO']}', "
                 f"encontrado '{linha['CLASSIFICACAO']}'."
+            )
+
+        if str(linha['NOME_LISTA']).strip() != regra['NOME_LISTA']:
+            registrar_erro(
+                erros,
+                f"Regra {int(regra['ORDEM'])} com NOME_LISTA divergente: "
+                f"esperado '{regra['NOME_LISTA']}', "
+                f"encontrado '{linha['NOME_LISTA']}'."
             )
 
     return erros[:LIMITE_EXEMPLOS]
@@ -291,8 +322,7 @@ def executar():
         print('Rode primeiro: python execucoes_individuais_avaliacoes\\exec_04_classificacao.py')
         return 1
 
-    grupos = carregar_json(ARQUIVO_GRUPOS)
-    nomes_classificacao = carregar_json(ARQUIVO_NOMES)
+    df_regras = carregar_regras_classificacao(ARQUIVO_REGRAS)
     df_entrada = carregar_csv(ARQUIVO_ENTRADA)
     df_saida = carregar_csv(ARQUIVO_SAIDA)
     df_auditoria = pd.read_csv(ARQUIVO_AUDITORIA, low_memory=False)
@@ -312,17 +342,14 @@ def executar():
     erros.extend(validar_coluna_classificacao(df_saida))
 
     if COLUNA_CLASSIFICACAO in df_saida.columns:
-        classificacoes_esperadas = obter_classificacoes_esperadas(
-            grupos,
-            nomes_classificacao,
-        )
+        classificacoes_esperadas = obter_classificacoes_esperadas(df_regras)
         erros.extend(
             validar_classificacoes_esperadas(df_saida, classificacoes_esperadas)
         )
-        erros.extend(validar_resumo_json(df_saida, df_sobrescritas, grupos, resumo))
+        erros.extend(validar_resumo_json(df_saida, df_sobrescritas, df_regras, resumo))
         erros.extend(validar_tipos(df_saida))
 
-    erros.extend(validar_auditoria(df_auditoria, grupos, nomes_classificacao))
+    erros.extend(validar_auditoria(df_auditoria, df_regras))
     erros.extend(validar_arquivo_nao_classificados(df_nao_classificados, resumo))
     erros.extend(validar_arquivo_sobrescritas(df_sobrescritas, resumo))
 
@@ -330,7 +357,7 @@ def executar():
         imprimir_erros(erros)
         return 1
 
-    totais = calcular_totais_resumo(df_saida, df_sobrescritas, grupos)
+    totais = calcular_totais_resumo(df_saida, df_sobrescritas, df_regras)
     print('TESTE OK - exec_04_classificacao')
     print(f'Arquivo de entrada: {ARQUIVO_ENTRADA}')
     print(f'Arquivo testado: {ARQUIVO_SAIDA}')
@@ -338,11 +365,11 @@ def executar():
     print(f"Classificadas: {totais['total_classificadas']}")
     print(f"Nao classificadas: {totais['total_nao_classificadas']}")
     print(f"Sobrescritas: {totais['total_sobrescritas']}")
-    print(f"Total de regras auditadas: {totais['total_regras']}")
+    print(f"Total de regras auditadas: {totais['total_regras_ativas']}")
     print('Quantidade de linhas preservada.')
     print('CLASSIFICACAO preenchida e dentro do mapa de nomes.')
     print('Resumo JSON bate com o CSV.')
-    print('Auditoria bate com grupos_classificacao.json.')
+    print('Auditoria bate com regra_classificacao.xlsx.')
     print('Arquivos de sobrescritas e nao classificados batem com o resumo.')
     print('Schema das colunas esta padronizado.')
     return 0

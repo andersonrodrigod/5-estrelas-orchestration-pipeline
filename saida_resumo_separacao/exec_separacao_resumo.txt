@@ -1,0 +1,77 @@
+RESUMO DA EXECUCAO - SEPARACAO POR CLASSIFICACAO
+
+ARQUIVOS DE ENTRADA:
+Avaliacoes: data_exec_indiv\avaliacoes\13_base_power_bi.csv
+Negativas: data_exec_indiv\negativas\04_base_com_local_editado.csv
+
+PASTAS DE SAIDA:
+Excels separados: data_exec_indiv\separacao
+Resumos e inspecoes: saida_resumo_separacao
+
+TOTAIS DE ORIGEM:
+Avaliacoes: 1369852
+Negativas: 1362133
+Total: 2731985
+
+TOTAIS ENVIADOS:
+Avaliacoes: 244721
+Negativas: 518595
+Total: 763316
+Nao enviados: 1968669
+
+ARQUIVOS GERADOS:
+- base de dados 5 estrelas fevereiro 25 - hospitalar.xlsx: avaliacoes=244721 | negativas=518595 | total=763316
+
+CLASSIFICACOES NAO ENVIADAS:
+- avaliacoes | AMBULÂNCIA: 1917
+- avaliacoes | CASE: 3267
+- avaliacoes | CRED_ATEND ELETIVO: 4374
+- avaliacoes | CRED_ATEND EMERGENCIA: 1382
+- avaliacoes | CRED_EXAMES: 1449
+- avaliacoes | CRED_INTERNACAO: 25
+- avaliacoes | CRED_LABORATÓRIO: 4541
+- avaliacoes | CRED_TRATAMENTO: 27963
+- avaliacoes | GESTAR BEM: 1646
+- avaliacoes | HAPCLINICA: 408281
+- avaliacoes | INTERNAÇÃO PGC: 84
+- avaliacoes | LABORATÓRIO: 139308
+- avaliacoes | MED PREV: 16457
+- avaliacoes | NASCER BEM: 8539
+- avaliacoes | ODONTOLOGIA: 10356
+- avaliacoes | PRODUTO COORDENADO: 2303
+- avaliacoes | QUALIVIDA: 10121
+- avaliacoes | TEA: 10654
+- avaliacoes | TELECONSULTA CASE: 1967
+- avaliacoes | TELECONSULTA ELETIVA: 275714
+- avaliacoes | TELECONSULTA URGÊNCIA: 53234
+- avaliacoes | TELEMEDICINA: 171
+- avaliacoes | TRANSPLANTE: 52
+- avaliacoes | VIDA IMAGEM: 141326
+- negativas | AMBULÂNCIA: 2347
+- negativas | CASE: 1052
+- negativas | CRED_ATEND ELETIVO: 6251
+- negativas | CRED_ATEND EMERGÊNCIA: 2279
+- negativas | CRED_EXAMES: 923
+- negativas | CRED_INTERNAÇÃO: 23
+- negativas | CRED_LABORATÓRIO: 4334
+- negativas | CRED_TRATAMENTO: 10391
+- negativas | GESTAR BEM: 537
+- negativas | HAPCLINICA: 368231
+- negativas | INTERNAÇÃO PGC: 177
+- negativas | LABORATÓRIO: 128432
+- negativas | MED PREV: 11707
+- negativas | NASCER BEM: 3942
+- negativas | ODONTOLOGIA: 6676
+- negativas | PRODUTO COORDENADO: 1109
+- negativas | QUALIVIDA: 3808
+- negativas | TEA: 5647
+- negativas | TELECONSULTA CASE: 300
+- negativas | TELECONSULTA ELETIVA: 140696
+- negativas | TELEMEDICINA: 214
+- negativas | TRANSPLANTE: 21
+- negativas | VIDA IMAGEM: 144441
+
+INSPECOES:
+Quantidades por arquivo: saida_resumo_separacao\exec_separacao_quantidades_por_arquivo.csv
+Classificacoes por grupo: saida_resumo_separacao\exec_separacao_classificacoes_por_grupo.csv
+Classificacoes nao enviadas: saida_resumo_separacao\exec_separacao_classificacoes_nao_enviadas.csv
