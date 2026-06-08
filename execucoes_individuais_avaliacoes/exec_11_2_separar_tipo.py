@@ -8,15 +8,15 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/13_base_power_bi.csv')
-arquivo_saida_tipo_1_a_3 = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_1_a_3.csv')
-arquivo_saida_tipo_4_a_7 = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_4_a_7.csv')
-arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_8_ou_mais.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
+arquivo_saida_tipo_1_a_3 = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_1_a_3.csv')
+arquivo_saida_tipo_4_a_7 = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_4_a_7.csv')
+arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_8_ou_mais.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_10_2_separar_tipo'
-arquivo_resumo_json = pasta_resumo / 'exec_10_2_separar_tipo_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_10_2_separar_tipo_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_10_2_separar_tipo_resumo.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_2_separar_tipo'
+arquivo_resumo_json = pasta_resumo / 'exec_11_2_separar_tipo_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_11_2_separar_tipo_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_11_2_separar_tipo_resumo.csv'
 
 
 def remover_decimal_zero_identificador(serie):
@@ -24,9 +24,9 @@ def remover_decimal_zero_identificador(serie):
     return texto.str.replace(r'\.0$', '', regex=True)
 
 
-print('Iniciando execucao 10.2 - separar por tipo...')
-print(f'Lendo arquivo da execucao 13: {arquivo_entrada}')
-print('Mantendo classificacoes no padrao Power BI da execucao 13.')
+print('Iniciando execucao 11.2 - separar por tipo...')
+print(f'Lendo arquivo da execucao 14: {arquivo_entrada}')
+print('Mantendo classificacoes no padrao Power BI da execucao 14.')
 
 df = ler_csv_padronizado(arquivo_entrada)
 df['tipo'] = pd.to_numeric(df['tipo'], errors='coerce')
@@ -63,10 +63,10 @@ salvar_csv_padronizado(df.loc[mascara_tipo_4_a_7], arquivo_saida_tipo_4_a_7)
 salvar_csv_padronizado(df.loc[mascara_tipo_8_ou_mais], arquivo_saida_tipo_8_ou_mais)
 
 resumo = {
-    'execucao': 'exec_10_2_separar_tipo',
+    'execucao': 'exec_11_2_separar_tipo',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_nomes_classificacao': None,
-    'observacao': 'Classificacoes mantidas no padrao Power BI gerado pela execucao 13.',
+    'observacao': 'Classificacoes mantidas no padrao Power BI gerado pela execucao 14.',
     'arquivo_saida_tipo_1_a_3': str(arquivo_saida_tipo_1_a_3),
     'arquivo_saida_tipo_4_a_7': str(arquivo_saida_tipo_4_a_7),
     'arquivo_saida_tipo_8_ou_mais': str(arquivo_saida_tipo_8_ou_mais),
@@ -81,7 +81,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 10.2 - SEPARAR POR TIPO',
+    'RESUMO DA EXECUCAO 11.2 - SEPARAR POR TIPO',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo TIPO 1 a 3: {resumo['arquivo_saida_tipo_1_a_3']}",
@@ -111,4 +111,4 @@ salvar_csv_padronizado(pd.DataFrame([{
     'TOTAL_TIPO_FORA_RECORTE': resumo['total_tipo_fora_recorte']
 }]), arquivo_resumo_csv)
 
-print('Execucao 10.2 finalizada.')
+print('Execucao 11.2 finalizada.')

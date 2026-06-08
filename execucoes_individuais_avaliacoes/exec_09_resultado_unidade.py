@@ -8,15 +8,15 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/07_base_com_meta.csv')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/08_base_com_resultado_unidade.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/08_base_com_meta.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/09_base_com_resultado_unidade.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_08_resultado_unidade'
-arquivo_resumo_json = pasta_resumo / 'exec_08_resultado_unidade_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_08_resultado_unidade_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_08_resultado_unidade_resumo.csv'
-arquivo_inspecao_grupos_csv = pasta_resumo / 'exec_08_resultado_unidade_inspecao_grupos.csv'
-arquivo_linhas_chave_vazia_csv = pasta_resumo / 'exec_08_resultado_unidade_linhas_chave_vazia.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_09_resultado_unidade'
+arquivo_resumo_json = pasta_resumo / 'exec_09_resultado_unidade_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_09_resultado_unidade_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_09_resultado_unidade_resumo.csv'
+arquivo_inspecao_grupos_csv = pasta_resumo / 'exec_09_resultado_unidade_inspecao_grupos.csv'
+arquivo_linhas_chave_vazia_csv = pasta_resumo / 'exec_09_resultado_unidade_linhas_chave_vazia.csv'
 
 colunas_grupo = ['CLASSIFICACAO', 'LOCAL EDITADO', 'UF']
 
@@ -40,8 +40,8 @@ def identificar_colunas_vazias(linha):
     return ', '.join(colunas_vazias)
 
 
-print('Iniciando execucao 08 - resultado da unidade...')
-print(f'Lendo arquivo da execucao 07: {arquivo_entrada}')
+print('Iniciando execucao 09 - resultado da unidade...')
+print(f'Lendo arquivo da execucao 08: {arquivo_entrada}')
 
 df = ler_csv_padronizado(arquivo_entrada)
 
@@ -108,7 +108,7 @@ print(f'Total de linhas recebidas: {total_linhas}')
 print(f'Total de grupos encontrados: {total_grupos}')
 print(f'Total de linhas com resultado da unidade: {total_linhas_com_resultado}')
 print(f'Total de linhas sem resultado da unidade: {total_linhas_sem_resultado}')
-print(f'Gravando arquivo da execucao 08: {arquivo_saida}')
+print(f'Gravando arquivo da execucao 09: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
@@ -117,7 +117,7 @@ salvar_csv_padronizado(df_inspecao_grupos, arquivo_inspecao_grupos_csv)
 salvar_csv_padronizado(df_linhas_chave_vazia, arquivo_linhas_chave_vazia_csv)
 
 resumo = {
-    'execucao': 'exec_08_resultado_unidade',
+    'execucao': 'exec_09_resultado_unidade',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_saida': str(arquivo_saida),
     'arquivo_inspecao_grupos': str(arquivo_inspecao_grupos_csv),
@@ -134,7 +134,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 08 - RESULTADO DA UNIDADE',
+    'RESUMO DA EXECUCAO 09 - RESULTADO DA UNIDADE',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
@@ -166,5 +166,5 @@ salvar_csv_padronizado(pd.DataFrame([{
     'TOTAL_LINHAS_CHAVE_VAZIA': resumo['total_linhas_chave_vazia']
 }]), arquivo_resumo_csv)
 
-print('Execucao 08 finalizada.')
+print('Execucao 09 finalizada.')
 

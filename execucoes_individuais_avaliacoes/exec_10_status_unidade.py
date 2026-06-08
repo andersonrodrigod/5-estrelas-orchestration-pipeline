@@ -8,17 +8,17 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/08_base_com_resultado_unidade.csv')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/09_base_com_resultado_unidade.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_09_status_unidade'
-arquivo_resumo_json = pasta_resumo / 'exec_09_status_unidade_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_09_status_unidade_resumo.txt'
-arquivo_status_csv = pasta_resumo / 'exec_09_status_unidade_status.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_10_status_unidade'
+arquivo_resumo_json = pasta_resumo / 'exec_10_status_unidade_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_10_status_unidade_resumo.txt'
+arquivo_status_csv = pasta_resumo / 'exec_10_status_unidade_status.csv'
 
 
-print('Iniciando execucao 09 - status unidade...')
-print(f'Lendo arquivo da execucao 08: {arquivo_entrada}')
+print('Iniciando execucao 10 - status unidade...')
+print(f'Lendo arquivo da execucao 09: {arquivo_entrada}')
 
 df = ler_csv_padronizado(arquivo_entrada)
 
@@ -50,7 +50,7 @@ print(f'Total de linhas recebidas: {len(df)}')
 print(f'Total dentro da meta: {total_dentro_meta}')
 print(f'Total fora da meta: {total_fora_meta}')
 print(f'Total sem status: {total_sem_status}')
-print(f'Gravando arquivo da execucao 09: {arquivo_saida}')
+print(f'Gravando arquivo da execucao 10: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
 pasta_resumo.mkdir(parents=True, exist_ok=True)
@@ -58,7 +58,7 @@ salvar_csv_padronizado(df, arquivo_saida)
 salvar_csv_padronizado(resumo_status, arquivo_status_csv)
 
 resumo = {
-    'execucao': 'exec_09_status_unidade',
+    'execucao': 'exec_10_status_unidade',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_saida': str(arquivo_saida),
     'arquivo_status_csv': str(arquivo_status_csv),
@@ -72,7 +72,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 09 - STATUS UNIDADE',
+    'RESUMO DA EXECUCAO 10 - STATUS UNIDADE',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de saida: {resumo['arquivo_saida']}",
@@ -87,5 +87,5 @@ linhas_txt = [
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
-print('Execucao 09 finalizada.')
+print('Execucao 10 finalizada.')
 

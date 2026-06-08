@@ -9,15 +9,15 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
-arquivo_saida_tipo_1_a_7 = Path('data_exec_indiv/avaliacoes/10_base_tipo_1_a_7.csv')
-arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/10_base_tipo_8_ou_mais.csv')
+arquivo_saida_tipo_1_a_7 = Path('data_exec_indiv/avaliacoes/11_base_tipo_1_a_7.csv')
+arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/11_base_tipo_8_ou_mais.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_10_separar_tipo'
-arquivo_resumo_json = pasta_resumo / 'exec_10_separar_tipo_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_10_separar_tipo_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_10_separar_tipo_resumo.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_separar_tipo'
+arquivo_resumo_json = pasta_resumo / 'exec_11_separar_tipo_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_11_separar_tipo_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_11_separar_tipo_resumo.csv'
 
 
 def remover_decimal_zero_identificador(serie):
@@ -56,8 +56,8 @@ def aplicar_nomes_envio(df, mapa_nomes_envio):
     df['CLASSIFICACAO'] = nomes_envio.fillna(df['CLASSIFICACAO'])
 
 
-print('Iniciando execucao 10 - separar por tipo...')
-print(f'Lendo arquivo da execucao 09: {arquivo_entrada}')
+print('Iniciando execucao 11 - separar por tipo...')
+print(f'Lendo arquivo da execucao 10: {arquivo_entrada}')
 print(f'Lendo nomes de classificacao para envio: {arquivo_nomes_classificacao}')
 
 df = ler_csv_padronizado(arquivo_entrada)
@@ -94,7 +94,7 @@ salvar_csv_padronizado(df.loc[mascara_tipo_1_a_7], arquivo_saida_tipo_1_a_7)
 salvar_csv_padronizado(df.loc[mascara_tipo_8_ou_mais], arquivo_saida_tipo_8_ou_mais)
 
 resumo = {
-    'execucao': 'exec_10_separar_tipo',
+    'execucao': 'exec_11_separar_tipo',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_nomes_classificacao': str(arquivo_nomes_classificacao),
     'arquivo_saida_tipo_1_a_7': str(arquivo_saida_tipo_1_a_7),
@@ -109,7 +109,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 10 - SEPARAR POR TIPO',
+    'RESUMO DA EXECUCAO 11 - SEPARAR POR TIPO',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo TIPO 1 a 7: {resumo['arquivo_saida_tipo_1_a_7']}",
@@ -135,4 +135,4 @@ salvar_csv_padronizado(pd.DataFrame([{
     'TOTAL_TIPO_FORA_RECORTE': resumo['total_tipo_fora_recorte']
 }]), arquivo_resumo_csv)
 
-print('Execucao 10 finalizada.')
+print('Execucao 11 finalizada.')

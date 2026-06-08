@@ -1,0 +1,22 @@
+{
+    "execucao": "exec_14_power_bi",
+    "objetivo": "Gerar CSV no layout historico esperado pelo Power BI.",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\10_base_com_status_unidade.csv",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\14_base_power_bi.csv",
+    "arquivo_colunas_csv": "saida_resumo_avaliacoes\\exec_14_power_bi\\exec_14_power_bi_colunas.csv",
+    "arquivo_classificacao_csv": "saida_resumo_avaliacoes\\exec_14_power_bi\\exec_14_power_bi_classificacao_ajustes.csv",
+    "total_linhas_entrada": 1369852,
+    "total_linhas_saida": 1369852,
+    "total_colunas_entrada": 44,
+    "total_colunas_saida": 43,
+    "colunas_removidas": [
+        "Quantidade notas validas"
+    ],
+    "ajustes_classificacao": {
+        "CRED_ATEND EMERGÊNCIA": "CRED_ATEND EMERGENCIA",
+        "CRED_INTERNAÇÃO": "CRED_INTERNACAO"
+    },
+    "ajustes_data": {
+        "data_atendimento": "Formato dd/mm/aaaa na saida Power BI."
+    }
+}

@@ -15,27 +15,27 @@ from funcoes_auxiliares.padronizacao_csv import salvar_csv_padronizado
 arquivos_entrada = [
     {
         'rotulo': 'TIPO 1 A 3',
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_1_a_3.csv'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_1_a_3.csv'),
         'aba': 'TIPO_1_A_3',
     },
     {
         'rotulo': 'TIPO 4 A 7',
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_4_a_7.csv'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_4_a_7.csv'),
         'aba': 'TIPO_4_A_7',
     },
     {
         'rotulo': 'TIPO 8 OU MAIS',
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_8_ou_mais.csv'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_8_ou_mais.csv'),
         'aba': 'TIPO_8_OU_MAIS',
     },
 ]
 
-arquivo_saida_excel = Path('data_exec_indiv/avaliacoes/11_resultado_final.xlsx')
+arquivo_saida_excel = Path('data_exec_indiv/avaliacoes/12_resultado_final.xlsx')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_gerar_excel_final'
-arquivo_resumo_json = pasta_resumo / 'exec_11_gerar_excel_final_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_11_gerar_excel_final_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_11_gerar_excel_final_resumo.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_12_gerar_excel_final'
+arquivo_resumo_json = pasta_resumo / 'exec_12_gerar_excel_final_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_12_gerar_excel_final_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_12_gerar_excel_final_resumo.csv'
 
 limite_linhas_excel = 1_048_576
 limite_colunas_excel = 16_384
@@ -205,7 +205,7 @@ def salvar_resumos(registros):
     pasta_resumo.mkdir(parents=True, exist_ok=True)
 
     resumo = {
-        'execucao': 'exec_11_gerar_excel_final',
+        'execucao': 'exec_12_gerar_excel_final',
         'arquivo_saida_excel': str(arquivo_saida_excel),
         'abas': registros,
         'observacao': (
@@ -220,7 +220,7 @@ def salvar_resumos(registros):
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     linhas_txt = [
-        'RESUMO DA EXECUCAO 11 - GERAR EXCEL FINAL',
+        'RESUMO DA EXECUCAO 12 - GERAR EXCEL FINAL',
         '',
         f"Arquivo Excel: {resumo['arquivo_saida_excel']}",
         '',
@@ -245,7 +245,7 @@ def salvar_resumos(registros):
 
 
 def executar():
-    print('Iniciando execucao 11 - gerar Excel final...')
+    print('Iniciando execucao 12 - gerar Excel final...')
 
     arquivos_faltando = validar_arquivos_obrigatorios()
     if arquivos_faltando:
@@ -265,7 +265,7 @@ def executar():
     salvar_resumos(registros)
 
     print(f'Excel final gerado: {arquivo_saida_excel}')
-    print('Execucao 11 finalizada.')
+    print('Execucao 12 finalizada.')
     return 0
 
 

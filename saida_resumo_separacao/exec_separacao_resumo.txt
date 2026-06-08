@@ -1,7 +1,7 @@
 RESUMO DA EXECUCAO - SEPARACAO POR CLASSIFICACAO
 
 ARQUIVOS DE ENTRADA:
-Avaliacoes: data_exec_indiv\avaliacoes\13_base_power_bi.csv
+Avaliacoes: data_exec_indiv\avaliacoes\14_base_power_bi.csv
 Negativas: data_exec_indiv\negativas\04_base_com_local_editado.csv
 
 PASTAS DE SAIDA:

@@ -7,14 +7,14 @@ from pathlib import Path
 import pandas as pd
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/13_base_power_bi.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_13_power_bi'
-arquivo_resumo_json = pasta_resumo / 'exec_13_power_bi_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_13_power_bi_resumo.txt'
-arquivo_colunas_csv = pasta_resumo / 'exec_13_power_bi_colunas.csv'
-arquivo_classificacao_csv = pasta_resumo / 'exec_13_power_bi_classificacao_ajustes.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_14_power_bi'
+arquivo_resumo_json = pasta_resumo / 'exec_14_power_bi_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_14_power_bi_resumo.txt'
+arquivo_colunas_csv = pasta_resumo / 'exec_14_power_bi_colunas.csv'
+arquivo_classificacao_csv = pasta_resumo / 'exec_14_power_bi_classificacao_ajustes.csv'
 
 
 # Layout usado pelos arquivos historicos que ja alimentam o Power BI.
@@ -216,7 +216,7 @@ def salvar_resumos(df_entrada, df_saida, classificacao_antes):
     salvar_csv_texto(df_classificacao, arquivo_classificacao_csv)
 
     resumo = {
-        'execucao': 'exec_13_power_bi',
+        'execucao': 'exec_14_power_bi',
         'objetivo': 'Gerar CSV no layout historico esperado pelo Power BI.',
         'arquivo_entrada': str(arquivo_entrada),
         'arquivo_saida': str(arquivo_saida),
@@ -240,7 +240,7 @@ def salvar_resumos(df_entrada, df_saida, classificacao_antes):
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     linhas_txt = [
-        'RESUMO DA EXECUCAO 13 - POWER BI',
+        'RESUMO DA EXECUCAO 14 - POWER BI',
         '',
         f"Arquivo de entrada: {resumo['arquivo_entrada']}",
         f"Arquivo de saida: {resumo['arquivo_saida']}",
@@ -276,8 +276,8 @@ def salvar_resumos(df_entrada, df_saida, classificacao_antes):
 
 
 def executar():
-    print('Iniciando execucao 13 - Power BI...')
-    print(f'Lendo arquivo da execucao 09: {arquivo_entrada}')
+    print('Iniciando execucao 14 - Power BI...')
+    print(f'Lendo arquivo da execucao 10: {arquivo_entrada}')
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
@@ -300,7 +300,7 @@ def executar():
     salvar_csv_texto(df_saida, arquivo_saida)
     salvar_resumos(df, df_saida, classificacao_antes)
 
-    print('Execucao 13 finalizada.')
+    print('Execucao 14 finalizada.')
     return 0
 
 

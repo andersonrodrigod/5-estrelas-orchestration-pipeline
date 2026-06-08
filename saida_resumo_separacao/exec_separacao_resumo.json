@@ -1,6 +1,6 @@
 {
     "execucao": "exec_separacao",
-    "arquivo_avaliacoes": "data_exec_indiv\\avaliacoes\\13_base_power_bi.csv",
+    "arquivo_avaliacoes": "data_exec_indiv\\avaliacoes\\14_base_power_bi.csv",
     "arquivo_negativas": "data_exec_indiv\\negativas\\04_base_com_local_editado.csv",
     "arquivo_nomes_classificacao": "data\\nomes_classificacao.json",
     "pasta_saida_excel": "data_exec_indiv\\separacao",

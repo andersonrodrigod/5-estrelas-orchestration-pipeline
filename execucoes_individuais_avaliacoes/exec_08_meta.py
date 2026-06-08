@@ -9,14 +9,14 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/06_base_com_operadora.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/07_base_com_operadora.csv')
 arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/07_base_com_meta.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/08_base_com_meta.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_07_meta'
-arquivo_resumo_json = pasta_resumo / 'exec_07_meta_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_07_meta_resumo.txt'
-arquivo_nao_encontrados_detalhado_csv = pasta_resumo / 'exec_07_meta_nao_encontrados_detalhado.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_08_meta'
+arquivo_resumo_json = pasta_resumo / 'exec_08_meta_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_08_meta_resumo.txt'
+arquivo_nao_encontrados_detalhado_csv = pasta_resumo / 'exec_08_meta_nao_encontrados_detalhado.csv'
 
 
 def normalizar_texto(serie):
@@ -60,8 +60,8 @@ def transformar_em_lista_registros(df_base, colunas):
     return registros
 
 
-print('Iniciando execucao 07 - meta...')
-print(f'Lendo arquivo da execucao 06: {arquivo_entrada}')
+print('Iniciando execucao 08 - meta...')
+print(f'Lendo arquivo da execucao 07: {arquivo_entrada}')
 print(f'Lendo arquivo de insumos: {arquivo_insumos}')
 
 df = ler_csv_padronizado(arquivo_entrada)
@@ -107,7 +107,7 @@ total_nao_encontrados = int(mascara_nao_encontrados.sum())
 print(f'Total de linhas recebidas: {len(df)}')
 print(f'Total de metas encontradas: {total_encontrados}')
 print(f'Total sem grupo correspondente: {total_nao_encontrados}')
-print(f'Gravando arquivo da execucao 07: {arquivo_saida}')
+print(f'Gravando arquivo da execucao 08: {arquivo_saida}')
 
 df_saida = df.drop(columns=['CHAVE_META', 'GRUPO_ENCONTRADO'])
 df_nao_encontrados_detalhado = df_saida.loc[mascara_nao_encontrados].copy()
@@ -117,7 +117,7 @@ salvar_csv_padronizado(df_saida, arquivo_saida)
 salvar_csv_padronizado(df_nao_encontrados_detalhado, arquivo_nao_encontrados_detalhado_csv)
 
 resumo = {
-    'execucao': 'exec_07_meta',
+    'execucao': 'exec_08_meta',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_insumos': str(arquivo_insumos),
     'arquivo_saida': str(arquivo_saida),
@@ -139,7 +139,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 07 - META',
+    'RESUMO DA EXECUCAO 08 - META',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de insumos: {resumo['arquivo_insumos']}",
@@ -171,5 +171,5 @@ else:
 with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
     arquivo.write('\n'.join(linhas_txt))
 
-print('Execucao 07 finalizada.')
+print('Execucao 08 finalizada.')
 

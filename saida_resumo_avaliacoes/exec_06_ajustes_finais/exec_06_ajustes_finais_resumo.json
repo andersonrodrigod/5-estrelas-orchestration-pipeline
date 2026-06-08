@@ -1,0 +1,62 @@
+{
+    "execucao": "exec_06_ajustes_finais",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\05_base_com_local_editado.csv",
+    "arquivo_regras_ajuste": "utils\\insumos\\regra_ajuste_final.xlsx",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\06_base_com_ajustes_finais.csv",
+    "arquivo_regras_csv": "saida_resumo_avaliacoes\\exec_06_ajustes_finais\\exec_06_ajustes_finais_regras.csv",
+    "arquivo_auditoria_csv": "saida_resumo_avaliacoes\\exec_06_ajustes_finais\\exec_06_ajustes_finais_auditoria.csv",
+    "total_linhas_entrada": 1369852,
+    "total_linhas_saida": 1369852,
+    "total_regras_ativas": 6,
+    "total_linhas_alteradas": 19,
+    "regras": [
+        {
+            "ORDEM_REGRA": "1",
+            "DESCRICAO": "Ajusta Notre Dame SP para Hospital Sao Lucas",
+            "COLUNA_AJUSTAR": "LOCAL EDITADO",
+            "VALOR_NOVO": "HOSPITAL SAO LUCAS",
+            "TOTAL_ATINGIDAS": "826",
+            "TOTAL_ALTERADAS": "0"
+        },
+        {
+            "ORDEM_REGRA": "2",
+            "DESCRICAO": "",
+            "COLUNA_AJUSTAR": "UF",
+            "VALOR_NOVO": "PE",
+            "TOTAL_ATINGIDAS": "2031",
+            "TOTAL_ALTERADAS": "4"
+        },
+        {
+            "ORDEM_REGRA": "3",
+            "DESCRICAO": "",
+            "COLUNA_AJUSTAR": "UF",
+            "VALOR_NOVO": "RN",
+            "TOTAL_ATINGIDAS": "6248",
+            "TOTAL_ALTERADAS": "3"
+        },
+        {
+            "ORDEM_REGRA": "4",
+            "DESCRICAO": "",
+            "COLUNA_AJUSTAR": "UF",
+            "VALOR_NOVO": "SP",
+            "TOTAL_ATINGIDAS": "3346",
+            "TOTAL_ALTERADAS": "1"
+        },
+        {
+            "ORDEM_REGRA": "4",
+            "DESCRICAO": "",
+            "COLUNA_AJUSTAR": "UF",
+            "VALOR_NOVO": "SP",
+            "TOTAL_ATINGIDAS": "10049",
+            "TOTAL_ALTERADAS": "6"
+        },
+        {
+            "ORDEM_REGRA": "4",
+            "DESCRICAO": "",
+            "COLUNA_AJUSTAR": "UF",
+            "VALOR_NOVO": "SP",
+            "TOTAL_ATINGIDAS": "1924",
+            "TOTAL_ALTERADAS": "5"
+        }
+    ]
+}

@@ -13,8 +13,8 @@ from openpyxl.cell import WriteOnlyCell
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-# Avaliacoes ja saem no layout historico usado pelo Power BI a partir da execucao 13.
-arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/13_base_power_bi.csv')
+# Avaliacoes ja saem no layout historico usado pelo Power BI a partir da execucao 14.
+arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
 arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
 pasta_saida_excel = Path('data_exec_indiv/separacao')
@@ -359,7 +359,7 @@ for grupo in regras_grupos:
         .drop(columns=['__classificacao_normalizada', '__grupo'])
     )
 
-    # A execucao 13 ja ajusta a CLASSIFICACAO das avaliacoes para o padrao
+    # A execucao 14 ja ajusta a CLASSIFICACAO das avaliacoes para o padrao
     # historico do Power BI. Reaplicar nomes aqui recolocaria acentos.
     negativas_filtradas = aplicar_nomes_envio(
         negativas_filtradas,

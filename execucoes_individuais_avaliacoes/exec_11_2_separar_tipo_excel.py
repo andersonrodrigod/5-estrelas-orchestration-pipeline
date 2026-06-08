@@ -14,27 +14,27 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import salvar_csv_padronizado
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/13_base_power_bi.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
 
 arquivos_saida = {
     'TIPO 1 A 3': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_1_a_3_power_bi.xlsx'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_1_a_3_power_bi.xlsx'),
         'aba': 'tipos 1 a 3',
     },
     'TIPO 4 A 7': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_4_a_7_power_bi.xlsx'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_4_a_7_power_bi.xlsx'),
         'aba': 'tipos 4 a 7',
     },
     'TIPO 8 OU MAIS': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/10_2_base_tipo_8_ou_mais_power_bi.xlsx'),
+        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_8_ou_mais_power_bi.xlsx'),
         'aba': 'tipos 8 ou mais',
     },
 }
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_10_2_separar_tipo_excel'
-arquivo_resumo_json = pasta_resumo / 'exec_10_2_separar_tipo_excel_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_10_2_separar_tipo_excel_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_10_2_separar_tipo_excel_resumo.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_2_separar_tipo_excel'
+arquivo_resumo_json = pasta_resumo / 'exec_11_2_separar_tipo_excel_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_11_2_separar_tipo_excel_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_11_2_separar_tipo_excel_resumo.csv'
 
 coluna_tipo = 'tipo'
 intervalo_progresso = 100_000
@@ -283,7 +283,7 @@ def salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recor
     pasta_resumo.mkdir(parents=True, exist_ok=True)
 
     resumo = {
-        'execucao': 'exec_10_2_separar_tipo_excel',
+        'execucao': 'exec_11_2_separar_tipo_excel',
         'arquivo_entrada': str(arquivo_entrada),
         'arquivos_saida': registros,
         'total_linhas_entrada': int(total_linhas),
@@ -301,7 +301,7 @@ def salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recor
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     linhas_txt = [
-        'RESUMO DA EXECUCAO 10.2 - SEPARAR TIPO EXCEL POWER BI',
+        'RESUMO DA EXECUCAO 11.2 - SEPARAR TIPO EXCEL POWER BI',
         '',
         f"Arquivo de entrada: {resumo['arquivo_entrada']}",
         f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
@@ -332,8 +332,8 @@ def salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recor
 
 
 def executar():
-    print('Iniciando execucao 10.2 Excel - separar por tipo para Power BI...', flush=True)
-    print(f'Lendo arquivo da execucao 13: {arquivo_entrada}', flush=True)
+    print('Iniciando execucao 11.2 Excel - separar por tipo para Power BI...', flush=True)
+    print(f'Lendo arquivo da execucao 14: {arquivo_entrada}', flush=True)
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
@@ -348,7 +348,7 @@ def executar():
 
     salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recorte)
 
-    print('Execucao 10.2 Excel finalizada.', flush=True)
+    print('Execucao 11.2 Excel finalizada.', flush=True)
     return 0
 
 

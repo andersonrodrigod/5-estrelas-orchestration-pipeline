@@ -8,19 +8,19 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/06_base_com_ajustes_finais.csv')
 arquivo_regras_operadora = Path('utils/insumos/regras_operadora.xlsx')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/06_base_com_operadora.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/07_base_com_operadora.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_06_operadora'
-arquivo_resumo_json = pasta_resumo / 'exec_06_operadora_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_06_operadora_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_06_operadora_resumo.csv'
-arquivo_auditoria_csv = pasta_resumo / 'exec_06_operadora_auditoria.csv'
-arquivo_operadora_distintos_csv = pasta_resumo / 'exec_06_operadora_local_editado_operadora.csv'
-arquivo_nao_classificados_csv = pasta_resumo / 'exec_06_operadora_nao_classificados.csv'
-arquivo_sobrescritos_csv = pasta_resumo / 'exec_06_operadora_sobrescritos.csv'
-arquivo_hapvida_distintos_csv = pasta_resumo / 'exec_06_operadora_hapvida_distintos.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_07_operadora'
+arquivo_resumo_json = pasta_resumo / 'exec_07_operadora_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_07_operadora_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_07_operadora_resumo.csv'
+arquivo_auditoria_csv = pasta_resumo / 'exec_07_operadora_auditoria.csv'
+arquivo_operadora_distintos_csv = pasta_resumo / 'exec_07_operadora_local_editado_operadora.csv'
+arquivo_nao_classificados_csv = pasta_resumo / 'exec_07_operadora_nao_classificados.csv'
+arquivo_sobrescritos_csv = pasta_resumo / 'exec_07_operadora_sobrescritos.csv'
+arquivo_hapvida_distintos_csv = pasta_resumo / 'exec_07_operadora_hapvida_distintos.csv'
 coluna_regra_operadora = '_REGRA_OPERADORA'
 
 colunas_regras = [
@@ -384,8 +384,8 @@ def regra_fechamento_hapvida(regra):
     )
 
 
-print('Iniciando execucao 06 - operadora por planilha de regras...')
-print(f'Lendo arquivo da execucao 05: {arquivo_entrada}')
+print('Iniciando execucao 07 - operadora por planilha de regras...')
+print(f'Lendo arquivo da execucao 06: {arquivo_entrada}')
 print(f'Lendo regras de operadora: {arquivo_regras_operadora}')
 
 df = ler_csv_padronizado(arquivo_entrada)
@@ -523,7 +523,7 @@ total_sobrescritos = (
 )
 
 resumo = {
-    'execucao': 'exec_06_operadora',
+    'execucao': 'exec_07_operadora',
     'arquivo_entrada': str(arquivo_entrada),
     'arquivo_regras_operadora': str(arquivo_regras_operadora),
     'arquivo_saida': str(arquivo_saida),
@@ -548,7 +548,7 @@ with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
     json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
 linhas_txt = [
-    'RESUMO DA EXECUCAO 06 - OPERADORA',
+    'RESUMO DA EXECUCAO 07 - OPERADORA',
     '',
     f"Arquivo de entrada: {resumo['arquivo_entrada']}",
     f"Arquivo de regras: {resumo['arquivo_regras_operadora']}",
@@ -602,4 +602,4 @@ print(f'Total classificadas antes do HAPVIDA: {total_classificadas_antes_hapvida
 print(f'Total preenchidas com HAPVIDA: {total_hapvida}')
 print(f'Total sobrescritos: {total_sobrescritos}')
 print(f'Total de regras ativas: {len(df_regras)}')
-print('Execucao 06 finalizada.')
+print('Execucao 07 finalizada.')

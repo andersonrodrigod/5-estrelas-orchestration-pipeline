@@ -10,13 +10,13 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/09_2_base_sem_ambulancia.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
+arquivo_saida = Path('data_exec_indiv/avaliacoes/11_base_sem_ambulancia.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_09_2_sem_ambulancia'
-arquivo_resumo_json = pasta_resumo / 'exec_09_2_sem_ambulancia_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_09_2_sem_ambulancia_resumo.txt'
-arquivo_excluidas_csv = pasta_resumo / 'exec_09_2_sem_ambulancia_excluidas.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_sem_ambulancia'
+arquivo_resumo_json = pasta_resumo / 'exec_11_sem_ambulancia_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_11_sem_ambulancia_resumo.txt'
+arquivo_excluidas_csv = pasta_resumo / 'exec_11_sem_ambulancia_excluidas.csv'
 
 coluna_classificacao = 'CLASSIFICACAO'
 classificacao_excluir = 'AMBULANCIA'
@@ -46,7 +46,7 @@ def salvar_resumos(df_entrada, df_saida, df_excluidas):
     salvar_csv_padronizado(resumo_excluidas, arquivo_excluidas_csv)
 
     resumo = {
-        'execucao': 'exec_09_2_sem_ambulancia',
+        'execucao': 'exec_11_sem_ambulancia',
         'arquivo_entrada': str(arquivo_entrada),
         'arquivo_saida': str(arquivo_saida),
         'arquivo_excluidas_csv': str(arquivo_excluidas_csv),
@@ -61,7 +61,7 @@ def salvar_resumos(df_entrada, df_saida, df_excluidas):
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     linhas_txt = [
-        'RESUMO DA EXECUCAO 09.2 - REMOVER AMBULANCIA',
+        'RESUMO DA EXECUCAO 11 - REMOVER AMBULANCIA',
         '',
         f"Arquivo de entrada: {resumo['arquivo_entrada']}",
         f"Arquivo de saida: {resumo['arquivo_saida']}",
@@ -85,8 +85,8 @@ def salvar_resumos(df_entrada, df_saida, df_excluidas):
 
 
 def executar():
-    print('Iniciando execucao 09.2 - remover ambulancia...')
-    print(f'Lendo arquivo da execucao 09: {arquivo_entrada}')
+    print('Iniciando execucao 11 - remover ambulancia...')
+    print(f'Lendo arquivo da execucao 10: {arquivo_entrada}')
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
@@ -111,7 +111,7 @@ def executar():
     salvar_csv_padronizado(df_saida, arquivo_saida)
     salvar_resumos(df, df_saida, df_excluidas)
 
-    print('Execucao 09.2 finalizada.')
+    print('Execucao 11 finalizada.')
     return 0
 
 

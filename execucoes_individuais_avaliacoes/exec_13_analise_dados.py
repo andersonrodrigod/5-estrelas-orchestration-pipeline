@@ -7,11 +7,11 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/09_2_base_sem_ambulancia.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/11_base_sem_ambulancia.csv')
 
-pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_12_analise_dados'
-arquivo_saida_excel = pasta_saida / 'exec_12_analise_dados.xlsx'
-arquivo_documentacao_txt = pasta_saida / 'exec_12_analise_dados_explicacao.txt'
+pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_13_analise_dados'
+arquivo_saida_excel = pasta_saida / 'exec_13_analise_dados.xlsx'
+arquivo_documentacao_txt = pasta_saida / 'exec_13_analise_dados_explicacao.txt'
 
 coluna_nota = 'NOTA GERAL'
 coluna_classificacao = 'CLASSIFICACAO'
@@ -179,10 +179,10 @@ def criar_resumo_geral(df):
 
 def salvar_documentacao():
     linhas = [
-        'EXECUCAO 12 - ANALISE DE DADOS',
+        'EXECUCAO 13 - ANALISE DE DADOS',
         '',
         'Objetivo:',
-        'Gerar uma visao consolidada de quantidade e media da NOTA GERAL a partir do arquivo sem ambulancia da execucao 09.2.',
+        'Gerar uma visao consolidada de quantidade e media da NOTA GERAL a partir do arquivo sem ambulancia da execucao 11.',
         '',
         'Arquivo de entrada:',
         str(arquivo_entrada),
@@ -190,9 +190,9 @@ def salvar_documentacao():
         'Arquivo Excel gerado:',
         str(arquivo_saida_excel),
         '',
-        'Por que usa a execucao 09.2:',
-        'A execucao 09.2 preserva a base completa da execucao 09 e remove somente classificacoes de ambulancia.',
-        'As execucoes 10 e 10.2 separam a base por TIPO, entao a analise geral fica melhor antes dessa separacao.',
+        'Por que usa a execucao 11:',
+        'A execucao 11 preserva a base completa da execucao 10 e remove somente classificacoes de ambulancia.',
+        'A separacao por TIPO acontece depois, entao a analise geral fica melhor antes dessa separacao.',
         '',
         'Abas do Excel:',
         '1. RESUMO: totais gerais da base e media geral da NOTA GERAL.',
@@ -214,8 +214,8 @@ def salvar_documentacao():
 
 
 def executar():
-    print('Iniciando execucao 12 - analise de dados...')
-    print(f'Lendo arquivo da execucao 09: {arquivo_entrada}')
+    print('Iniciando execucao 13 - analise de dados...')
+    print(f'Lendo arquivo da execucao 11: {arquivo_entrada}')
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
@@ -251,7 +251,7 @@ def executar():
     salvar_documentacao()
 
     print(f'Documentacao gerada: {arquivo_documentacao_txt}')
-    print('Execucao 12 finalizada.')
+    print('Execucao 13 finalizada.')
     return 0
 
 
