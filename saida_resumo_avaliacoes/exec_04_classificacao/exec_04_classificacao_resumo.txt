@@ -9,27 +9,76 @@ Sobrescritas detalhadas: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_c
 Nao classificados detalhado: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_nao_classificados_detalhado.csv
 
 TOTAIS:
-Total de linhas na entrada: 1369852
-Total classificadas: 1369852
-Total nao classificadas: 0
-Total sobrescritas: 41018
+Total de linhas na entrada: 1133048
+Total classificadas: 1132167
+Total nao classificadas: 881
+Total sobrescritas: 32713
 Total de regras ativas: 38
 
 REGRAS COM MAIS LINHAS ATINGIDAS:
-- Regra 24 - HAPCLINICA: 433255 linhas atingidas (0 sobrescritas)
-- Regra 18 - TELECONSULTA ELETIVA: 277681 linhas atingidas (0 sobrescritas)
-- Regra 2 - HOSPITALAR: 236197 linhas atingidas (0 sobrescritas)
-- Regra 32 - VIDA IMAGEM: 141326 linhas atingidas (348 sobrescritas)
-- Regra 30 - LABORATÓRIO: 140274 linhas atingidas (0 sobrescritas)
-- Regra 19 - TELECONSULTA URGÊNCIA: 53234 linhas atingidas (0 sobrescritas)
-- Regra 21 - CRED_TRATAMENTO: 27968 linhas atingidas (2643 sobrescritas)
-- Regra 20 - MED PREV: 27200 linhas atingidas (0 sobrescritas)
-- Regra 14 - TEA: 12318 linhas atingidas (3125 sobrescritas)
-- Regra 3 - QUALIVIDA: 11148 linhas atingidas (0 sobrescritas)
+- Regra 24 - HAPCLINICA: 359641 linhas atingidas (0 sobrescritas)
+- Regra 18 - TELECONSULTA ELETIVA: 239985 linhas atingidas (0 sobrescritas)
+- Regra 2 - HOSPITALAR: 184382 linhas atingidas (0 sobrescritas)
+- Regra 32 - VIDA IMAGEM: 114018 linhas atingidas (258 sobrescritas)
+- Regra 30 - LABORATÓRIO: 106630 linhas atingidas (0 sobrescritas)
+- Regra 19 - TELECONSULTA URGÊNCIA: 57353 linhas atingidas (0 sobrescritas)
+- Regra 20 - MED PREV: 21618 linhas atingidas (0 sobrescritas)
+- Regra 21 - CRED_TRATAMENTO: 19723 linhas atingidas (2132 sobrescritas)
+- Regra 3 - QUALIVIDA: 9048 linhas atingidas (0 sobrescritas)
+- Regra 4 - QUALIVIDA: 9048 linhas atingidas (9048 sobrescritas)
 
 SOBRESCRITAS:
-Total de linhas sobrescritas: 41018
+Total de linhas sobrescritas: 32713
 Detalhamento completo em: saida_resumo_avaliacoes\exec_04_classificacao\exec_04_classificacao_sobrescritas.csv
 
 NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
-- Nenhuma linha sem classificacao
+- CLINICA E DIAG ADOLFO PINHEIRO: 612
+- MEDPREV HORTO FLORESTAL: 40
+- AMB PENHA SANTO AMARO: 24
+- CLINICA PECA: 12
+- NEXO CLINICAL: 8
+- PRO FISIO: 7
+- CLINICA NOVO AMANHA LTDA: 6
+- CLINICA MEDICA REVITALIZE LTDA: 5
+- MEDOLHOS - SOLUCOES PARA A VISAO LTDA: 5
+- ADRIANA DA LUZ MENDES: 5
+- SUELENA PONTE TERAPIAS: 5
+- CLINICA DIA CELSO GARCIA: 4
+- CALAI TERAPIAS INTEGRADAS: 4
+- HOSPITAL NOSSA SENHORA DABADIA: 3
+- MED PRE MARACANAU II: 3
+- HARMONIA DO CORPO: 3
+- ESPACO TERAPEUTICO EVOLUIR: 3
+- FISIOMEVI FISIOTERAPIA: 3
+- PSICLIN ONLINE: 3
+- ODONTOCARDIO: 2
+- KAKIHARA SERVICOS DE SAUDE: 2
+- FISIO REABILITACAO: 2
+- PRO VIDA CLINICA MEDICA: 2
+- DAVITA TAQUARAL: 2
+- FISIO PREVENCE SAUDE INTEGRADA: 2
+- RESILIENCIA: 2
+- ALCANCE DESENV HUMANO: 2
+- HOSPITAL SAO MARCOS DE UBERABA: 2
+- CENDOR: 2
+- MUNDO FONO SERVICOS DE FONOAUDIOLOGIA LTDA: 2
+- CDM DIAGNOSTICO: 2
+- EQUILIBRACAO: 2
+- FONOAUDIOLOGIA: 2
+- IVANA PARMEGGIANI PIERONI CLINICA DE PSICANAL: 2
+- HOSPITAL INFANTIL SABARA: 2
+- CLINICA KINESIUS: 2
+- CLINEFRO NEFROLOGIA: 2
+- CLINICA NEURO DESENVOLVER LTDA: 2
+- UD A ITAQUAQUECETUBA: 2
+- INSTITUTO DE OLHOS VILLAS: 2
+- RE INVENTAR DESENVOLVIMENTO INFANTIL LTDA: 2
+- MICHEL MASSON PSICOLOGIA: 2
+- TOTUM PSICOLOGIA: 1
+- INSTITUTO DO EQUILIBRIO: 1
+- AUDIFONO DIAGNOSTICOS: 1
+- MEDPREV MARACANAU: 1
+- INSTITUTO CUBO MAGICO ZONA SUL: 1
+- GHANEM MAX COLIN: 1
+- IMON INST MORATENSE NEF: 1
+- INCORD: 1

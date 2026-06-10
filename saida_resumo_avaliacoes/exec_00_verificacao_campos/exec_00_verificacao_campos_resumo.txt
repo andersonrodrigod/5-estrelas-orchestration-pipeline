@@ -1,29 +1,33 @@
 RESUMO DA EXECUCAO 00 - VERIFICACAO DE CAMPOS
 
-Arquivo de entrada: data\5_estrelas_abril.csv
+Arquivo de entrada: data\premissa_5_estrelas_maio.csv
 Arquivo de resumo CSV: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_resumo.csv
 Valores invalidos agrupados: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_valores_invalidos.csv
 Linhas com LOCAL e ESPECIALIDADE invalidos: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_local_especialidade_invalidos.csv
+Linhas com UF vazio: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_uf_vazio.csv
+Linhas com TIPO vazio: saida_resumo_avaliacoes\exec_00_verificacao_campos\exec_00_verificacao_campos_tipo_vazio.csv
 
-Total de linhas na entrada: 1369852
-Total com LOCAL e ESPECIALIDADE invalidos juntos: 1924
+Total de linhas na entrada: 1133048
+Total com LOCAL e ESPECIALIDADE invalidos juntos: 3488
+Total com UF vazio: 3654
+Total com TIPO vazio: 0
 
 COLUNAS VERIFICADAS:
 
 - Coluna: LOCAL
   Total vazios: 0
-  Total apenas hifen: 5508
-  Total sem letras: 5508
-  Total apenas caracteres especiais: 5508
+  Total apenas hifen: 6189
+  Total sem letras: 6189
+  Total apenas caracteres especiais: 6189
 
 - Coluna: ESPECIALIDADE
   Total vazios: 0
-  Total apenas hifen: 1973
-  Total sem letras: 1973
-  Total apenas caracteres especiais: 1973
+  Total apenas hifen: 3645
+  Total sem letras: 3645
+  Total apenas caracteres especiais: 3645
 
 - Coluna: UF
-  Total vazios: 2255
+  Total vazios: 3654
   Total apenas hifen: 0
   Total sem letras: 0
   Total apenas caracteres especiais: 0

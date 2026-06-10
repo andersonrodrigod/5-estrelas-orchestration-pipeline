@@ -32,10 +32,10 @@ arquivos_entrada = [
 
 arquivo_saida_excel = Path('data_exec_indiv/avaliacoes/12_resultado_final.xlsx')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_12_gerar_excel_final'
-arquivo_resumo_json = pasta_resumo / 'exec_12_gerar_excel_final_resumo.json'
-arquivo_resumo_txt = pasta_resumo / 'exec_12_gerar_excel_final_resumo.txt'
-arquivo_resumo_csv = pasta_resumo / 'exec_12_gerar_excel_final_resumo.csv'
+pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_12_gerar_excel_rafael'
+arquivo_resumo_json = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.json'
+arquivo_resumo_txt = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.txt'
+arquivo_resumo_csv = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.csv'
 
 limite_linhas_excel = 1_048_576
 limite_colunas_excel = 16_384
@@ -205,7 +205,7 @@ def salvar_resumos(registros):
     pasta_resumo.mkdir(parents=True, exist_ok=True)
 
     resumo = {
-        'execucao': 'exec_12_gerar_excel_final',
+        'execucao': 'exec_12_gerar_excel_rafael',
         'arquivo_saida_excel': str(arquivo_saida_excel),
         'abas': registros,
         'observacao': (
@@ -220,7 +220,7 @@ def salvar_resumos(registros):
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     linhas_txt = [
-        'RESUMO DA EXECUCAO 12 - GERAR EXCEL FINAL',
+        'RESUMO DA EXECUCAO 12 - GERAR EXCEL RAFAEL',
         '',
         f"Arquivo Excel: {resumo['arquivo_saida_excel']}",
         '',
@@ -245,7 +245,7 @@ def salvar_resumos(registros):
 
 
 def executar():
-    print('Iniciando execucao 12 - gerar Excel final...')
+    print('Iniciando execucao 12 - gerar Excel Rafael...')
 
     arquivos_faltando = validar_arquivos_obrigatorios()
     if arquivos_faltando:
