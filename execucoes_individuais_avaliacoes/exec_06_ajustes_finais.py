@@ -11,10 +11,8 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_
 
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
-arquivo_regras_ajuste = resolver_caminho_onedrive_comercial(
-    Path('utils/insumos/regra_ajuste_final.xlsx'),
-    Path('5 Estrelas/INSUMOS/regra_ajuste_final.xlsx'),
-)
+arquivo_regras_ajuste_local = Path('utils/insumos/regra_ajuste_final.xlsx')
+arquivo_regras_ajuste_onedrive = Path('5 Estrelas/INSUMOS/regra_ajuste_final.xlsx')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/06_base_com_ajustes_finais.csv')
 
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_06_ajustes_finais'
@@ -23,6 +21,13 @@ arquivo_resumo_txt = pasta_resumo / 'exec_06_ajustes_finais_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_06_ajustes_finais_resumo.csv'
 arquivo_auditoria_csv = pasta_resumo / 'exec_06_ajustes_finais_auditoria.csv'
 arquivo_regras_csv = pasta_resumo / 'exec_06_ajustes_finais_regras.csv'
+
+
+def obter_arquivo_regras_ajuste():
+    return resolver_caminho_onedrive_comercial(
+        arquivo_regras_ajuste_local,
+        arquivo_regras_ajuste_onedrive,
+    )
 
 colunas_regras = [
     'STATUS_ATIVO',
@@ -327,19 +332,129 @@ def aplicar_ajustes(df_base, df_regras):
     return df_base, pd.DataFrame(resumos), df_auditoria
 
 
-def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
-    pasta_resumo.mkdir(parents=True, exist_ok=True)
-    salvar_csv_padronizado(df_regras_resumo, arquivo_regras_csv)
-    salvar_csv_padronizado(df_auditoria, arquivo_auditoria_csv)
+def processar_ajustes_finais(df_base, caminho_regras_ajuste):
+    df = df_base.copy()
+    df_regras = carregar_regras(caminho_regras_ajuste)
 
-    total_alteradas = int(df_regras_resumo['TOTAL_ALTERADAS'].sum()) if not df_regras_resumo.empty else 0
+    erros_regras = validar_regras(df_regras, set(df.columns))
+    if erros_regras:
+        raise ValueError('\n'.join(erros_regras))
+
+    df_saida, df_regras_resumo, df_auditoria = aplicar_ajustes(df, df_regras)
+    total_alteradas = (
+        int(df_regras_resumo['TOTAL_ALTERADAS'].sum())
+        if not df_regras_resumo.empty
+        else 0
+    )
+
     resumo = {
         'execucao': 'exec_06_ajustes_finais',
-        'arquivo_entrada': str(arquivo_entrada),
-        'arquivo_regras_ajuste': str(arquivo_regras_ajuste),
-        'arquivo_saida': str(arquivo_saida),
-        'arquivo_regras_csv': str(arquivo_regras_csv),
-        'arquivo_auditoria_csv': str(arquivo_auditoria_csv),
+        'arquivo_regras_ajuste': str(caminho_regras_ajuste),
+        'total_linhas_entrada': int(len(df_base)),
+        'total_linhas_saida': int(len(df_saida)),
+        'total_regras_ativas': int(len(df_regras_resumo)),
+        'total_linhas_alteradas': total_alteradas,
+        'regras': transformar_em_lista_registros(
+            df_regras_resumo,
+            [
+                'ORDEM_REGRA',
+                'DESCRICAO',
+                'COLUNA_AJUSTAR',
+                'VALOR_NOVO',
+                'TOTAL_ATINGIDAS',
+                'TOTAL_ALTERADAS',
+            ],
+        ),
+    }
+    artefatos = {
+        'regras_resumo': df_regras_resumo,
+        'auditoria': df_auditoria,
+    }
+
+    return df_saida, resumo, artefatos
+
+
+def salvar_resumos_ajustes_finais(
+    resumo,
+    artefatos,
+    pasta_destino,
+    arquivo_entrada_resumo=None,
+    arquivo_saida_resumo=None,
+):
+    pasta_destino = Path(pasta_destino)
+    pasta_destino.mkdir(parents=True, exist_ok=True)
+
+    destino_resumo_json = pasta_destino / 'exec_06_ajustes_finais_resumo.json'
+    destino_resumo_txt = pasta_destino / 'exec_06_ajustes_finais_resumo.txt'
+    destino_resumo_csv = pasta_destino / 'exec_06_ajustes_finais_resumo.csv'
+    destino_auditoria_csv = pasta_destino / 'exec_06_ajustes_finais_auditoria.csv'
+    destino_regras_csv = pasta_destino / 'exec_06_ajustes_finais_regras.csv'
+
+    df_regras_resumo = artefatos['regras_resumo']
+    df_auditoria = artefatos['auditoria']
+    salvar_csv_padronizado(df_regras_resumo, destino_regras_csv)
+    salvar_csv_padronizado(df_auditoria, destino_auditoria_csv)
+
+    resumo_saida = dict(resumo)
+    resumo_saida.update({
+        'arquivo_entrada': str(arquivo_entrada_resumo) if arquivo_entrada_resumo else '',
+        'arquivo_saida': str(arquivo_saida_resumo) if arquivo_saida_resumo else '',
+        'arquivo_regras_csv': str(destino_regras_csv),
+        'arquivo_auditoria_csv': str(destino_auditoria_csv),
+    })
+
+    with open(destino_resumo_json, 'w', encoding='utf-8') as arquivo:
+        json.dump(resumo_saida, arquivo, ensure_ascii=False, indent=4)
+
+    linhas_txt = [
+        'RESUMO DA EXECUCAO 06 - AJUSTES FINAIS',
+        '',
+        f"Arquivo de entrada: {resumo_saida['arquivo_entrada']}",
+        f"Arquivo de regras: {resumo_saida['arquivo_regras_ajuste']}",
+        f"Arquivo de saida: {resumo_saida['arquivo_saida']}",
+        f"Auditoria: {resumo_saida['arquivo_auditoria_csv']}",
+        '',
+        f"Total de linhas na entrada: {resumo_saida['total_linhas_entrada']}",
+        f"Total de linhas na saida: {resumo_saida['total_linhas_saida']}",
+        f"Total de regras ativas: {resumo_saida['total_regras_ativas']}",
+        f"Total de linhas alteradas: {resumo_saida['total_linhas_alteradas']}",
+        '',
+        'REGRAS APLICADAS:',
+    ]
+
+    if resumo_saida['regras']:
+        for regra in resumo_saida['regras']:
+            linhas_txt.append(
+                f"- Regra {regra['ORDEM_REGRA']} - {regra['DESCRICAO']}: "
+                f"{regra['TOTAL_ALTERADAS']} alteradas de {regra['TOTAL_ATINGIDAS']} atingidas"
+            )
+    else:
+        linhas_txt.append('- Nenhuma regra ativa')
+
+    with open(destino_resumo_txt, 'w', encoding='utf-8') as arquivo:
+        arquivo.write('\n'.join(linhas_txt))
+
+    salvar_csv_padronizado(pd.DataFrame([{
+        'EXECUCAO': resumo_saida['execucao'],
+        'ARQUIVO_ENTRADA': resumo_saida['arquivo_entrada'],
+        'ARQUIVO_REGRAS': resumo_saida['arquivo_regras_ajuste'],
+        'ARQUIVO_SAIDA': resumo_saida['arquivo_saida'],
+        'TOTAL_LINHAS_ENTRADA': resumo_saida['total_linhas_entrada'],
+        'TOTAL_LINHAS_SAIDA': resumo_saida['total_linhas_saida'],
+        'TOTAL_REGRAS_ATIVAS': resumo_saida['total_regras_ativas'],
+        'TOTAL_LINHAS_ALTERADAS': resumo_saida['total_linhas_alteradas'],
+    }]), destino_resumo_csv)
+
+
+def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
+    total_alteradas = (
+        int(df_regras_resumo['TOTAL_ALTERADAS'].sum())
+        if not df_regras_resumo.empty
+        else 0
+    )
+    resumo = {
+        'execucao': 'exec_06_ajustes_finais',
+        'arquivo_regras_ajuste': str(obter_arquivo_regras_ajuste()),
         'total_linhas_entrada': int(len(df_entrada)),
         'total_linhas_saida': int(len(df_saida)),
         'total_regras_ativas': int(len(df_regras_resumo)),
@@ -356,69 +471,38 @@ def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
             ],
         ),
     }
-
-    with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
-        json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
-
-    linhas_txt = [
-        'RESUMO DA EXECUCAO 06 - AJUSTES FINAIS',
-        '',
-        f"Arquivo de entrada: {resumo['arquivo_entrada']}",
-        f"Arquivo de regras: {resumo['arquivo_regras_ajuste']}",
-        f"Arquivo de saida: {resumo['arquivo_saida']}",
-        f"Auditoria: {resumo['arquivo_auditoria_csv']}",
-        '',
-        f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
-        f"Total de linhas na saida: {resumo['total_linhas_saida']}",
-        f"Total de regras ativas: {resumo['total_regras_ativas']}",
-        f"Total de linhas alteradas: {resumo['total_linhas_alteradas']}",
-        '',
-        'REGRAS APLICADAS:',
-    ]
-
-    if resumo['regras']:
-        for regra in resumo['regras']:
-            linhas_txt.append(
-                f"- Regra {regra['ORDEM_REGRA']} - {regra['DESCRICAO']}: "
-                f"{regra['TOTAL_ALTERADAS']} alteradas de {regra['TOTAL_ATINGIDAS']} atingidas"
-            )
-    else:
-        linhas_txt.append('- Nenhuma regra ativa')
-
-    with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
-        arquivo.write('\n'.join(linhas_txt))
-
-    salvar_csv_padronizado(pd.DataFrame([{
-        'EXECUCAO': resumo['execucao'],
-        'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
-        'ARQUIVO_REGRAS': resumo['arquivo_regras_ajuste'],
-        'ARQUIVO_SAIDA': resumo['arquivo_saida'],
-        'TOTAL_LINHAS_ENTRADA': resumo['total_linhas_entrada'],
-        'TOTAL_LINHAS_SAIDA': resumo['total_linhas_saida'],
-        'TOTAL_REGRAS_ATIVAS': resumo['total_regras_ativas'],
-        'TOTAL_LINHAS_ALTERADAS': resumo['total_linhas_alteradas'],
-    }]), arquivo_resumo_csv)
+    artefatos = {
+        'regras_resumo': df_regras_resumo,
+        'auditoria': df_auditoria,
+    }
+    salvar_resumos_ajustes_finais(
+        resumo,
+        artefatos,
+        pasta_resumo,
+        arquivo_entrada_resumo=arquivo_entrada,
+        arquivo_saida_resumo=arquivo_saida,
+    )
 
 
-def executar():
+def executar(salvar_base=True):
     print('Iniciando execucao 06 - ajustes finais...')
     print(f'Lendo arquivo da execucao 05: {arquivo_entrada}')
-    print(f'Lendo regras de ajuste final: {arquivo_regras_ajuste}')
+    caminho_regras_ajuste = obter_arquivo_regras_ajuste()
+    print(f'Lendo regras de ajuste final: {caminho_regras_ajuste}')
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
         return 1
 
-    if not arquivo_regras_ajuste.exists():
-        print(f'ERRO - arquivo de regras nao encontrado: {arquivo_regras_ajuste}')
+    if not caminho_regras_ajuste.exists():
+        print(f'ERRO - arquivo de regras nao encontrado: {caminho_regras_ajuste}')
         return 1
 
-    df = ler_csv_padronizado(arquivo_entrada)
-    df_original = df.copy()
-    df_regras = carregar_regras(arquivo_regras_ajuste)
-
-    erros_regras = validar_regras(df_regras, set(df.columns))
-    if erros_regras:
+    df_entrada = ler_csv_padronizado(arquivo_entrada)
+    try:
+        df, resumo, artefatos = processar_ajustes_finais(df_entrada, caminho_regras_ajuste)
+    except ValueError as erro:
+        erros_regras = str(erro).splitlines()
         print('ERRO - regra_ajuste_final.xlsx possui problemas:')
         for erro in erros_regras[:50]:
             print(f'- {erro}')
@@ -426,20 +510,26 @@ def executar():
             print(f'- ... mais {len(erros_regras) - 50} problema(s)')
         return 1
 
-    df, df_regras_resumo, df_auditoria = aplicar_ajustes(df, df_regras)
-    total_alteradas = int(df_regras_resumo['TOTAL_ALTERADAS'].sum()) if not df_regras_resumo.empty else 0
-
     print(f'Total de linhas recebidas: {len(df)}')
-    print(f'Total de linhas alteradas: {total_alteradas}')
-    print(f'Gravando arquivo da execucao 06: {arquivo_saida}')
+    print(f"Total de linhas alteradas: {resumo['total_linhas_alteradas']}")
 
-    arquivo_saida.parent.mkdir(parents=True, exist_ok=True)
-    salvar_csv_padronizado(df, arquivo_saida)
-    salvar_resumos(df_original, df, df_regras_resumo, df_auditoria)
+    if salvar_base:
+        print(f'Gravando arquivo da execucao 06: {arquivo_saida}')
+        arquivo_saida.parent.mkdir(parents=True, exist_ok=True)
+        salvar_csv_padronizado(df, arquivo_saida)
+
+    salvar_resumos_ajustes_finais(
+        resumo,
+        artefatos,
+        pasta_resumo,
+        arquivo_entrada_resumo=arquivo_entrada,
+        arquivo_saida_resumo=arquivo_saida,
+    )
 
     print('Execucao 06 finalizada.')
-    return 0
+    return df, resumo, artefatos
 
 
 if __name__ == '__main__':
-    sys.exit(executar())
+    resultado = executar()
+    sys.exit(1 if resultado == 1 else 0)

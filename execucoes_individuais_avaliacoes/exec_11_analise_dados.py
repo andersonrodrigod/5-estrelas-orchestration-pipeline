@@ -227,7 +227,7 @@ def criar_resumo_geral(df):
     ])
 
 
-def salvar_documentacao():
+def salvar_documentacao(caminho_documentacao=arquivo_documentacao_txt, caminho_excel=arquivo_saida_excel):
     linhas = [
         'EXECUCAO 11 - ANALISE DE DADOS',
         '',
@@ -238,7 +238,7 @@ def salvar_documentacao():
         str(arquivo_entrada),
         '',
         'Arquivo Excel gerado:',
-        str(arquivo_saida_excel),
+        str(caminho_excel),
         '',
         'Observacao sobre ambulancia:',
         'A remocao de ambulancia ficou como fluxo legado/alternativo.',
@@ -260,8 +260,48 @@ def salvar_documentacao():
         '- A linha TOTAL GERAL da aba CLASSIFICACAO usa todas as linhas da base.',
     ]
 
-    with open(arquivo_documentacao_txt, 'w', encoding='utf-8') as arquivo:
+    with open(caminho_documentacao, 'w', encoding='utf-8') as arquivo:
         arquivo.write('\n'.join(linhas))
+
+
+def processar_analise_dados(df_base):
+    df = df_base.copy()
+    colunas_faltando = validar_colunas_obrigatorias(df)
+    if colunas_faltando:
+        raise ValueError('\n'.join(colunas_faltando))
+
+    df[coluna_nota] = pd.to_numeric(df[coluna_nota], errors='coerce')
+    for coluna in [coluna_classificacao, coluna_operadora, coluna_unidade, coluna_especialidade]:
+        df[coluna] = normalizar_texto(df[coluna])
+
+    return {
+        'resumo': criar_resumo_geral(df),
+        'classificacao': criar_analise_classificacao(df),
+        'operadora': criar_analise_operadora(df),
+        'unidade': criar_analise_por_coluna(df, coluna_unidade),
+        'local_por_classificacao': criar_analise_unidade_por_classificacao(df),
+    }
+
+
+def salvar_analise_dados(analises, pasta_destino):
+    pasta_destino = Path(pasta_destino)
+    pasta_destino.mkdir(parents=True, exist_ok=True)
+    destino_excel = pasta_destino / 'exec_11_analise_dados.xlsx'
+    destino_documentacao = pasta_destino / 'exec_11_analise_dados_explicacao.txt'
+
+    with pd.ExcelWriter(destino_excel, engine='openpyxl') as writer:
+        analises['resumo'].to_excel(writer, sheet_name='RESUMO', index=False)
+        analises['classificacao'].to_excel(writer, sheet_name='CLASSIFICACAO', index=False)
+        analises['operadora'].to_excel(writer, sheet_name='OPERADORA', index=False)
+        analises['unidade'].to_excel(writer, sheet_name='UNIDADE', index=False)
+        analises['local_por_classificacao'].to_excel(
+            writer,
+            sheet_name='LOCAL_POR_CLASSIFICACAO',
+            index=False,
+        )
+
+    salvar_documentacao(destino_documentacao, destino_excel)
+    return destino_excel, destino_documentacao
 
 
 def executar():
@@ -274,40 +314,18 @@ def executar():
 
     df = ler_csv_padronizado(arquivo_entrada)
 
-    colunas_faltando = validar_colunas_obrigatorias(df)
-    if colunas_faltando:
+    try:
+        analises = processar_analise_dados(df)
+    except ValueError as erro:
         print('ERRO - colunas obrigatorias ausentes:')
-        for coluna in colunas_faltando:
+        for coluna in str(erro).splitlines():
             print(f'- {coluna}')
         return 1
 
-    df[coluna_nota] = pd.to_numeric(df[coluna_nota], errors='coerce')
-    for coluna in [coluna_classificacao, coluna_operadora, coluna_unidade, coluna_especialidade]:
-        df[coluna] = normalizar_texto(df[coluna])
-
-    pasta_saida.mkdir(parents=True, exist_ok=True)
-
-    df_resumo = criar_resumo_geral(df)
-    df_classificacao = criar_analise_classificacao(df)
-    df_operadora = criar_analise_operadora(df)
-    df_unidade = criar_analise_por_coluna(df, coluna_unidade)
-    df_unidade_por_classificacao = criar_analise_unidade_por_classificacao(df)
-
     print(f'Gravando Excel de analise: {arquivo_saida_excel}')
-    with pd.ExcelWriter(arquivo_saida_excel, engine='openpyxl') as writer:
-        df_resumo.to_excel(writer, sheet_name='RESUMO', index=False)
-        df_classificacao.to_excel(writer, sheet_name='CLASSIFICACAO', index=False)
-        df_operadora.to_excel(writer, sheet_name='OPERADORA', index=False)
-        df_unidade.to_excel(writer, sheet_name='UNIDADE', index=False)
-        df_unidade_por_classificacao.to_excel(
-            writer,
-            sheet_name='LOCAL_POR_CLASSIFICACAO',
-            index=False,
-        )
+    _, destino_documentacao = salvar_analise_dados(analises, pasta_saida)
 
-    salvar_documentacao()
-
-    print(f'Documentacao gerada: {arquivo_documentacao_txt}')
+    print(f'Documentacao gerada: {destino_documentacao}')
     print('Execucao 11 finalizada.')
     return 0
 

@@ -40,131 +40,173 @@ def identificar_colunas_vazias(linha):
     return ', '.join(colunas_vazias)
 
 
-print('Iniciando execucao 09 - resultado da unidade...')
-print(f'Lendo arquivo da execucao 08: {arquivo_entrada}')
+def processar_resultado_unidade(df_base):
+    df = df_base.copy()
 
-df = ler_csv_padronizado(arquivo_entrada)
+    for coluna in colunas_grupo:
+        df[coluna] = normalizar_texto(df[coluna])
 
-# Padroniza as chaves do agrupamento.
-for coluna in colunas_grupo:
-    df[coluna] = normalizar_texto(df[coluna])
-
-# FEATURE TEMPORARIA: preencher UF vazia ou marcada como "vazio" com CE.
-mascara_uf_vazia = df['UF'].isna() | (df['UF'] == '') | (df['UF'].str.lower() == 'vazio')
-df.loc[mascara_uf_vazia, 'UF'] = 'CE'
-
-# Garante que a nota geral esteja numerica para o calculo da media.
-df['NOTA GERAL'] = pd.to_numeric(df['NOTA GERAL'], errors='coerce')
-
-# Calcula a media por grupo e devolve o valor para cada linha.
-df['RESULTADO DA UNIDADE'] = (
-    df.groupby(colunas_grupo, dropna=False)['NOTA GERAL']
-    .transform('mean')
-    .round(2)
-)
-
-# Gera uma visao resumida para inspecao posterior.
-df_inspecao_grupos = (
-    df.groupby(colunas_grupo, dropna=False)
-    .agg(
-        QUANTIDADE_LINHAS=('NOTA GERAL', 'size'),
-        RESULTADO_DA_UNIDADE=('RESULTADO DA UNIDADE', 'first'),
-        NOTA_GERAL_MIN=('NOTA GERAL', 'min'),
-        NOTA_GERAL_MAX=('NOTA GERAL', 'max'),
-        META=('META', 'first'),
-        OPERADORA=('OPERADORA', 'first')
+    mascara_uf_vazia = (
+        df['UF'].isna() | (df['UF'] == '') | (df['UF'].str.lower() == 'vazio')
     )
-    .reset_index()
-    .sort_values('QUANTIDADE_LINHAS', ascending=False)
-)
+    df.loc[mascara_uf_vazia, 'UF'] = 'CE'
 
-total_grupos = int(len(df_inspecao_grupos))
-total_linhas = int(len(df))
-total_linhas_com_resultado = int(df['RESULTADO DA UNIDADE'].notna().sum())
-total_linhas_sem_resultado = int(df['RESULTADO DA UNIDADE'].isna().sum())
-mascara_grupos_chave_vazia = (
-    df_inspecao_grupos['CLASSIFICACAO'].isna() |
-    (df_inspecao_grupos['CLASSIFICACAO'] == '') |
-    df_inspecao_grupos['LOCAL EDITADO'].isna() |
-    (df_inspecao_grupos['LOCAL EDITADO'] == '') |
-    df_inspecao_grupos['UF'].isna() |
-    (df_inspecao_grupos['UF'] == '')
-)
-total_grupos_chave_vazia = int(mascara_grupos_chave_vazia.sum())
+    df['NOTA GERAL'] = pd.to_numeric(df['NOTA GERAL'], errors='coerce')
+    df['RESULTADO DA UNIDADE'] = (
+        df.groupby(colunas_grupo, dropna=False)['NOTA GERAL']
+        .transform('mean')
+        .round(2)
+    )
 
-mascara_linhas_chave_vazia = (
-    df['CLASSIFICACAO'].isna() |
-    (df['CLASSIFICACAO'] == '') |
-    df['LOCAL EDITADO'].isna() |
-    (df['LOCAL EDITADO'] == '') |
-    df['UF'].isna() |
-    (df['UF'] == '')
-)
-df_linhas_chave_vazia = df.loc[mascara_linhas_chave_vazia].copy()
-df_linhas_chave_vazia['COLUNA_VAZIA'] = df_linhas_chave_vazia.apply(identificar_colunas_vazias, axis=1)
-total_linhas_chave_vazia = int(len(df_linhas_chave_vazia))
+    df_inspecao_grupos = (
+        df.groupby(colunas_grupo, dropna=False)
+        .agg(
+            QUANTIDADE_LINHAS=('NOTA GERAL', 'size'),
+            RESULTADO_DA_UNIDADE=('RESULTADO DA UNIDADE', 'first'),
+            NOTA_GERAL_MIN=('NOTA GERAL', 'min'),
+            NOTA_GERAL_MAX=('NOTA GERAL', 'max'),
+            META=('META', 'first'),
+            OPERADORA=('OPERADORA', 'first')
+        )
+        .reset_index()
+        .sort_values('QUANTIDADE_LINHAS', ascending=False)
+    )
 
-print(f'Total de linhas recebidas: {total_linhas}')
-print(f'Total de grupos encontrados: {total_grupos}')
-print(f'Total de linhas com resultado da unidade: {total_linhas_com_resultado}')
-print(f'Total de linhas sem resultado da unidade: {total_linhas_sem_resultado}')
-print(f'Gravando arquivo da execucao 09: {arquivo_saida}')
+    mascara_grupos_chave_vazia = (
+        df_inspecao_grupos['CLASSIFICACAO'].isna() |
+        (df_inspecao_grupos['CLASSIFICACAO'] == '') |
+        df_inspecao_grupos['LOCAL EDITADO'].isna() |
+        (df_inspecao_grupos['LOCAL EDITADO'] == '') |
+        df_inspecao_grupos['UF'].isna() |
+        (df_inspecao_grupos['UF'] == '')
+    )
 
-arquivo_saida.parent.mkdir(exist_ok=True)
-pasta_resumo.mkdir(parents=True, exist_ok=True)
-salvar_csv_padronizado(df, arquivo_saida)
-salvar_csv_padronizado(df_inspecao_grupos, arquivo_inspecao_grupos_csv)
-salvar_csv_padronizado(df_linhas_chave_vazia, arquivo_linhas_chave_vazia_csv)
+    mascara_linhas_chave_vazia = (
+        df['CLASSIFICACAO'].isna() |
+        (df['CLASSIFICACAO'] == '') |
+        df['LOCAL EDITADO'].isna() |
+        (df['LOCAL EDITADO'] == '') |
+        df['UF'].isna() |
+        (df['UF'] == '')
+    )
+    df_linhas_chave_vazia = df.loc[mascara_linhas_chave_vazia].copy()
+    df_linhas_chave_vazia['COLUNA_VAZIA'] = df_linhas_chave_vazia.apply(
+        identificar_colunas_vazias,
+        axis=1,
+    )
 
-resumo = {
-    'execucao': 'exec_09_resultado_unidade',
-    'arquivo_entrada': str(arquivo_entrada),
-    'arquivo_saida': str(arquivo_saida),
-    'arquivo_inspecao_grupos': str(arquivo_inspecao_grupos_csv),
-    'arquivo_linhas_chave_vazia': str(arquivo_linhas_chave_vazia_csv),
-    'total_linhas_entrada': total_linhas,
-    'total_grupos': total_grupos,
-    'total_linhas_com_resultado': total_linhas_com_resultado,
-    'total_linhas_sem_resultado': total_linhas_sem_resultado,
-    'total_grupos_chave_vazia': total_grupos_chave_vazia,
-    'total_linhas_chave_vazia': total_linhas_chave_vazia
-}
+    resumo = {
+        'execucao': 'exec_09_resultado_unidade',
+        'total_linhas_entrada': int(len(df)),
+        'total_grupos': int(len(df_inspecao_grupos)),
+        'total_linhas_com_resultado': int(df['RESULTADO DA UNIDADE'].notna().sum()),
+        'total_linhas_sem_resultado': int(df['RESULTADO DA UNIDADE'].isna().sum()),
+        'total_grupos_chave_vazia': int(mascara_grupos_chave_vazia.sum()),
+        'total_linhas_chave_vazia': int(len(df_linhas_chave_vazia)),
+    }
+    artefatos = {
+        'inspecao_grupos': df_inspecao_grupos,
+        'linhas_chave_vazia': df_linhas_chave_vazia,
+    }
 
-with open(arquivo_resumo_json, 'w', encoding='utf-8') as arquivo:
-    json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
+    return df, resumo, artefatos
 
-linhas_txt = [
-    'RESUMO DA EXECUCAO 09 - RESULTADO DA UNIDADE',
-    '',
-    f"Arquivo de entrada: {resumo['arquivo_entrada']}",
-    f"Arquivo de saida: {resumo['arquivo_saida']}",
-    f"Arquivo de inspecao: {resumo['arquivo_inspecao_grupos']}",
-    f"Arquivo de linhas com chave vazia: {resumo['arquivo_linhas_chave_vazia']}",
-    '',
-    f"Total de linhas na entrada: {resumo['total_linhas_entrada']}",
-    f"Total de grupos: {resumo['total_grupos']}",
-    f"Total de linhas com resultado da unidade: {resumo['total_linhas_com_resultado']}",
-    f"Total de linhas sem resultado da unidade: {resumo['total_linhas_sem_resultado']}",
-    f"Total de grupos com alguma chave vazia: {resumo['total_grupos_chave_vazia']}",
-    f"Total de linhas com alguma chave vazia: {resumo['total_linhas_chave_vazia']}"
-]
 
-with open(arquivo_resumo_txt, 'w', encoding='utf-8') as arquivo:
-    arquivo.write('\n'.join(linhas_txt))
+def salvar_resumos_resultado_unidade(
+    resumo,
+    artefatos,
+    pasta_destino,
+    arquivo_entrada_resumo=None,
+    arquivo_saida_resumo=None,
+):
+    pasta_destino = Path(pasta_destino)
+    pasta_destino.mkdir(parents=True, exist_ok=True)
 
-salvar_csv_padronizado(pd.DataFrame([{
-    'EXECUCAO': resumo['execucao'],
-    'ARQUIVO_ENTRADA': resumo['arquivo_entrada'],
-    'ARQUIVO_SAIDA': resumo['arquivo_saida'],
-    'ARQUIVO_INSPECAO': resumo['arquivo_inspecao_grupos'],
-    'ARQUIVO_LINHAS_CHAVE_VAZIA': resumo['arquivo_linhas_chave_vazia'],
-    'TOTAL_LINHAS_ENTRADA': resumo['total_linhas_entrada'],
-    'TOTAL_GRUPOS': resumo['total_grupos'],
-    'TOTAL_LINHAS_COM_RESULTADO': resumo['total_linhas_com_resultado'],
-    'TOTAL_LINHAS_SEM_RESULTADO': resumo['total_linhas_sem_resultado'],
-    'TOTAL_GRUPOS_CHAVE_VAZIA': resumo['total_grupos_chave_vazia'],
-    'TOTAL_LINHAS_CHAVE_VAZIA': resumo['total_linhas_chave_vazia']
-}]), arquivo_resumo_csv)
+    destino_resumo_json = pasta_destino / 'exec_09_resultado_unidade_resumo.json'
+    destino_resumo_txt = pasta_destino / 'exec_09_resultado_unidade_resumo.txt'
+    destino_resumo_csv = pasta_destino / 'exec_09_resultado_unidade_resumo.csv'
+    destino_inspecao_csv = pasta_destino / 'exec_09_resultado_unidade_inspecao_grupos.csv'
+    destino_chave_vazia_csv = (
+        pasta_destino / 'exec_09_resultado_unidade_linhas_chave_vazia.csv'
+    )
 
-print('Execucao 09 finalizada.')
+    salvar_csv_padronizado(artefatos['inspecao_grupos'], destino_inspecao_csv)
+    salvar_csv_padronizado(artefatos['linhas_chave_vazia'], destino_chave_vazia_csv)
+
+    resumo_saida = dict(resumo)
+    resumo_saida.update({
+        'arquivo_entrada': str(arquivo_entrada_resumo) if arquivo_entrada_resumo else '',
+        'arquivo_saida': str(arquivo_saida_resumo) if arquivo_saida_resumo else '',
+        'arquivo_inspecao_grupos': str(destino_inspecao_csv),
+        'arquivo_linhas_chave_vazia': str(destino_chave_vazia_csv),
+    })
+
+    with open(destino_resumo_json, 'w', encoding='utf-8') as arquivo:
+        json.dump(resumo_saida, arquivo, ensure_ascii=False, indent=4)
+
+    linhas_txt = [
+        'RESUMO DA EXECUCAO 09 - RESULTADO DA UNIDADE',
+        '',
+        f"Arquivo de entrada: {resumo_saida['arquivo_entrada']}",
+        f"Arquivo de saida: {resumo_saida['arquivo_saida']}",
+        f"Arquivo de inspecao: {resumo_saida['arquivo_inspecao_grupos']}",
+        f"Arquivo de linhas com chave vazia: {resumo_saida['arquivo_linhas_chave_vazia']}",
+        '',
+        f"Total de linhas na entrada: {resumo_saida['total_linhas_entrada']}",
+        f"Total de grupos: {resumo_saida['total_grupos']}",
+        f"Total de linhas com resultado da unidade: {resumo_saida['total_linhas_com_resultado']}",
+        f"Total de linhas sem resultado da unidade: {resumo_saida['total_linhas_sem_resultado']}",
+        f"Total de grupos com alguma chave vazia: {resumo_saida['total_grupos_chave_vazia']}",
+        f"Total de linhas com alguma chave vazia: {resumo_saida['total_linhas_chave_vazia']}"
+    ]
+
+    with open(destino_resumo_txt, 'w', encoding='utf-8') as arquivo:
+        arquivo.write('\n'.join(linhas_txt))
+
+    salvar_csv_padronizado(pd.DataFrame([{
+        'EXECUCAO': resumo_saida['execucao'],
+        'ARQUIVO_ENTRADA': resumo_saida['arquivo_entrada'],
+        'ARQUIVO_SAIDA': resumo_saida['arquivo_saida'],
+        'ARQUIVO_INSPECAO': resumo_saida['arquivo_inspecao_grupos'],
+        'ARQUIVO_LINHAS_CHAVE_VAZIA': resumo_saida['arquivo_linhas_chave_vazia'],
+        'TOTAL_LINHAS_ENTRADA': resumo_saida['total_linhas_entrada'],
+        'TOTAL_GRUPOS': resumo_saida['total_grupos'],
+        'TOTAL_LINHAS_COM_RESULTADO': resumo_saida['total_linhas_com_resultado'],
+        'TOTAL_LINHAS_SEM_RESULTADO': resumo_saida['total_linhas_sem_resultado'],
+        'TOTAL_GRUPOS_CHAVE_VAZIA': resumo_saida['total_grupos_chave_vazia'],
+        'TOTAL_LINHAS_CHAVE_VAZIA': resumo_saida['total_linhas_chave_vazia']
+    }]), destino_resumo_csv)
+
+
+def executar(salvar_base=True):
+    print('Iniciando execucao 09 - resultado da unidade...')
+    print(f'Lendo arquivo da execucao 08: {arquivo_entrada}')
+
+    df_entrada = ler_csv_padronizado(arquivo_entrada)
+    df_saida, resumo, artefatos = processar_resultado_unidade(df_entrada)
+
+    print(f"Total de linhas recebidas: {resumo['total_linhas_entrada']}")
+    print(f"Total de grupos encontrados: {resumo['total_grupos']}")
+    print(f"Total de linhas com resultado da unidade: {resumo['total_linhas_com_resultado']}")
+    print(f"Total de linhas sem resultado da unidade: {resumo['total_linhas_sem_resultado']}")
+
+    if salvar_base:
+        print(f'Gravando arquivo da execucao 09: {arquivo_saida}')
+        arquivo_saida.parent.mkdir(exist_ok=True)
+        salvar_csv_padronizado(df_saida, arquivo_saida)
+
+    salvar_resumos_resultado_unidade(
+        resumo,
+        artefatos,
+        pasta_resumo,
+        arquivo_entrada_resumo=arquivo_entrada,
+        arquivo_saida_resumo=arquivo_saida,
+    )
+
+    print('Execucao 09 finalizada.')
+    return df_saida, resumo, artefatos
+
+
+if __name__ == '__main__':
+    executar()
 
