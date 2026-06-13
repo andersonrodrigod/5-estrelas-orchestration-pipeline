@@ -1,0 +1,10 @@
+RESUMO DA EXECUCAO 10 - STATUS UNIDADE
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\09_base_com_resultado_unidade.csv
+Arquivo de saida: data_exec_indiv\avaliacoes\10_base_com_status_unidade.csv
+Arquivo de status: saida_resumo_avaliacoes\exec_10_status_unidade\exec_10_status_unidade_status.csv
+
+Total de linhas na entrada: 1369852
+Total dentro da meta: 1362674
+Total fora da meta: 5261
+Total sem status: 1917

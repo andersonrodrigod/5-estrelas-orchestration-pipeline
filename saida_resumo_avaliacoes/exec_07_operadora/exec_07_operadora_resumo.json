@@ -1,0 +1,366 @@
+{
+    "execucao": "exec_07_operadora",
+    "arquivo_entrada": "data_exec_indiv\\avaliacoes\\06_base_com_ajustes_finais.csv",
+    "arquivo_regras_operadora": "C:\\Users\\Rodrigo\\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\\5 Estrelas\\INSUMOS\\regras_operadora.xlsx",
+    "arquivo_saida": "data_exec_indiv\\avaliacoes\\07_base_com_operadora.csv",
+    "arquivo_auditoria": "saida_resumo_avaliacoes\\exec_07_operadora\\exec_07_operadora_auditoria.csv",
+    "total_linhas_entrada": 1369852,
+    "total_classificadas_antes_hapvida": 829757,
+    "total_preenchidas_com_hapvida": 540095,
+    "total_classificadas_final": 1369852,
+    "total_sobrescritos": 11195,
+    "total_regras_ativas": 421,
+    "total_locais_multiplas_operadoras": 14,
+    "locais_multiplas_operadoras": [
+        {
+            "LOCAL EDITADO": "ARAGON CLIN REAB",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "ODONTOLOGIA",
+            "QUANTIDADE": "5"
+        },
+        {
+            "LOCAL EDITADO": "ARAGON CLIN REAB",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "REDE CREDENCIADA",
+            "QUANTIDADE": "75"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA CUIDAR",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "ODONTOLOGIA",
+            "QUANTIDADE": "18"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA CUIDAR",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "REDE CREDENCIADA",
+            "QUANTIDADE": "11"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA SUZANO",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "4"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA SUZANO",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "REDE CREDENCIADA",
+            "QUANTIDADE": "181"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA VILA REIS",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "4"
+        },
+        {
+            "LOCAL EDITADO": "CLINICA VILA REIS",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "REDE CREDENCIADA",
+            "QUANTIDADE": "155"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL HUMANIZA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CCG",
+            "QUANTIDADE": "2829"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL HUMANIZA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL IMESA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL IMESA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "116"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL ONIX BATEL",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CLINIPAN",
+            "QUANTIDADE": "279"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL ONIX BATEL",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "3"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL ONIX MATEUS LEME",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CLINIPAN",
+            "QUANTIDADE": "1885"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL ONIX MATEUS LEME",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SANTA MONICA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "4"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SANTA MONICA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "491"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "2194"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL SAO LUCAS",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "NDI MG",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL VERA CRUZ",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "HOSPITAL VERA CRUZ",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "PROMED",
+            "QUANTIDADE": "4009"
+        },
+        {
+            "LOCAL EDITADO": "MED PREV CACHOEIRINHA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CCG",
+            "QUANTIDADE": "18"
+        },
+        {
+            "LOCAL EDITADO": "MED PREV CACHOEIRINHA",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "HAPVIDA",
+            "QUANTIDADE": "1030"
+        },
+        {
+            "LOCAL EDITADO": "PENDENCIA ESPECIAL CCG",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CCG",
+            "QUANTIDADE": "2"
+        },
+        {
+            "LOCAL EDITADO": "PENDENCIA ESPECIAL CCG",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "CLINIPAN",
+            "QUANTIDADE": "1"
+        },
+        {
+            "LOCAL EDITADO": "SEM NOME",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "ODONTOLOGIA",
+            "QUANTIDADE": "3590"
+        },
+        {
+            "LOCAL EDITADO": "SEM NOME",
+            "TOTAL_OPERADORAS": "2",
+            "OPERADORA": "REDE CREDENCIADA",
+            "QUANTIDADE": "1"
+        }
+    ],
+    "regras_aplicadas": [
+        {
+            "ORDEM": 1,
+            "REGRA": "CLASSIFICACAO contem TELE",
+            "OPERADORA_APLICADA": "TELECONSULTA",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 331086,
+            "TOTAL_VAZIAS": 331086,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 2,
+            "REGRA": "CLASSIFICACAO contem CRED",
+            "OPERADORA_APLICADA": "REDE CREDENCIADA",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 39734,
+            "TOTAL_VAZIAS": 39734,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 3,
+            "REGRA": "UF igual a PR",
+            "OPERADORA_APLICADA": "CLINIPAN",
+            "APLICAR_SOMENTE_VAZIOS": "sim",
+            "TOTAL_ATINGIDAS": 28256,
+            "TOTAL_VAZIAS": 28256,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 4,
+            "REGRA": "UF igual a RS",
+            "OPERADORA_APLICADA": "CCG",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 18865,
+            "TOTAL_VAZIAS": 18865,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 5,
+            "REGRA": "UF igual a MG",
+            "OPERADORA_APLICADA": "NDI MG",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 36010,
+            "TOTAL_VAZIAS": 36010,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 6,
+            "REGRA": "LOCAL EDITADO contem OCTAVIANO NEVES e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 1301,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1301
+        },
+        {
+            "ORDEM": 7,
+            "REGRA": "LOCAL EDITADO contem VENDA NOVA e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 1406,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1406
+        },
+        {
+            "ORDEM": 8,
+            "REGRA": "LOCAL EDITADO contem PROCLIN ELDORADO e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 1167,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 1167
+        },
+        {
+            "ORDEM": 9,
+            "REGRA": "LOCAL EDITADO contem HVC DAY UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 500,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 500
+        },
+        {
+            "ORDEM": 10,
+            "REGRA": "HOSPITAL VERA CRUZ e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 4009,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 4009
+        },
+        {
+            "ORDEM": 11,
+            "REGRA": "LOCAL EDITADO contem BETIM e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 2486,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 2486
+        },
+        {
+            "ORDEM": 12,
+            "REGRA": "LOCAL EDITADO contem RAJA e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 13,
+            "REGRA": "LOCAL EDITADO igual a LIFE CENTER CONTAGEM e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 14,
+            "REGRA": "LOCAL EDITADO igual a HOSPITAL LIFE CENTER e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 15,
+            "REGRA": "LOCAL EDITADO contem EFIGENCIA e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 16,
+            "REGRA": "LOCAL EDITADO igual a PA CONTORNO e UF igual a MG",
+            "OPERADORA_APLICADA": "PROMED",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 17,
+            "REGRA": "LOCAL EDITADO igual a PA CONTORNO e OPERADORA vazia",
+            "OPERADORA_APLICADA": "NDI MG",
+            "APLICAR_SOMENTE_VAZIOS": "sim",
+            "TOTAL_ATINGIDAS": 0,
+            "TOTAL_VAZIAS": 0,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 18,
+            "REGRA": "BLOCO NDI SP E RJ",
+            "OPERADORA_APLICADA": "NDI SP E RJ",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 365776,
+            "TOTAL_VAZIAS": 365450,
+            "TOTAL_SOBRESCRITAS": 326
+        },
+        {
+            "ORDEM": 420,
+            "REGRA": "CLASSIFICACAO igual a ODONTOLOGIA",
+            "OPERADORA_APLICADA": "ODONTOLOGIA",
+            "APLICAR_SOMENTE_VAZIOS": "nao",
+            "TOTAL_ATINGIDAS": 10356,
+            "TOTAL_VAZIAS": 10356,
+            "TOTAL_SOBRESCRITAS": 0
+        },
+        {
+            "ORDEM": 421,
+            "REGRA": "OPERADORA vazia no final recebe HAPVIDA",
+            "OPERADORA_APLICADA": "HAPVIDA",
+            "APLICAR_SOMENTE_VAZIOS": "sim",
+            "TOTAL_ATINGIDAS": 540095,
+            "TOTAL_VAZIAS": 540095,
+            "TOTAL_SOBRESCRITAS": 0
+        }
+    ]
+}

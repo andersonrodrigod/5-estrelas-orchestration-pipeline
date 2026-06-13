@@ -1,7 +1,7 @@
 RESUMO DA EXECUCAO 02 - CONTRATACAO
 
 Arquivo de entrada: data_exec_indiv\avaliacoes\01_base_limpa.csv
-Arquivo de insumos: utils\insumos\insumos 5 estrelas.xlsx
+Arquivo de insumos: C:\Users\Rodrigo\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\5 Estrelas\INSUMOS\insumos 5 estrelas.xlsx
 Arquivo de saida: data_exec_indiv\avaliacoes\02_base_com_contratacao.csv
 
 Total de linhas na entrada: 1369852

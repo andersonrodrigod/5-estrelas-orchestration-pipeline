@@ -1,0 +1,19 @@
+RESUMO DA EXECUCAO 06 - AJUSTES FINAIS
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\05_base_com_local_editado.csv
+Arquivo de regras: C:\Users\Rodrigo\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\5 Estrelas\INSUMOS\regra_ajuste_final.xlsx
+Arquivo de saida: data_exec_indiv\avaliacoes\06_base_com_ajustes_finais.csv
+Auditoria: saida_resumo_avaliacoes\exec_06_ajustes_finais\exec_06_ajustes_finais_auditoria.csv
+
+Total de linhas na entrada: 1369852
+Total de linhas na saida: 1369852
+Total de regras ativas: 6
+Total de linhas alteradas: 19
+
+REGRAS APLICADAS:
+- Regra 1 - Ajusta Notre Dame SP para Hospital Sao Lucas: 0 alteradas de 826 atingidas
+- Regra 2 - : 4 alteradas de 2031 atingidas
+- Regra 3 - : 3 alteradas de 6248 atingidas
+- Regra 4 - : 1 alteradas de 3346 atingidas
+- Regra 4 - : 6 alteradas de 10049 atingidas
+- Regra 4 - : 5 alteradas de 1924 atingidas

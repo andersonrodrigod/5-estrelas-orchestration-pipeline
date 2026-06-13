@@ -1,0 +1,40 @@
+RESUMO DA EXECUCAO 08 - META
+
+Arquivo de entrada: data_exec_indiv\avaliacoes\07_base_com_operadora.csv
+Arquivo de insumos: C:\Users\Rodrigo\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\5 Estrelas\INSUMOS\insumos 5 estrelas.xlsx
+Arquivo de saida: data_exec_indiv\avaliacoes\08_base_com_meta.csv
+Nao encontrados detalhado: saida_resumo_avaliacoes\exec_08_meta\exec_08_meta_nao_encontrados_detalhado.csv
+
+Total de linhas na entrada: 1369852
+Total encontrados: 1367935
+Total nao encontrados: 1917
+
+GRUPOS ENCONTRADOS:
+- HAPCLINICA: 408281
+- TELECONSULTA ELETIVA: 275714
+- HOSPITALAR: 236197
+- VIDA IMAGEM: 141326
+- LABORATÓRIO: 139308
+- TELECONSULTA URGÊNCIA: 53234
+- CRED_TRATAMENTO: 27963
+- MED PREV: 16457
+- TEA: 10654
+- ODONTOLOGIA: 10356
+- QUALIVIDA: 10121
+- NASCER BEM: 8539
+- INTERNAÇÃO: 8524
+- CRED_LABORATÓRIO: 4541
+- CRED_ATEND ELETIVO: 4374
+- CASE: 3267
+- PRODUTO COORDENADO: 2303
+- TELECONSULTA CASE: 1967
+- GESTAR BEM: 1646
+- CRED_EXAMES: 1449
+- CRED_ATEND EMERGENCIA: 1382
+- TELEMEDICINA: 171
+- INTERNAÇÃO PGC: 84
+- TRANSPLANTE: 52
+- CRED_INTERNACAO: 25
+
+CLASSIFICACOES SEM CORRESPONDENCIA:
+- AMBULÂNCIA: 1917

@@ -17,6 +17,8 @@ coluna_nota = 'NOTA GERAL'
 coluna_classificacao = 'CLASSIFICACAO'
 coluna_operadora = 'OPERADORA'
 coluna_unidade = 'LOCAL EDITADO'
+coluna_tipo = 'TIPO'
+coluna_especialidade = 'ESPECIALIDADE'
 
 ordem_classificacao = [
     'HAPCLINICA',
@@ -77,6 +79,8 @@ def validar_colunas_obrigatorias(df):
         coluna_classificacao,
         coluna_operadora,
         coluna_unidade,
+        coluna_tipo,
+        coluna_especialidade,
     ]
     return [coluna for coluna in colunas if coluna not in df.columns]
 
@@ -135,12 +139,24 @@ def criar_analise_por_coluna(df, coluna):
     )
 
 
+def listar_valores_distintos(serie):
+    valores = (
+        serie.astype('string')
+        .fillna('')
+        .str.strip()
+    )
+    valores = sorted(valor for valor in valores.unique() if valor != '')
+    return ' | '.join(valores)
+
+
 def criar_analise_unidade_por_classificacao(df):
     resumo = (
         df.groupby([coluna_classificacao, coluna_unidade], dropna=False)
         .agg(
             QUANTIDADE=(coluna_nota, 'size'),
             MEDIA_NOTA_GERAL=(coluna_nota, 'mean'),
+            TIPOS=(coluna_tipo, listar_valores_distintos),
+            ESPECIALIDADES=(coluna_especialidade, listar_valores_distintos),
         )
         .reset_index()
     )
@@ -164,7 +180,8 @@ def criar_analise_unidade_por_classificacao(df):
         coluna_unidade,
         'QUANTIDADE',
         'MEDIA_NOTA_GERAL',
-        'FORA_DA_ORDEM_INFORMADA',
+        'TIPOS',
+        'ESPECIALIDADES',
     ]]
 
 
@@ -235,7 +252,7 @@ def salvar_documentacao():
         '   - ATENDIMENTO PRESENCIAL = soma de HAPVIDA + PROMED.',
         '   - HAPVIDA CORPORATIVO = soma de HAPVIDA, NDI SP E RJ, TELECONSULTA, CLINIPAN, NDI MG, CCG, PROMED e ODONTOLOGIA.',
         '4. UNIDADE: quantidade e media da NOTA GERAL por LOCAL EDITADO, ordenado da maior quantidade para a menor.',
-        '5. LOCAL_POR_CLASSIFICACAO: quantidade e media da NOTA GERAL por CLASSIFICACAO e LOCAL EDITADO.',
+        '5. LOCAL_POR_CLASSIFICACAO: quantidade, media da NOTA GERAL, tipos e especialidades por CLASSIFICACAO e LOCAL EDITADO.',
         '',
         'Observacoes:',
         '- A media e calculada usando a coluna NOTA GERAL.',
@@ -265,7 +282,7 @@ def executar():
         return 1
 
     df[coluna_nota] = pd.to_numeric(df[coluna_nota], errors='coerce')
-    for coluna in [coluna_classificacao, coluna_operadora, coluna_unidade]:
+    for coluna in [coluna_classificacao, coluna_operadora, coluna_unidade, coluna_especialidade]:
         df[coluna] = normalizar_texto(df[coluna])
 
     pasta_saida.mkdir(parents=True, exist_ok=True)
