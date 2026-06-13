@@ -13,7 +13,7 @@ exec_06_ajustes_finais.py
 Com isso, a etapa atual de operadora passa a ser `exec_07_operadora.py`, e os calculos seguintes tambem sao empurrados.
 
 ```text
-exec_14_power_bi.py
+exec_12_power_bi.py
 ```
 
 ## Por Que Criar Essa Etapa

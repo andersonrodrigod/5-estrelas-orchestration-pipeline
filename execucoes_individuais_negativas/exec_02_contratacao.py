@@ -6,10 +6,14 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/negativas/01_base_limpa.csv')
-arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
+arquivo_insumos = resolver_caminho_onedrive_comercial(
+    Path('utils/insumos/insumos 5 estrelas.xlsx'),
+    Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
+)
 arquivo_saida = Path('data_exec_indiv/negativas/02_base_com_contratacao.csv')
 pasta_resumo = Path('saida_resumo_negativas') / 'exec_02_contratacao'
 arquivo_resumo_json = pasta_resumo / 'exec_02_contratacao_resumo.json'

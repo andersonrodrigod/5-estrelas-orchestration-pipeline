@@ -4,8 +4,13 @@ from pathlib import Path
 
 import pandas as pd
 
+from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
+
 arquivo_base = Path('data/5_estrelas_fevereiro.csv')
-arquivo_insumos = Path('utils/insumos/insumos 5 estrelas.xlsx')
+arquivo_insumos = resolver_caminho_onedrive_comercial(
+    Path('utils/insumos/insumos 5 estrelas.xlsx'),
+    Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
+)
 pasta_saida = Path('saida_resumo_avaliacoes')
 
 renomear_colunas = {

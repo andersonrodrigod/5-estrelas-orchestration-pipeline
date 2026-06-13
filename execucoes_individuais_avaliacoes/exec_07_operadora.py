@@ -6,10 +6,14 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/06_base_com_ajustes_finais.csv')
-arquivo_regras_operadora = Path('utils/insumos/regras_operadora.xlsx')
+arquivo_regras_operadora = resolver_caminho_onedrive_comercial(
+    Path('utils/insumos/regras_operadora.xlsx'),
+    Path('5 Estrelas/INSUMOS/regras_operadora.xlsx'),
+)
 arquivo_saida = Path('data_exec_indiv/avaliacoes/07_base_com_operadora.csv')
 
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_07_operadora'

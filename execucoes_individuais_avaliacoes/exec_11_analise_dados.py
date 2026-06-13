@@ -7,11 +7,11 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/11_base_sem_ambulancia.csv')
+arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 
-pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_13_analise_dados'
-arquivo_saida_excel = pasta_saida / 'exec_13_analise_dados.xlsx'
-arquivo_documentacao_txt = pasta_saida / 'exec_13_analise_dados_explicacao.txt'
+pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_11_analise_dados'
+arquivo_saida_excel = pasta_saida / 'exec_11_analise_dados.xlsx'
+arquivo_documentacao_txt = pasta_saida / 'exec_11_analise_dados_explicacao.txt'
 
 coluna_nota = 'NOTA GERAL'
 coluna_classificacao = 'CLASSIFICACAO'
@@ -135,6 +135,39 @@ def criar_analise_por_coluna(df, coluna):
     )
 
 
+def criar_analise_unidade_por_classificacao(df):
+    resumo = (
+        df.groupby([coluna_classificacao, coluna_unidade], dropna=False)
+        .agg(
+            QUANTIDADE=(coluna_nota, 'size'),
+            MEDIA_NOTA_GERAL=(coluna_nota, 'mean'),
+        )
+        .reset_index()
+    )
+
+    resumo['MEDIA_NOTA_GERAL'] = resumo['MEDIA_NOTA_GERAL'].round(2)
+    resumo['ORDEM_CLASSIFICACAO'] = resumo[coluna_classificacao].map(
+        {valor: indice for indice, valor in enumerate(ordem_classificacao, start=1)}
+    )
+    resumo['FORA_DA_ORDEM_INFORMADA'] = resumo['ORDEM_CLASSIFICACAO'].isna()
+    resumo['ORDEM_CLASSIFICACAO'] = resumo['ORDEM_CLASSIFICACAO'].fillna(
+        len(ordem_classificacao) + 1
+    )
+
+    resumo = resumo.sort_values(
+        ['ORDEM_CLASSIFICACAO', coluna_classificacao, 'QUANTIDADE', coluna_unidade],
+        ascending=[True, True, False, True],
+    )
+
+    return resumo[[
+        coluna_classificacao,
+        coluna_unidade,
+        'QUANTIDADE',
+        'MEDIA_NOTA_GERAL',
+        'FORA_DA_ORDEM_INFORMADA',
+    ]]
+
+
 def criar_linha_operadora_consolidada(df, nome, operadoras):
     mascara = df[coluna_operadora].isin(operadoras)
     df_recorte = df.loc[mascara]
@@ -179,10 +212,10 @@ def criar_resumo_geral(df):
 
 def salvar_documentacao():
     linhas = [
-        'EXECUCAO 13 - ANALISE DE DADOS',
+        'EXECUCAO 11 - ANALISE DE DADOS',
         '',
         'Objetivo:',
-        'Gerar uma visao consolidada de quantidade e media da NOTA GERAL a partir do arquivo sem ambulancia da execucao 11.',
+        'Gerar uma visao consolidada de quantidade e media da NOTA GERAL a partir da base completa da execucao 10.',
         '',
         'Arquivo de entrada:',
         str(arquivo_entrada),
@@ -190,9 +223,9 @@ def salvar_documentacao():
         'Arquivo Excel gerado:',
         str(arquivo_saida_excel),
         '',
-        'Por que usa a execucao 11:',
-        'A execucao 11 preserva a base completa da execucao 10 e remove somente classificacoes de ambulancia.',
-        'A separacao por TIPO acontece depois, entao a analise geral fica melhor antes dessa separacao.',
+        'Observacao sobre ambulancia:',
+        'A remocao de ambulancia ficou como fluxo legado/alternativo.',
+        'Esta analise usa a base completa da execucao 10 para nao depender de uma etapa temporaria.',
         '',
         'Abas do Excel:',
         '1. RESUMO: totais gerais da base e media geral da NOTA GERAL.',
@@ -202,6 +235,7 @@ def salvar_documentacao():
         '   - ATENDIMENTO PRESENCIAL = soma de HAPVIDA + PROMED.',
         '   - HAPVIDA CORPORATIVO = soma de HAPVIDA, NDI SP E RJ, TELECONSULTA, CLINIPAN, NDI MG, CCG, PROMED e ODONTOLOGIA.',
         '4. UNIDADE: quantidade e media da NOTA GERAL por LOCAL EDITADO, ordenado da maior quantidade para a menor.',
+        '5. LOCAL_POR_CLASSIFICACAO: quantidade e media da NOTA GERAL por CLASSIFICACAO e LOCAL EDITADO.',
         '',
         'Observacoes:',
         '- A media e calculada usando a coluna NOTA GERAL.',
@@ -214,8 +248,8 @@ def salvar_documentacao():
 
 
 def executar():
-    print('Iniciando execucao 13 - analise de dados...')
-    print(f'Lendo arquivo da execucao 11: {arquivo_entrada}')
+    print('Iniciando execucao 11 - analise de dados...')
+    print(f'Lendo arquivo da execucao 10: {arquivo_entrada}')
 
     if not arquivo_entrada.exists():
         print(f'ERRO - arquivo nao encontrado: {arquivo_entrada}')
@@ -240,6 +274,7 @@ def executar():
     df_classificacao = criar_analise_classificacao(df)
     df_operadora = criar_analise_operadora(df)
     df_unidade = criar_analise_por_coluna(df, coluna_unidade)
+    df_unidade_por_classificacao = criar_analise_unidade_por_classificacao(df)
 
     print(f'Gravando Excel de analise: {arquivo_saida_excel}')
     with pd.ExcelWriter(arquivo_saida_excel, engine='openpyxl') as writer:
@@ -247,11 +282,16 @@ def executar():
         df_classificacao.to_excel(writer, sheet_name='CLASSIFICACAO', index=False)
         df_operadora.to_excel(writer, sheet_name='OPERADORA', index=False)
         df_unidade.to_excel(writer, sheet_name='UNIDADE', index=False)
+        df_unidade_por_classificacao.to_excel(
+            writer,
+            sheet_name='LOCAL_POR_CLASSIFICACAO',
+            index=False,
+        )
 
     salvar_documentacao()
 
     print(f'Documentacao gerada: {arquivo_documentacao_txt}')
-    print('Execucao 13 finalizada.')
+    print('Execucao 11 finalizada.')
     return 0
 
 

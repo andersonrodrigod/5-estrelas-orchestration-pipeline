@@ -6,12 +6,16 @@ import sys
 import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
+from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
 ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
 ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
-ARQUIVO_REGRAS = Path('utils/insumos/regra_classificacao.xlsx')
+ARQUIVO_REGRAS = resolver_caminho_onedrive_comercial(
+    Path('utils/insumos/regra_classificacao.xlsx'),
+    Path('5 Estrelas/INSUMOS/regra_classificacao.xlsx'),
+)
 PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_04_classificacao_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_04_classificacao_resumo.txt'

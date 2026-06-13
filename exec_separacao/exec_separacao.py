@@ -14,7 +14,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 # Avaliacoes ja saem no layout historico usado pelo Power BI a partir da execucao 14.
-arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
+arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
 arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
 pasta_saida_excel = Path('data_exec_indiv/separacao')

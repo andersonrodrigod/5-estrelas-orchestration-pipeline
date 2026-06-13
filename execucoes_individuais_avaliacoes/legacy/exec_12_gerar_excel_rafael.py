@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import csv
 import json
 import sys
@@ -9,7 +9,7 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 from funcoes_auxiliares.padronizacao_csv import salvar_csv_padronizado
 
 arquivos_entrada = [
