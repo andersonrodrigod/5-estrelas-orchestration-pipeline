@@ -1,6 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
 import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -15,7 +14,6 @@ arquivo_nomes = Path('data/nomes_classificacao.json')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao_legacy.csv')
 
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao_legacy'
-pasta_resumo_espelho = Path('saida_resumo') / 'exec_04_classificacao_legacy'
 arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_legacy_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_legacy_resumo.txt'
 arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_legacy_auditoria.csv'
@@ -399,16 +397,6 @@ if not df_sobrescritas.empty:
 salvar_csv_padronizado(df_sobrescritas, arquivo_sobrescritas_csv)
 
 salvar_csv_padronizado(df_nao_classificados_detalhado, arquivo_nao_classificados_detalhado_csv)
-
-pasta_resumo_espelho.mkdir(parents=True, exist_ok=True)
-for arquivo_resumo in [
-    arquivo_resumo_json,
-    arquivo_resumo_txt,
-    arquivo_auditoria_csv,
-    arquivo_sobrescritas_csv,
-    arquivo_nao_classificados_detalhado_csv
-]:
-    shutil.copy2(arquivo_resumo, pasta_resumo_espelho / arquivo_resumo.name)
 
 print('Execucao 04 legacy finalizada.')
 

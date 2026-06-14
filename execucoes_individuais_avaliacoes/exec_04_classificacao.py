@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-import shutil
 import sys
 from pathlib import Path
 
@@ -17,7 +16,6 @@ arquivo_regras_classificacao_onedrive = Path('5 Estrelas/INSUMOS/regra_classific
 arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
 
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
-pasta_resumo_espelho = Path('saida_resumo') / 'exec_04_classificacao'
 arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_04_classificacao_resumo.csv'
@@ -552,7 +550,6 @@ def salvar_resumos_classificacao(
     resumo,
     artefatos,
     pasta_destino,
-    pasta_espelho=None,
     arquivo_entrada_resumo=None,
     arquivo_saida_resumo=None,
 ):
@@ -675,20 +672,6 @@ def salvar_resumos_classificacao(
         destino_nao_classificados_csv,
     )
 
-    if pasta_espelho:
-        pasta_espelho = Path(pasta_espelho)
-        pasta_espelho.mkdir(parents=True, exist_ok=True)
-        for arquivo_resumo in [
-            destino_resumo_json,
-            destino_resumo_txt,
-            destino_resumo_csv,
-            destino_auditoria_csv,
-            destino_sobrescritas_csv,
-            destino_nao_classificados_csv,
-        ]:
-            shutil.copy2(arquivo_resumo, pasta_espelho / arquivo_resumo.name)
-
-
 def executar(salvar_base=True):
     print('Iniciando execucao 04 - classificacao por planilha de regras...')
     print(f'Lendo arquivo da execucao 03: {arquivo_entrada}')
@@ -715,7 +698,6 @@ def executar(salvar_base=True):
         resumo,
         artefatos,
         pasta_resumo,
-        pasta_espelho=pasta_resumo_espelho,
         arquivo_entrada_resumo=arquivo_entrada,
         arquivo_saida_resumo=arquivo_saida,
     )
