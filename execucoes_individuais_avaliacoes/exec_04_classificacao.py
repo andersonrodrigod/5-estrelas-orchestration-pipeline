@@ -552,17 +552,18 @@ def salvar_resumos_classificacao(
     pasta_destino,
     arquivo_entrada_resumo=None,
     arquivo_saida_resumo=None,
+    prefixo='exec_04_classificacao',
 ):
     pasta_destino = Path(pasta_destino)
     pasta_destino.mkdir(parents=True, exist_ok=True)
 
-    destino_resumo_json = pasta_destino / 'exec_04_classificacao_resumo.json'
-    destino_resumo_txt = pasta_destino / 'exec_04_classificacao_resumo.txt'
-    destino_resumo_csv = pasta_destino / 'exec_04_classificacao_resumo.csv'
-    destino_auditoria_csv = pasta_destino / 'exec_04_classificacao_auditoria.csv'
-    destino_sobrescritas_csv = pasta_destino / 'exec_04_classificacao_sobrescritas.csv'
+    destino_resumo_json = pasta_destino / f'{prefixo}_resumo.json'
+    destino_resumo_txt = pasta_destino / f'{prefixo}_resumo.txt'
+    destino_resumo_csv = pasta_destino / f'{prefixo}_resumo.csv'
+    destino_auditoria_csv = pasta_destino / f'{prefixo}_auditoria.csv'
+    destino_sobrescritas_csv = pasta_destino / f'{prefixo}_sobrescritas.csv'
     destino_nao_classificados_csv = (
-        pasta_destino / 'exec_04_classificacao_nao_classificados_detalhado.csv'
+        pasta_destino / f'{prefixo}_nao_classificados_detalhado.csv'
     )
 
     resumo_saida = dict(resumo)

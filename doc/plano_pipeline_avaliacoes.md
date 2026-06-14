@@ -22,19 +22,22 @@ refactor/pipeline-avaliacoes
 ## Pasta Nova
 
 ```text
-execucoes_pipeline_avaliacoes/
+execucoes_pipeline/
 ```
 
 Estrutura prevista:
 
 ```text
-execucoes_pipeline_avaliacoes/
+execucoes_pipeline/
     __init__.py
     config.py
     pipeline.py
     resumos.py
     exec_pre_validacao.py
-    exec_final.py
+    exec_pre_validacao_avaliacoes.py
+    exec_pre_validacao_negativas.py
+    exec_gerar_arquivos_bi.py
+    exec_separacao.py
 ```
 
 ## Principio de Arquitetura
@@ -61,7 +64,20 @@ Isso evita duplicar regra de negocio em dois lugares diferentes.
 
 ## Pre-validacao
 
-A pre-validacao comeca da entrada bruta usada pela execucao 00.
+A pre-validacao fica separada em dois entrypoints:
+
+```text
+execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+execucoes_pipeline/exec_pre_validacao_negativas.py
+```
+
+O arquivo abaixo permanece como agregador para rodar os dois fluxos em sequencia:
+
+```text
+execucoes_pipeline/exec_pre_validacao.py
+```
+
+A pre-validacao de avaliacoes comeca da entrada bruta usada pela execucao 00.
 
 Ela deve executar o fluxo completo de avaliacoes ate a analise:
 
@@ -80,10 +96,21 @@ Ela deve executar o fluxo completo de avaliacoes ate a analise:
 11 analise dados
 ```
 
+Na mesma execucao, ela tambem deve executar o fluxo de negativas:
+
+```text
+00 verificacao campos negativas
+01 limpeza negativas
+02 contratacao negativas
+03 classificacao negativas
+04 local editado negativas
+```
+
 Ela deve gerar:
 
 - todos os resumos e auditorias de todas as etapas;
 - CSV final completo da base tratada;
+- CSV final completo da base tratada de negativas;
 - Excel de analise de dados;
 - documentacao da analise de dados;
 - resumo mestre da execucao com tempo por etapa e arquivos gerados.
@@ -105,6 +132,7 @@ Ela deve gerar:
 - Excel de analise de dados;
 - CSV Power BI;
 - tres Excels finais separados por tipo para Power BI;
+- Excels separados por grupo/classificacao usando avaliacoes e negativas finais;
 - resumo mestre da execucao com tempo por etapa e arquivos gerados.
 
 Ela tambem nao deve gravar CSVs intermediarios gigantes, salvo se uma flag de debug for ativada.
@@ -116,6 +144,8 @@ Pre-validacao:
 ```text
 data_exec_indiv/avaliacoes/pipeline_pre_validacao_base_final.csv
 saida_resumo_avaliacoes/pipeline_pre_validacao/
+data_exec_indiv/negativas/pipeline_pre_validacao_base_final.csv
+saida_resumo_negativas/pipeline_pre_validacao/
 ```
 
 Final:
@@ -126,7 +156,16 @@ data_exec_indiv/avaliacoes/12_base_power_bi.csv
 data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
 data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
 data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+data_exec_indiv/separacao/
 saida_resumo_avaliacoes/pipeline_final/
+```
+
+A separacao por grupo/classificacao dentro de `execucoes_pipeline/exec_separacao.py`
+usa como entrada:
+
+```text
+data_exec_indiv/avaliacoes/12_base_power_bi.csv
+data_exec_indiv/negativas/pipeline_pre_validacao_base_final.csv
 ```
 
 ## Resumos
@@ -183,7 +222,7 @@ Na nova branch, elas podem ser adaptadas para reutilizar funcoes compartilhadas,
 
 ### Marco 1 - Pre-validacao 00 a 11
 
-Criar estrutura inicial da pasta `execucoes_pipeline_avaliacoes` e refatorar as etapas 00 a 11 para exporem funcoes reutilizaveis:
+Criar estrutura inicial da pasta `execucoes_pipeline` e refatorar as etapas 00 a 11 para exporem funcoes reutilizaveis:
 
 ```text
 00 verificacao campos
@@ -204,12 +243,14 @@ Este marco gera todos os resumos da pre-validacao em:
 
 ```text
 saida_resumo_avaliacoes/pipeline_pre_validacao/
+saida_resumo_negativas/pipeline_pre_validacao/
 ```
 
 e o CSV final completo da pre-validacao em:
 
 ```text
 data_exec_indiv/avaliacoes/pipeline_pre_validacao_base_final.csv
+data_exec_indiv/negativas/pipeline_pre_validacao_base_final.csv
 ```
 
 Tambem gera o Excel de analise em:

@@ -149,16 +149,17 @@ def salvar_resumos_local_editado(
     pasta_destino,
     arquivo_entrada_resumo=None,
     arquivo_saida_resumo=None,
+    prefixo='exec_05_local_editado',
 ):
     pasta_destino = Path(pasta_destino)
     pasta_destino.mkdir(parents=True, exist_ok=True)
 
-    destino_resumo_json = pasta_destino / 'exec_05_local_editado_resumo.json'
-    destino_resumo_txt = pasta_destino / 'exec_05_local_editado_resumo.txt'
-    destino_resumo_csv = pasta_destino / 'exec_05_local_editado_resumo.csv'
-    destino_atualizados_csv = pasta_destino / 'exec_05_local_editado_atualizados.csv'
+    destino_resumo_json = pasta_destino / f'{prefixo}_resumo.json'
+    destino_resumo_txt = pasta_destino / f'{prefixo}_resumo.txt'
+    destino_resumo_csv = pasta_destino / f'{prefixo}_resumo.csv'
+    destino_atualizados_csv = pasta_destino / f'{prefixo}_atualizados.csv'
     destino_nao_encontrados_csv = (
-        pasta_destino / 'exec_05_local_editado_nao_encontrados.csv'
+        pasta_destino / f'{prefixo}_nao_encontrados.csv'
     )
 
     resumo_saida = dict(resumo)
