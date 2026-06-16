@@ -19,6 +19,9 @@ coluna_operadora = 'OPERADORA'
 coluna_unidade = 'LOCAL EDITADO'
 coluna_tipo = 'TIPO'
 coluna_especialidade = 'ESPECIALIDADE'
+coluna_meta = 'META'
+coluna_resultado_unidade = 'RESULTADO DA UNIDADE'
+coluna_status_unidade = 'STATUS UNIDADE'
 
 ordem_classificacao = [
     'HAPCLINICA',
@@ -81,6 +84,9 @@ def validar_colunas_obrigatorias(df):
         coluna_unidade,
         coluna_tipo,
         coluna_especialidade,
+        coluna_meta,
+        coluna_resultado_unidade,
+        coluna_status_unidade,
     ]
     return [coluna for coluna in colunas if coluna not in df.columns]
 
@@ -155,6 +161,11 @@ def criar_analise_unidade_por_classificacao(df):
         .agg(
             QUANTIDADE=(coluna_nota, 'size'),
             MEDIA_NOTA_GERAL=(coluna_nota, 'mean'),
+            META=(coluna_meta, 'first'),
+            **{
+                coluna_resultado_unidade: (coluna_resultado_unidade, 'first'),
+                coluna_status_unidade: (coluna_status_unidade, 'first'),
+            },
             TIPOS=(coluna_tipo, listar_valores_distintos),
             ESPECIALIDADES=(coluna_especialidade, listar_valores_distintos),
         )
@@ -162,6 +173,8 @@ def criar_analise_unidade_por_classificacao(df):
     )
 
     resumo['MEDIA_NOTA_GERAL'] = resumo['MEDIA_NOTA_GERAL'].round(2)
+    resumo['META'] = resumo['META'].round(2)
+    resumo[coluna_resultado_unidade] = resumo[coluna_resultado_unidade].round(2)
     resumo['ORDEM_CLASSIFICACAO'] = resumo[coluna_classificacao].map(
         {valor: indice for indice, valor in enumerate(ordem_classificacao, start=1)}
     )
@@ -180,6 +193,9 @@ def criar_analise_unidade_por_classificacao(df):
         coluna_unidade,
         'QUANTIDADE',
         'MEDIA_NOTA_GERAL',
+        'META',
+        coluna_resultado_unidade,
+        coluna_status_unidade,
         'TIPOS',
         'ESPECIALIDADES',
     ]]
@@ -252,7 +268,7 @@ def salvar_documentacao(caminho_documentacao=arquivo_documentacao_txt, caminho_e
         '   - ATENDIMENTO PRESENCIAL = soma de HAPVIDA + PROMED.',
         '   - HAPVIDA CORPORATIVO = soma de HAPVIDA, NDI SP E RJ, TELECONSULTA, CLINIPAN, NDI MG, CCG, PROMED e ODONTOLOGIA.',
         '4. UNIDADE: quantidade e media da NOTA GERAL por LOCAL EDITADO, ordenado da maior quantidade para a menor.',
-        '5. LOCAL_POR_CLASSIFICACAO: quantidade, media da NOTA GERAL, tipos e especialidades por CLASSIFICACAO e LOCAL EDITADO.',
+        '5. LOCAL_POR_CLASSIFICACAO: quantidade, media da NOTA GERAL, META, RESULTADO DA UNIDADE, STATUS UNIDADE, tipos e especialidades por CLASSIFICACAO e LOCAL EDITADO.',
         '',
         'Observacoes:',
         '- A media e calculada usando a coluna NOTA GERAL.',
@@ -271,7 +287,15 @@ def processar_analise_dados(df_base):
         raise ValueError('\n'.join(colunas_faltando))
 
     df[coluna_nota] = pd.to_numeric(df[coluna_nota], errors='coerce')
-    for coluna in [coluna_classificacao, coluna_operadora, coluna_unidade, coluna_especialidade]:
+    df[coluna_meta] = pd.to_numeric(df[coluna_meta], errors='coerce')
+    df[coluna_resultado_unidade] = pd.to_numeric(df[coluna_resultado_unidade], errors='coerce')
+    for coluna in [
+        coluna_classificacao,
+        coluna_operadora,
+        coluna_unidade,
+        coluna_especialidade,
+        coluna_status_unidade,
+    ]:
         df[coluna] = normalizar_texto(df[coluna])
 
     return {
