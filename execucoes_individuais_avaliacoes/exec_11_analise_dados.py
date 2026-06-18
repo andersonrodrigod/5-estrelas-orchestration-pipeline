@@ -17,6 +17,7 @@ coluna_nota = 'NOTA GERAL'
 coluna_classificacao = 'CLASSIFICACAO'
 coluna_operadora = 'OPERADORA'
 coluna_unidade = 'LOCAL EDITADO'
+coluna_uf = 'UF'
 coluna_tipo = 'TIPO'
 coluna_especialidade = 'ESPECIALIDADE'
 coluna_meta = 'META'
@@ -82,6 +83,7 @@ def validar_colunas_obrigatorias(df):
         coluna_classificacao,
         coluna_operadora,
         coluna_unidade,
+        coluna_uf,
         coluna_tipo,
         coluna_especialidade,
         coluna_meta,
@@ -157,7 +159,7 @@ def listar_valores_distintos(serie):
 
 def criar_analise_unidade_por_classificacao(df):
     resumo = (
-        df.groupby([coluna_classificacao, coluna_unidade], dropna=False)
+        df.groupby([coluna_classificacao, coluna_unidade, coluna_uf], dropna=False)
         .agg(
             QUANTIDADE=(coluna_nota, 'size'),
             MEDIA_NOTA_GERAL=(coluna_nota, 'mean'),
@@ -184,13 +186,14 @@ def criar_analise_unidade_por_classificacao(df):
     )
 
     resumo = resumo.sort_values(
-        ['ORDEM_CLASSIFICACAO', coluna_classificacao, 'QUANTIDADE', coluna_unidade],
-        ascending=[True, True, False, True],
+        ['ORDEM_CLASSIFICACAO', coluna_classificacao, 'QUANTIDADE', coluna_unidade, coluna_uf],
+        ascending=[True, True, False, True, True],
     )
 
     return resumo[[
         coluna_classificacao,
         coluna_unidade,
+        coluna_uf,
         'QUANTIDADE',
         'MEDIA_NOTA_GERAL',
         'META',
@@ -268,7 +271,7 @@ def salvar_documentacao(caminho_documentacao=arquivo_documentacao_txt, caminho_e
         '   - ATENDIMENTO PRESENCIAL = soma de HAPVIDA + PROMED.',
         '   - HAPVIDA CORPORATIVO = soma de HAPVIDA, NDI SP E RJ, TELECONSULTA, CLINIPAN, NDI MG, CCG, PROMED e ODONTOLOGIA.',
         '4. UNIDADE: quantidade e media da NOTA GERAL por LOCAL EDITADO, ordenado da maior quantidade para a menor.',
-        '5. LOCAL_POR_CLASSIFICACAO: quantidade, media da NOTA GERAL, META, RESULTADO DA UNIDADE, STATUS UNIDADE, tipos e especialidades por CLASSIFICACAO e LOCAL EDITADO.',
+        '5. LOCAL_POR_CLASSIFICACAO: quantidade, media da NOTA GERAL, META, RESULTADO DA UNIDADE, STATUS UNIDADE, UF, tipos e especialidades por CLASSIFICACAO e LOCAL EDITADO.',
         '',
         'Observacoes:',
         '- A media e calculada usando a coluna NOTA GERAL.',
@@ -293,6 +296,7 @@ def processar_analise_dados(df_base):
         coluna_classificacao,
         coluna_operadora,
         coluna_unidade,
+        coluna_uf,
         coluna_especialidade,
         coluna_status_unidade,
     ]:

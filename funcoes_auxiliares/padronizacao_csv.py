@@ -39,6 +39,10 @@ COLUNAS_TEXTO = {
 }
 
 COLUNAS_FLOAT = {
+    'NOTA1',
+    'NOTA2',
+    'NOTA3',
+    'NOTA4',
     'NOTA5',
     'NOTA GERAL',
     'META',
@@ -46,10 +50,6 @@ COLUNAS_FLOAT = {
 }
 
 COLUNAS_INT = {
-    'NOTA1',
-    'NOTA2',
-    'NOTA3',
-    'NOTA4',
     'MES',
     'DIA',
     'ANO',

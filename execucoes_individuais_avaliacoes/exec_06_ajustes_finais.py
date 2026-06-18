@@ -78,6 +78,8 @@ comparadores_validos = {
     'nao_vazio',
 }
 
+prefixo_valor_coluna = 'COLUNA:'
+
 
 def normalizar_texto(serie):
     texto = serie.astype('string')
@@ -99,6 +101,14 @@ def normalizar_flag(valor, padrao=False):
 
 def separar_lista(valor):
     return [item.strip() for item in str(valor).split(';') if item.strip() != '']
+
+
+def obter_coluna_valor_novo(valor_novo):
+    texto = str(valor_novo).strip()
+    if not texto.upper().startswith(prefixo_valor_coluna):
+        return ''
+
+    return texto[len(prefixo_valor_coluna):].strip().upper()
 
 
 def transformar_em_lista_registros(df_base, colunas):
@@ -175,6 +185,19 @@ def validar_regras(df_regras, colunas_base):
                 f"Linha {linha_excel} usa COLUNA_AJUSTAR inexistente "
                 f"'{regra['coluna_ajustar']}'."
             )
+
+        coluna_valor_novo = obter_coluna_valor_novo(regra['valor_novo'])
+        if regra['valor_novo'].upper().startswith(prefixo_valor_coluna):
+            if coluna_valor_novo == '':
+                erros.append(
+                    f"Linha {linha_excel} usa VALOR_NOVO '{regra['valor_novo']}' "
+                    'sem informar a coluna de origem.'
+                )
+            elif coluna_valor_novo not in colunas_base:
+                erros.append(
+                    f"Linha {linha_excel} usa coluna inexistente '{coluna_valor_novo}' "
+                    'em VALOR_NOVO.'
+                )
 
         for numero in range(1, 4):
             coluna = regra[f'coluna_{numero}']
@@ -281,7 +304,14 @@ def aplicar_ajustes(df_base, df_regras):
 
     for _, regra in df_regras.iterrows():
         coluna_ajustar = regra['coluna_ajustar']
-        valor_novo = regra['valor_novo']
+        coluna_valor_novo = obter_coluna_valor_novo(regra['valor_novo'])
+        if coluna_valor_novo:
+            valor_novo = normalizar_texto(df_base[coluna_valor_novo])
+            valor_novo_auditoria = regra['valor_novo']
+        else:
+            valor_novo = regra['valor_novo']
+            valor_novo_auditoria = valor_novo
+
         mascara = montar_mascara_regra(df_base, regra)
 
         if regra['valor_atual_esperado'] != '':
@@ -292,7 +322,8 @@ def aplicar_ajustes(df_base, df_regras):
             atual = normalizar_texto(df_base[coluna_ajustar])
             mascara = mascara & (atual == '')
 
-        alteradas = mascara & (normalizar_texto(df_base[coluna_ajustar]) != valor_novo)
+        atual = normalizar_texto(df_base[coluna_ajustar])
+        alteradas = mascara & (atual != valor_novo)
         total_atingidas = int(mascara.sum())
         total_alteradas = int(alteradas.sum())
 
@@ -302,15 +333,21 @@ def aplicar_ajustes(df_base, df_regras):
             df_auditoria['DESCRICAO'] = regra['descricao']
             df_auditoria['COLUNA_AJUSTAR'] = coluna_ajustar
             df_auditoria['VALOR_ANTERIOR'] = df_base.loc[alteradas, coluna_ajustar]
-            df_auditoria['VALOR_NOVO'] = valor_novo
+            if coluna_valor_novo:
+                df_auditoria['VALOR_NOVO'] = valor_novo.loc[alteradas].values
+            else:
+                df_auditoria['VALOR_NOVO'] = valor_novo
             auditorias.append(df_auditoria)
-            df_base.loc[alteradas, coluna_ajustar] = valor_novo
+            if coluna_valor_novo:
+                df_base.loc[alteradas, coluna_ajustar] = valor_novo.loc[alteradas]
+            else:
+                df_base.loc[alteradas, coluna_ajustar] = valor_novo
 
         resumos.append({
             'ORDEM_REGRA': int(regra['ordem']),
             'DESCRICAO': regra['descricao'],
             'COLUNA_AJUSTAR': coluna_ajustar,
-            'VALOR_NOVO': valor_novo,
+            'VALOR_NOVO': valor_novo_auditoria,
             'TOTAL_ATINGIDAS': total_atingidas,
             'TOTAL_ALTERADAS': total_alteradas,
         })
