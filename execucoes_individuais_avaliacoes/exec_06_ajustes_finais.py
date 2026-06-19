@@ -32,6 +32,7 @@ def obter_arquivo_regras_ajuste():
 colunas_regras = [
     'STATUS_ATIVO',
     'ORDEM',
+    'ACAO',
     'COLUNA_AJUSTAR',
     'VALOR_NOVO',
     'VALOR_ATUAL_ESPERADO',
@@ -51,6 +52,7 @@ colunas_regras = [
 mapa_colunas_regras = {
     'STATUS_ATIVO': 'ativo',
     'ORDEM': 'ordem',
+    'ACAO': 'acao',
     'COLUNA_AJUSTAR': 'coluna_ajustar',
     'VALOR_NOVO': 'valor_novo',
     'VALOR_ATUAL_ESPERADO': 'valor_atual_esperado',
@@ -76,6 +78,11 @@ comparadores_validos = {
     'nao_contem',
     'vazio',
     'nao_vazio',
+}
+
+acoes_validas = {
+    'ajustar',
+    'excluir',
 }
 
 prefixo_valor_coluna = 'COLUNA:'
@@ -145,6 +152,7 @@ def carregar_regras(caminho):
     df_regras = df_regras.sort_values('ordem', kind='stable')
 
     for coluna in [
+        'acao',
         'coluna_ajustar',
         'valor_novo',
         'valor_atual_esperado',
@@ -161,6 +169,8 @@ def carregar_regras(caminho):
     ]:
         df_regras[coluna] = normalizar_texto(df_regras[coluna])
 
+    df_regras['acao'] = df_regras['acao'].str.lower()
+    df_regras.loc[df_regras['acao'] == '', 'acao'] = 'ajustar'
     df_regras['coluna_ajustar'] = df_regras['coluna_ajustar'].str.upper()
     for numero in range(1, 4):
         df_regras[f'coluna_{numero}'] = df_regras[f'coluna_{numero}'].str.upper()
@@ -178,26 +188,33 @@ def validar_regras(df_regras, colunas_base):
         if pd.isna(regra['ordem']):
             erros.append(f'Linha {linha_excel} com ORDEM vazia ou invalida.')
 
-        if regra['coluna_ajustar'] == '':
-            erros.append(f'Linha {linha_excel} com COLUNA_AJUSTAR vazia.')
-        elif regra['coluna_ajustar'] not in colunas_base:
+        if regra['acao'] not in acoes_validas:
             erros.append(
-                f"Linha {linha_excel} usa COLUNA_AJUSTAR inexistente "
-                f"'{regra['coluna_ajustar']}'."
+                f"Linha {linha_excel} usa ACAO invalida '{regra['acao']}'. "
+                "Use 'ajustar' ou 'excluir'."
             )
 
-        coluna_valor_novo = obter_coluna_valor_novo(regra['valor_novo'])
-        if regra['valor_novo'].upper().startswith(prefixo_valor_coluna):
-            if coluna_valor_novo == '':
+        if regra['acao'] == 'ajustar':
+            if regra['coluna_ajustar'] == '':
+                erros.append(f'Linha {linha_excel} com COLUNA_AJUSTAR vazia.')
+            elif regra['coluna_ajustar'] not in colunas_base:
                 erros.append(
-                    f"Linha {linha_excel} usa VALOR_NOVO '{regra['valor_novo']}' "
-                    'sem informar a coluna de origem.'
+                    f"Linha {linha_excel} usa COLUNA_AJUSTAR inexistente "
+                    f"'{regra['coluna_ajustar']}'."
                 )
-            elif coluna_valor_novo not in colunas_base:
-                erros.append(
-                    f"Linha {linha_excel} usa coluna inexistente '{coluna_valor_novo}' "
-                    'em VALOR_NOVO.'
-                )
+
+            coluna_valor_novo = obter_coluna_valor_novo(regra['valor_novo'])
+            if regra['valor_novo'].upper().startswith(prefixo_valor_coluna):
+                if coluna_valor_novo == '':
+                    erros.append(
+                        f"Linha {linha_excel} usa VALOR_NOVO '{regra['valor_novo']}' "
+                        'sem informar a coluna de origem.'
+                    )
+                elif coluna_valor_novo not in colunas_base:
+                    erros.append(
+                        f"Linha {linha_excel} usa coluna inexistente '{coluna_valor_novo}' "
+                        'em VALOR_NOVO.'
+                    )
 
         for numero in range(1, 4):
             coluna = regra[f'coluna_{numero}']
@@ -303,9 +320,10 @@ def aplicar_ajustes(df_base, df_regras):
     colunas_auditaveis = [coluna for coluna in colunas_auditaveis if coluna in df_base.columns]
 
     for _, regra in df_regras.iterrows():
+        acao = regra['acao']
         coluna_ajustar = regra['coluna_ajustar']
         coluna_valor_novo = obter_coluna_valor_novo(regra['valor_novo'])
-        if coluna_valor_novo:
+        if acao == 'ajustar' and coluna_valor_novo:
             valor_novo = normalizar_texto(df_base[coluna_valor_novo])
             valor_novo_auditoria = regra['valor_novo']
         else:
@@ -314,23 +332,41 @@ def aplicar_ajustes(df_base, df_regras):
 
         mascara = montar_mascara_regra(df_base, regra)
 
-        if regra['valor_atual_esperado'] != '':
+        if acao == 'ajustar' and regra['valor_atual_esperado'] != '':
             atual = normalizar_texto(df_base[coluna_ajustar]).str.upper()
             mascara = mascara & (atual == regra['valor_atual_esperado'].upper())
 
-        if not regra['permitir_sobrescrita']:
+        if acao == 'ajustar' and not regra['permitir_sobrescrita']:
             atual = normalizar_texto(df_base[coluna_ajustar])
             mascara = mascara & (atual == '')
 
-        atual = normalizar_texto(df_base[coluna_ajustar])
-        alteradas = mascara & (atual != valor_novo)
         total_atingidas = int(mascara.sum())
-        total_alteradas = int(alteradas.sum())
+        total_alteradas = 0
+        total_excluidas = 0
 
-        if total_alteradas > 0:
+        if acao == 'excluir':
+            total_excluidas = total_atingidas
+            if total_excluidas > 0:
+                df_auditoria = df_base.loc[mascara, colunas_auditaveis].copy()
+                df_auditoria['ORDEM_REGRA'] = int(regra['ordem'])
+                df_auditoria['DESCRICAO'] = regra['descricao']
+                df_auditoria['ACAO'] = acao
+                df_auditoria['COLUNA_AJUSTAR'] = ''
+                df_auditoria['VALOR_ANTERIOR'] = ''
+                df_auditoria['VALOR_NOVO'] = ''
+                auditorias.append(df_auditoria)
+                df_base = df_base.loc[~mascara].copy()
+
+        if acao == 'ajustar':
+            atual = normalizar_texto(df_base[coluna_ajustar])
+            alteradas = mascara & (atual != valor_novo)
+            total_alteradas = int(alteradas.sum())
+
+        if acao == 'ajustar' and total_alteradas > 0:
             df_auditoria = df_base.loc[alteradas, colunas_auditaveis].copy()
             df_auditoria['ORDEM_REGRA'] = int(regra['ordem'])
             df_auditoria['DESCRICAO'] = regra['descricao']
+            df_auditoria['ACAO'] = acao
             df_auditoria['COLUNA_AJUSTAR'] = coluna_ajustar
             df_auditoria['VALOR_ANTERIOR'] = df_base.loc[alteradas, coluna_ajustar]
             if coluna_valor_novo:
@@ -346,10 +382,12 @@ def aplicar_ajustes(df_base, df_regras):
         resumos.append({
             'ORDEM_REGRA': int(regra['ordem']),
             'DESCRICAO': regra['descricao'],
+            'ACAO': acao,
             'COLUNA_AJUSTAR': coluna_ajustar,
             'VALOR_NOVO': valor_novo_auditoria,
             'TOTAL_ATINGIDAS': total_atingidas,
             'TOTAL_ALTERADAS': total_alteradas,
+            'TOTAL_EXCLUIDAS': total_excluidas,
         })
 
     if auditorias:
@@ -360,6 +398,7 @@ def aplicar_ajustes(df_base, df_regras):
                 *colunas_auditaveis,
                 'ORDEM_REGRA',
                 'DESCRICAO',
+                'ACAO',
                 'COLUNA_AJUSTAR',
                 'VALOR_ANTERIOR',
                 'VALOR_NOVO',
@@ -383,6 +422,11 @@ def processar_ajustes_finais(df_base, caminho_regras_ajuste):
         if not df_regras_resumo.empty
         else 0
     )
+    total_excluidas = (
+        int(df_regras_resumo['TOTAL_EXCLUIDAS'].sum())
+        if not df_regras_resumo.empty
+        else 0
+    )
 
     resumo = {
         'execucao': 'exec_06_ajustes_finais',
@@ -391,15 +435,18 @@ def processar_ajustes_finais(df_base, caminho_regras_ajuste):
         'total_linhas_saida': int(len(df_saida)),
         'total_regras_ativas': int(len(df_regras_resumo)),
         'total_linhas_alteradas': total_alteradas,
+        'total_linhas_excluidas': total_excluidas,
         'regras': transformar_em_lista_registros(
             df_regras_resumo,
             [
                 'ORDEM_REGRA',
                 'DESCRICAO',
+                'ACAO',
                 'COLUNA_AJUSTAR',
                 'VALOR_NOVO',
                 'TOTAL_ATINGIDAS',
                 'TOTAL_ALTERADAS',
+                'TOTAL_EXCLUIDAS',
             ],
         ),
     }
@@ -455,6 +502,7 @@ def salvar_resumos_ajustes_finais(
         f"Total de linhas na saida: {resumo_saida['total_linhas_saida']}",
         f"Total de regras ativas: {resumo_saida['total_regras_ativas']}",
         f"Total de linhas alteradas: {resumo_saida['total_linhas_alteradas']}",
+        f"Total de linhas excluidas: {resumo_saida['total_linhas_excluidas']}",
         '',
         'REGRAS APLICADAS:',
     ]
@@ -463,7 +511,9 @@ def salvar_resumos_ajustes_finais(
         for regra in resumo_saida['regras']:
             linhas_txt.append(
                 f"- Regra {regra['ORDEM_REGRA']} - {regra['DESCRICAO']}: "
-                f"{regra['TOTAL_ALTERADAS']} alteradas de {regra['TOTAL_ATINGIDAS']} atingidas"
+                f"{regra['TOTAL_ALTERADAS']} alteradas, "
+                f"{regra['TOTAL_EXCLUIDAS']} excluidas de "
+                f"{regra['TOTAL_ATINGIDAS']} atingidas"
             )
     else:
         linhas_txt.append('- Nenhuma regra ativa')
@@ -480,12 +530,18 @@ def salvar_resumos_ajustes_finais(
         'TOTAL_LINHAS_SAIDA': resumo_saida['total_linhas_saida'],
         'TOTAL_REGRAS_ATIVAS': resumo_saida['total_regras_ativas'],
         'TOTAL_LINHAS_ALTERADAS': resumo_saida['total_linhas_alteradas'],
+        'TOTAL_LINHAS_EXCLUIDAS': resumo_saida['total_linhas_excluidas'],
     }]), destino_resumo_csv)
 
 
 def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
     total_alteradas = (
         int(df_regras_resumo['TOTAL_ALTERADAS'].sum())
+        if not df_regras_resumo.empty
+        else 0
+    )
+    total_excluidas = (
+        int(df_regras_resumo['TOTAL_EXCLUIDAS'].sum())
         if not df_regras_resumo.empty
         else 0
     )
@@ -496,15 +552,18 @@ def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
         'total_linhas_saida': int(len(df_saida)),
         'total_regras_ativas': int(len(df_regras_resumo)),
         'total_linhas_alteradas': total_alteradas,
+        'total_linhas_excluidas': total_excluidas,
         'regras': transformar_em_lista_registros(
             df_regras_resumo,
             [
                 'ORDEM_REGRA',
                 'DESCRICAO',
+                'ACAO',
                 'COLUNA_AJUSTAR',
                 'VALOR_NOVO',
                 'TOTAL_ATINGIDAS',
                 'TOTAL_ALTERADAS',
+                'TOTAL_EXCLUIDAS',
             ],
         ),
     }

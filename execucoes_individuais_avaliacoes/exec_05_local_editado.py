@@ -7,6 +7,7 @@ import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
+from funcoes_auxiliares.normalizacao_local import normalizar_local_comparacao
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
@@ -64,11 +65,11 @@ def processar_local_editado(df_base, caminho_insumos):
 
     df['LOCAL'] = normalizar_texto(df['LOCAL'])
     df['LOCAL EDITADO'] = normalizar_texto(df['LOCAL EDITADO'])
-    df['LOCAL_COMPARACAO'] = df['LOCAL'].str.lower()
+    df['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df['LOCAL'])
 
     df_insumos['Local'] = normalizar_texto(df_insumos['Local'])
     df_insumos['local editado'] = normalizar_texto(df_insumos['local editado'])
-    df_insumos['LOCAL_COMPARACAO'] = df_insumos['Local'].str.lower()
+    df_insumos['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_insumos['Local'])
 
     df_insumos = df_insumos.dropna(subset=['LOCAL_COMPARACAO'])
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')

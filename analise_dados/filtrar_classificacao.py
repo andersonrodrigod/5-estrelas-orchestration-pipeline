@@ -7,16 +7,18 @@ arquivo_entrada = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv
 arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 
 # Preencha com o valor desejado ou deixe None para nao filtrar a coluna.
-filtro_tipo = None
+filtro_tipo = 5
 filtro_contratacao = None
 filtro_local = None
-filtro_especialidade = 'tea'
-filtro_classificacao = None
+filtro_local_editado = "ORTODONT"
+filtro_especialidade = None
+filtro_classificacao = "ODONTOLOGIA"
 
 # Preencha com o valor que deve ser excluido ou deixe None para nao aplicar.
 filtro_tipo_diferente = None
 filtro_contratacao_diferente = None
 filtro_local_diferente = None
+filtro_local_editado_diferente = None
 filtro_especialidade_diferente = None
 filtro_classificacao_diferente = None
 
@@ -24,6 +26,7 @@ colunas_saida = [
     'TIPO',
     'CONTRATACAO',
     'LOCAL',
+    'LOCAL EDITADO',
     'ESPECIALIDADE',
     'CLASSIFICACAO',
 ]
@@ -62,6 +65,20 @@ if filtro_local is not None:
 if filtro_local_diferente is not None:
     mascara = mascara & ~normalizar_texto(df['LOCAL']).str.contains(
         str(filtro_local_diferente).strip().lower(),
+        na=False,
+        regex=False
+    )
+
+if filtro_local_editado is not None:
+    mascara = mascara & normalizar_texto(df['LOCAL EDITADO']).str.contains(
+        str(filtro_local_editado).strip().lower(),
+        na=False,
+        regex=False
+    )
+
+if filtro_local_editado_diferente is not None:
+    mascara = mascara & ~normalizar_texto(df['LOCAL EDITADO']).str.contains(
+        str(filtro_local_editado_diferente).strip().lower(),
         na=False,
         regex=False
     )

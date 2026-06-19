@@ -7,6 +7,7 @@ import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
+from funcoes_auxiliares.normalizacao_local import normalizar_local_comparacao
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
@@ -24,12 +25,12 @@ def obter_arquivo_insumos():
 def processar_contratacao(df, caminho_insumos):
     df = df.copy()
     df['LOCAL'] = df['LOCAL'].astype('string').str.strip()
-    df['LOCAL_COMPARACAO'] = df['LOCAL'].str.lower()
+    df['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df['LOCAL'])
 
     df_insumos = pd.read_excel(caminho_insumos, sheet_name='contratacao')
     df_insumos['Local'] = df_insumos['Local'].astype('string').str.strip()
     df_insumos['contratacao'] = df_insumos['contratacao'].astype('string').str.strip().str.lower()
-    df_insumos['LOCAL_COMPARACAO'] = df_insumos['Local'].str.lower()
+    df_insumos['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_insumos['Local'])
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO', 'contratacao'])
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 

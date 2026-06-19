@@ -47,12 +47,19 @@ colunas_auditoria_classificacao = [
 ]
 
 
+def remover_ponto_final(serie):
+    return serie.astype('string').str.strip().str.replace(r'\.+$', '', regex=True).str.strip()
+
+
 def processar_limpeza(df):
     df = df.rename(columns=renomear_colunas).copy()
 
     for coluna in colunas_obrigatorias:
         if coluna not in df.columns:
             df[coluna] = None
+
+    if 'LOCAL' in df.columns:
+        df['LOCAL'] = remover_ponto_final(df['LOCAL'])
 
     total_entrada = int(len(df))
 
