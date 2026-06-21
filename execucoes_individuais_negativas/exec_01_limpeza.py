@@ -25,6 +25,11 @@ colunas_obrigatorias = [
     'LOCAL EDITADO'
 ]
 
+
+def remover_ponto_final(serie):
+    return serie.astype('string').str.strip().str.replace(r'\.+$', '', regex=True).str.strip()
+
+
 print('Iniciando execucao 01 - limpeza negativas...')
 print(f'Lendo arquivo original: {arquivo_entrada}')
 
@@ -36,6 +41,9 @@ for coluna in colunas_obrigatorias:
     if coluna not in df.columns:
         df[coluna] = None
         colunas_criadas.append(coluna)
+
+if 'LOCAL' in df.columns:
+    df['LOCAL'] = remover_ponto_final(df['LOCAL'])
 
 print(f'Total de linhas recebidas: {len(df)}')
 print(f'Gravando arquivo da execucao 01: {arquivo_saida}')

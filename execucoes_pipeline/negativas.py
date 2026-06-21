@@ -43,6 +43,10 @@ def preparar_texto(serie):
     return texto.str.strip()
 
 
+def remover_ponto_final(serie):
+    return serie.astype('string').str.strip().str.replace(r'\.+$', '', regex=True).str.strip()
+
+
 def transformar_em_lista_registros(df_base, colunas):
     if df_base.empty:
         return []
@@ -254,6 +258,9 @@ def processar_limpeza_negativas(df_base):
         if coluna not in df.columns:
             df[coluna] = None
             colunas_criadas.append(coluna)
+
+    if 'LOCAL' in df.columns:
+        df['LOCAL'] = remover_ponto_final(df['LOCAL'])
 
     resumo = {
         'execucao': 'exec_01_limpeza_negativas',
