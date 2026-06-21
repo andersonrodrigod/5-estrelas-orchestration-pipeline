@@ -1,0 +1,43 @@
+{
+    "execucao": "exec_00_verificacao_campos_negativas",
+    "total_linhas_entrada": 1093880,
+    "total_local_especialidade_invalidos": 3957,
+    "colunas_verificadas": [
+        "LOCAL",
+        "ESPECIALIDADE",
+        "UF"
+    ],
+    "resumo_colunas": [
+        {
+            "COLUNA": "LOCAL",
+            "TOTAL_LINHAS": "1093880",
+            "TOTAL_VAZIOS": "0",
+            "TOTAL_APENAS_HIFEN": "5283",
+            "TOTAL_SEM_LETRAS": "5283",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "5283",
+            "OBSERVACAO": ""
+        },
+        {
+            "COLUNA": "ESPECIALIDADE",
+            "TOTAL_LINHAS": "1093880",
+            "TOTAL_VAZIOS": "0",
+            "TOTAL_APENAS_HIFEN": "4373",
+            "TOTAL_SEM_LETRAS": "4373",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "4373",
+            "OBSERVACAO": ""
+        },
+        {
+            "COLUNA": "UF",
+            "TOTAL_LINHAS": "1093880",
+            "TOTAL_VAZIOS": "4471",
+            "TOTAL_APENAS_HIFEN": "0",
+            "TOTAL_SEM_LETRAS": "0",
+            "TOTAL_APENAS_CARACTERES_ESPECIAIS": "0",
+            "OBSERVACAO": ""
+        }
+    ],
+    "arquivo_entrada": "data\\5_estrelas_maio_negativo.csv",
+    "arquivo_resumo_csv": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_00_verificacao_campos\\exec_00_verificacao_campos_resumo.csv",
+    "arquivo_valores_invalidos_csv": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_00_verificacao_campos\\exec_00_verificacao_campos_valores_invalidos.csv",
+    "arquivo_local_especialidade_invalidos_csv": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_00_verificacao_campos\\exec_00_verificacao_campos_local_especialidade_invalidos.csv"
+}

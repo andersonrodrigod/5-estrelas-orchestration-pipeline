@@ -1,0 +1,38 @@
+RESUMO DA EXECUCAO 04 - CLASSIFICACAO
+
+ARQUIVOS:
+Arquivo de entrada: pipeline_negativas_memoria_exec_02
+Arquivo de regras: C:\Users\Rodrigo\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\5 Estrelas\INSUMOS\regra_classificacao.xlsx
+Arquivo de saida: pipeline_negativas_memoria_exec_03
+Auditoria por regra: saida_resumo_negativas\pipeline_pre_validacao_negativas\exec_03_classificacao\exec_03_classificacao_auditoria.csv
+Sobrescritas detalhadas: saida_resumo_negativas\pipeline_pre_validacao_negativas\exec_03_classificacao\exec_03_classificacao_sobrescritas.csv
+Nao classificados detalhado: saida_resumo_negativas\pipeline_pre_validacao_negativas\exec_03_classificacao\exec_03_classificacao_nao_classificados_detalhado.csv
+
+TOTAIS:
+Total de linhas na entrada: 1093880
+Total classificadas: 1093836
+Total nao classificadas: 44
+Total sobrescritas: 18228
+Total de regras ativas: 38
+
+REGRAS COM MAIS LINHAS ATINGIDAS:
+- Regra 2 - HOSPITALAR: 420886 linhas atingidas (0 sobrescritas)
+- Regra 24 - HAPCLINICA: 301473 linhas atingidas (0 sobrescritas)
+- Regra 32 - VIDA IMAGEM: 116430 linhas atingidas (27 sobrescritas)
+- Regra 18 - TELECONSULTA ELETIVA: 104077 linhas atingidas (0 sobrescritas)
+- Regra 30 - LABORATÓRIO: 97898 linhas atingidas (0 sobrescritas)
+- Regra 20 - MED PREV: 13434 linhas atingidas (0 sobrescritas)
+- Regra 35 - INTERNAÇÃO: 10681 linhas atingidas (0 sobrescritas)
+- Regra 21 - CRED_TRATAMENTO: 8831 linhas atingidas (939 sobrescritas)
+- Regra 25 - ODONTOLOGIA: 5264 linhas atingidas (0 sobrescritas)
+- Regra 38 - ODONTOLOGIA: 5264 linhas atingidas (0 sobrescritas)
+
+SOBRESCRITAS:
+Total de linhas sobrescritas: 18228
+Detalhamento completo em: saida_resumo_negativas\pipeline_pre_validacao_negativas\exec_03_classificacao\exec_03_classificacao_sobrescritas.csv
+
+NAO CLASSIFICADAS - PRINCIPAIS LOCAIS:
+- AMB PENHA SANTO AMARO: 27
+- CLINC DIAG ADOLFO PINHEIRO: 7
+- ADRIANA DA LUZ MENDES: 6
+- UD A ITAQUAQUECETUBA: 4

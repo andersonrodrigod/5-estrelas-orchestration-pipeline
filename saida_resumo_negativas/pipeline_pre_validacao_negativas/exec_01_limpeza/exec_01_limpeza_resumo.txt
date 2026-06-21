@@ -1,0 +1,18 @@
+RESUMO DA EXECUCAO 01 - LIMPEZA NEGATIVAS
+
+Arquivo de entrada: data\5_estrelas_maio_negativo.csv
+Arquivo de saida: pipeline_negativas_memoria_exec_01
+
+Total de linhas na entrada: 1093880
+Total de linhas na saida: 1093880
+Total de colunas na saida: 28
+
+COLUNAS OBRIGATORIAS:
+- CONTRATACAO
+- CLASSIFICACAO
+- LOCAL EDITADO
+
+COLUNAS CRIADAS:
+- CONTRATACAO
+- CLASSIFICACAO
+- LOCAL EDITADO

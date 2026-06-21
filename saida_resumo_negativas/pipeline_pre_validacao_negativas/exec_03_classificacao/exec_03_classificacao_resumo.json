@@ -1,0 +1,14 @@
+{
+    "execucao": "exec_03_classificacao_negativas",
+    "arquivo_regras_classificacao": "C:\\Users\\Rodrigo\\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\\5 Estrelas\\INSUMOS\\regra_classificacao.xlsx",
+    "total_linhas_entrada": 1093880,
+    "total_classificadas": 1093836,
+    "total_nao_classificadas": 44,
+    "total_sobrescritas": 18228,
+    "total_regras_ativas": 38,
+    "arquivo_entrada": "pipeline_negativas_memoria_exec_02",
+    "arquivo_saida": "pipeline_negativas_memoria_exec_03",
+    "arquivo_auditoria": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_03_classificacao\\exec_03_classificacao_auditoria.csv",
+    "arquivo_sobrescritas": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_03_classificacao\\exec_03_classificacao_sobrescritas.csv",
+    "arquivo_nao_classificados_detalhado": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_03_classificacao\\exec_03_classificacao_nao_classificados_detalhado.csv"
+}

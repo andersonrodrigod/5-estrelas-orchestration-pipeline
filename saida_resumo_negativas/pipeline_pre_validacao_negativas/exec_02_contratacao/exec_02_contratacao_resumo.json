@@ -1,0 +1,30 @@
+{
+    "execucao": "exec_02_contratacao_negativas",
+    "arquivo_insumos": "C:\\Users\\Rodrigo\\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\\5 Estrelas\\INSUMOS\\insumos 5 estrelas.xlsx",
+    "total_linhas_entrada": 1093880,
+    "total_rede_propria": 1065335,
+    "total_rede_credenciada": 28434,
+    "total_sem_contratacao": 111,
+    "locais_sem_contratacao": {
+        "NDI - CC RIBEIRAO PIRES.": 21,
+        "HOSPITAL SAO FRANCISCO RIBEIRAO PRETO.": 17,
+        "NDI - CC BARRA FUNDA.": 9,
+        "CAIS NOVA ERA (CENTRO DE ATENCAO INTEGRADA A SAUDE).": 8,
+        "CLINC DIAG ADOLFO PINHEIRO": 7,
+        "ADRIANA DA LUZ MENDES": 6,
+        "RESIDENCIA .": 5,
+        "HOME CARE - CAMPINA GRANDE": 5,
+        "NDI - CC CARAPICUIBA (CC SAO MIGUEL 1).": 5,
+        "QUALIVIDA ANGELICA   HAPVIDA NOTREDAME INTERMEDICA - .": 4,
+        "UD A ITAQUAQUECETUBA": 4,
+        "RESIDENCIA.": 4,
+        "HOSPITAL DE URGENCIA DE SAO BERNARDO DO CAMPO.": 4,
+        "HOSP GERAL DE PIRAJUSSARA.": 4,
+        "NDI - CC ARUJA.": 4,
+        "NDI - CC ITU.": 4
+    },
+    "arquivo_entrada": "pipeline_negativas_memoria_exec_01",
+    "arquivo_saida": "pipeline_negativas_memoria_exec_02",
+    "arquivo_locais_sem_contratacao": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_02_contratacao\\exec_02_locais_sem_contratacao.csv",
+    "arquivo_linhas_sem_contratacao": "saida_resumo_negativas\\pipeline_pre_validacao_negativas\\exec_02_contratacao\\exec_02_linhas_sem_contratacao.csv"
+}

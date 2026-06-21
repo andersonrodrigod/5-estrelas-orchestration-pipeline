@@ -1,0 +1,28 @@
+RESUMO DA EXECUCAO 02 - CONTRATACAO
+
+Arquivo de entrada: pipeline_negativas_memoria_exec_01
+Arquivo de insumos: C:\Users\Rodrigo\OneDrive - HAPVIDA ASSISTÊNCIA MÉDICA LTDA\5 Estrelas\INSUMOS\insumos 5 estrelas.xlsx
+Arquivo de saida: pipeline_negativas_memoria_exec_02
+
+Total de linhas na entrada: 1093880
+Total rede propria: 1065335
+Total rede credenciada: 28434
+Total sem contratacao: 111
+
+Locais sem contratacao:
+- NDI - CC RIBEIRAO PIRES.: 21
+- HOSPITAL SAO FRANCISCO RIBEIRAO PRETO.: 17
+- NDI - CC BARRA FUNDA.: 9
+- CAIS NOVA ERA (CENTRO DE ATENCAO INTEGRADA A SAUDE).: 8
+- CLINC DIAG ADOLFO PINHEIRO: 7
+- ADRIANA DA LUZ MENDES: 6
+- RESIDENCIA .: 5
+- HOME CARE - CAMPINA GRANDE: 5
+- NDI - CC CARAPICUIBA (CC SAO MIGUEL 1).: 5
+- QUALIVIDA ANGELICA   HAPVIDA NOTREDAME INTERMEDICA - .: 4
+- UD A ITAQUAQUECETUBA: 4
+- RESIDENCIA.: 4
+- HOSPITAL DE URGENCIA DE SAO BERNARDO DO CAMPO.: 4
+- HOSP GERAL DE PIRAJUSSARA.: 4
+- NDI - CC ARUJA.: 4
+- NDI - CC ITU.: 4

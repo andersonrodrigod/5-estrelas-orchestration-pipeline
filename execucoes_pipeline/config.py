@@ -31,7 +31,7 @@ def criar_config_pre_validacao():
     arquivo_entrada_negativas = Path(
         os.environ.get(
             'PIPELINE_NEGATIVAS_ENTRADA',
-            'data/5_estrelas_abril_negativa.csv',
+            'data/5_estrelas_maio_negativo.csv',
         )
     )
 
@@ -55,7 +55,9 @@ def criar_config_pre_validacao():
             Path('5 Estrelas/INSUMOS/regras_operadora.xlsx'),
         ),
         pasta_resumo=Path('saida_resumo_avaliacoes') / 'pipeline_pre_validacao',
-        pasta_resumo_negativas=Path('saida_resumo_negativas') / 'pipeline_pre_validacao',
+        pasta_resumo_negativas=(
+            Path('saida_resumo_negativas') / 'pipeline_pre_validacao_negativas'
+        ),
         arquivo_csv_final_pre_validacao=(
             Path('data_exec_indiv/avaliacoes')
             / 'pipeline_pre_validacao_base_final.csv'
