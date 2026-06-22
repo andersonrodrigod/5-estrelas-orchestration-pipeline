@@ -11,14 +11,32 @@ from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
+from execucoes_pipeline.config import criar_config_pre_validacao
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-# Avaliacoes ja saem no layout historico usado pelo Power BI a partir da execucao 14.
-arquivo_avaliacoes = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
-arquivo_negativas = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
+config = criar_config_pre_validacao()
+arquivo_avaliacoes = config.arquivo_csv_final_pre_validacao
+arquivo_negativas = config.arquivo_csv_final_pre_validacao_negativas
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
-pasta_saida_excel = Path('data_exec_indiv/separacao')
 pasta_resumo = Path('saida_resumo_separacao')
+pasta_saida_excel_local = Path('data_exec_indiv/separacao')
+pasta_saida_excel_sharepoint = Path(
+    r'C:\Users\anderson.dossantos\HAPVIDA ASSISTÊNCIA MÉDICA LTDA'
+    r'\5 Estrelas - Documentos\Base de Dados 5 Estrelas'
+    r'\base de dados maio 26\atualizações das classificações'
+)
+
+
+def resolver_pasta_saida_excel():
+    if pasta_saida_excel_sharepoint.exists():
+        print(f'Usando pasta do SharePoint/OneDrive: {pasta_saida_excel_sharepoint}')
+        return pasta_saida_excel_sharepoint
+
+    print(f'Usando pasta local do projeto: {pasta_saida_excel_local}')
+    return pasta_saida_excel_local
+
+
+pasta_saida_excel = resolver_pasta_saida_excel()
 
 arquivo_resumo_json = pasta_resumo / 'exec_separacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_separacao_resumo.txt'
@@ -109,35 +127,118 @@ colunas_numericas_avaliacoes = {
     'dia',
     'ano',
     'tipo',
-    'nota geral',
-    'Meta',
-    'resultado da unidade',
+    'notageral',
+    'meta',
+    'resultadodaunidade',
 }
 
 colunas_texto_forcado_avaliacoes = {
     'cdatendimento',
-    'num_beneficiario',
+    'numbeneficiario',
     'cdempresa',
     'cdusuario',
     'telefone',
-    'data_atendimento',
+    'dataatendimento',
 }
 
 colunas_numericas_negativas = {
-    'NOTA',
-    'MES',
-    'DIA',
-    'ANO',
-    'TIPO',
+    'nota',
+    'mes',
+    'dia',
+    'ano',
+    'tipo',
 }
 
 colunas_texto_forcado_negativas = {
+    'cdatendimento',
+    'numbeneficiario',
+    'cdempresa',
+    'cdusuario',
+    'telefone',
+    'dataatendimento',
+}
+
+cabecalhos_avaliacoes = [
+    'cdatendimento',
+    'num_beneficiario',
+    'cdempresa',
+    'profissional',
+    'procedimento',
+    'especialidade',
+    'data_atendimento',
+    'local',
+    'uf',
+    'classificacao_tipo_desc',
+    'nota1',
+    'motivador1',
+    'desc_motivador1',
+    'nota2',
+    'motivador2',
+    'desc_motivador2',
+    'nota3',
+    'motivador3',
+    'desc_motivador3',
+    'nota4',
+    'motivador4',
+    'desc_motivador4',
+    'nota5',
+    'motivador5',
+    'desc_motivador5',
+    'cdusuario',
+    'mes',
+    'dia',
+    'ano',
+    'status',
+    'nome',
+    'telefone',
+    'email',
+    'tipo',
+    'dt_resposta',
+    'nota geral',
+    'contratação',
+    'CLASSIFICAÇÃO',
+    'operadora',
+    'local editado',
+    'Meta',
+    'resultado da unidade',
+    'staus unidade',
+]
+
+cabecalhos_negativas = [
     'CDATENDIMENTO',
     'NUM_BENEFICIARIO',
     'CDEMPRESA',
-    'CDUSUARIO',
-    'TELEFONE',
+    'PROFISSIONAL',
+    'PROCEDIMENTO',
+    'ESPECIALIDADE',
     'DATA_ATENDIMENTO',
+    'LOCAL',
+    'UF',
+    'CLASSIFICACAO_TIPO_DESC',
+    'NOTA',
+    'TITULO_MOTIVADOR',
+    'DESC_MOTIVADOR',
+    'DESCRICAO',
+    'RESPOSTA',
+    'CDUSUARIO',
+    'MES',
+    'DIA',
+    'ANO',
+    'STATUS',
+    'NOME',
+    'TELEFONE',
+    'EMAIL',
+    'TIPO',
+    'DT_RESPOSTA',
+    'CONTRATACAO',
+    'CLASSIFICACAO',
+    'LOCAL EDITADO',
+]
+
+aliases_cabecalhos = {
+    'contratacao': 'contratação',
+    'classificacao': 'CLASSIFICAÇÃO',
+    'statusunidade': 'staus unidade',
 }
 
 
@@ -153,7 +254,30 @@ def normalizar_texto(valor):
 
 def normalizar_cabecalho(valor):
     texto = normalizar_texto(valor)
-    return texto.replace(' ', '').replace('_', '')
+    return texto.replace(' ', '').replace('_', '').lower()
+
+
+def chave_cabecalho_saida(coluna):
+    chave = normalizar_cabecalho(coluna)
+    return normalizar_cabecalho(aliases_cabecalhos.get(chave, coluna))
+
+
+def padronizar_layout(df, cabecalhos):
+    mapa_colunas = {
+        chave_cabecalho_saida(coluna): coluna
+        for coluna in df.columns
+    }
+    df_saida = pd.DataFrame(index=df.index)
+
+    for cabecalho in cabecalhos:
+        chave = normalizar_cabecalho(cabecalho)
+        coluna_origem = mapa_colunas.get(chave)
+        if coluna_origem is None:
+            df_saida[cabecalho] = pd.NA
+        else:
+            df_saida[cabecalho] = df[coluna_origem]
+
+    return df_saida
 
 
 def carregar_json(caminho):
@@ -264,10 +388,12 @@ def criar_celula_texto(ws, valor):
 
 
 def criar_celula_excel(ws, coluna, valor, colunas_numericas, colunas_texto_forcado):
-    if coluna in colunas_numericas:
+    coluna_normalizada = normalizar_cabecalho(coluna)
+
+    if coluna_normalizada in colunas_numericas:
         return converter_numero(valor)
 
-    if coluna in colunas_texto_forcado:
+    if coluna_normalizada in colunas_texto_forcado:
         return criar_celula_texto(ws, valor)
 
     if valor_vazio(valor):
@@ -297,6 +423,8 @@ def escrever_aba_dataframe(workbook, nome_aba, df, colunas_numericas, colunas_te
 def salvar_excel_grupo(grupo, df_avaliacoes, df_negativas):
     caminho_saida = pasta_saida_excel / f'{prefixo_saida}{grupo}.xlsx'
     workbook = Workbook(write_only=True)
+    df_avaliacoes = padronizar_layout(df_avaliacoes, cabecalhos_avaliacoes)
+    df_negativas = padronizar_layout(df_negativas, cabecalhos_negativas)
     escrever_aba_dataframe(
         workbook,
         'avaliacoes',

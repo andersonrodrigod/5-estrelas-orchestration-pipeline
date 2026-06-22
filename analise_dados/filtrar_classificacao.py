@@ -10,9 +10,9 @@ arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 filtro_tipo = 5
 filtro_contratacao = None
 filtro_local = None
-filtro_local_editado = "ORTODONT"
+filtro_local_editado = None
 filtro_especialidade = None
-filtro_classificacao = "ODONTOLOGIA"
+filtro_classificacao = None
 
 # Preencha com o valor que deve ser excluido ou deixe None para nao aplicar.
 filtro_tipo_diferente = None

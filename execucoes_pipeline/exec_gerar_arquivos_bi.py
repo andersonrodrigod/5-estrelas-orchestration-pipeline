@@ -13,7 +13,7 @@ from execucoes_individuais_avaliacoes import exec_13_separar_tipo_excel as separ
 arquivo_entrada_padrao = Path(
     os.environ.get(
         'PIPELINE_AVALIACOES_BASE_FINAL',
-        'data_exec_indiv/avaliacoes/pipeline_pre_validacao_base_final.csv',
+        'data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv',
     )
 )
 

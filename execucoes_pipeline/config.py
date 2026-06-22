@@ -60,11 +60,11 @@ def criar_config_pre_validacao():
         ),
         arquivo_csv_final_pre_validacao=(
             Path('data_exec_indiv/avaliacoes')
-            / 'pipeline_pre_validacao_base_final.csv'
+            / 'pipeline_pre_validacao_avaliacoes_base_final.csv'
         ),
         arquivo_csv_final_pre_validacao_negativas=(
             Path('data_exec_indiv/negativas')
-            / 'pipeline_pre_validacao_base_final.csv'
+            / 'pipeline_pre_validacao_negativas_base_final.csv'
         ),
         arquivo_csv_final=(
             Path('data_exec_indiv/avaliacoes')
