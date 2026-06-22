@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 import sys
 import time
 from pathlib import Path
@@ -8,14 +7,11 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from execucoes_individuais_avaliacoes import exec_12_power_bi as power_bi
 from execucoes_individuais_avaliacoes import exec_13_separar_tipo_excel as separar_tipo
+from execucoes_pipeline.config import criar_config_pre_validacao
 
 
-arquivo_entrada_padrao = Path(
-    os.environ.get(
-        'PIPELINE_AVALIACOES_BASE_FINAL',
-        'data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv',
-    )
-)
+config = criar_config_pre_validacao()
+arquivo_entrada_padrao = config.arquivo_csv_final_pre_validacao
 
 arquivo_power_bi = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'pipeline_arquivos_bi'
