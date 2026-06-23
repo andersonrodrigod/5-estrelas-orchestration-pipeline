@@ -201,7 +201,7 @@ cabecalhos_avaliacoes = [
     'local editado',
     'Meta',
     'resultado da unidade',
-    'staus unidade',
+    'status unidade',
 ]
 
 cabecalhos_negativas = [
@@ -238,7 +238,8 @@ cabecalhos_negativas = [
 aliases_cabecalhos = {
     'contratacao': 'contratação',
     'classificacao': 'CLASSIFICAÇÃO',
-    'statusunidade': 'staus unidade',
+    'statusunidade': 'status unidade',
+    'stausunidade': 'status unidade',
 }
 
 
