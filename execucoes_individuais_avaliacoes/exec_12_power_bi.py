@@ -61,7 +61,7 @@ colunas_power_bi = [
     'local editado',
     'Meta',
     'resultado da unidade',
-    'status unidade',
+    'staus unidade',
 ]
 
 mapa_colunas_origem = {
@@ -107,7 +107,7 @@ mapa_colunas_origem = {
     'local editado': 'LOCAL EDITADO',
     'Meta': 'META',
     'resultado da unidade': 'RESULTADO DA UNIDADE',
-    'status unidade': 'STATUS UNIDADE',
+    'staus unidade': 'STATUS UNIDADE',
 }
 
 ajustes_classificacao = {
