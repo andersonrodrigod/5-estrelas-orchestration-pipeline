@@ -148,7 +148,7 @@ def extrair():
             cursor.arraysize = FETCH_SIZE
             cursor.execute(sql)
 
-            colunas = [coluna[0] for coluna in cursor.description]
+            colunas = [coluna[0] for coluna in cursor.description] # type: ignore
 
             with arquivo_csv.open("w", newline="", encoding="utf-8-sig") as saida:
                 writer = csv.writer(saida, delimiter=";")

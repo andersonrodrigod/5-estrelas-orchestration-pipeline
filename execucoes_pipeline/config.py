@@ -25,7 +25,7 @@ def criar_config_pre_validacao():
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
-            'data/5_estrelas_maio.csv',
+            'data/supermercado_mundial.csv',
         )
     )
     arquivo_entrada_negativas = Path(

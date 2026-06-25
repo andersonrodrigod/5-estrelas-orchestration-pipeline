@@ -74,6 +74,22 @@ TIPOS_ESPERADOS = {
 }
 
 
+def detectar_separador_csv(caminho):
+    caminho = Path(caminho)
+
+    with caminho.open('r', encoding='utf-8-sig', errors='replace') as arquivo:
+        cabecalho = arquivo.readline()
+
+    separadores = [',', ';', '|', '\t']
+    contagens = {separador: cabecalho.count(separador) for separador in separadores}
+    separador, quantidade = max(contagens.items(), key=lambda item: item[1])
+
+    if quantidade == 0:
+        return ','
+
+    return separador
+
+
 def _normalizar_texto(serie, remover_zero_decimal=False):
     texto = serie.astype('string')
 
@@ -115,8 +131,14 @@ def padronizar_dataframe(df):
     return df
 
 
-def ler_csv_padronizado(caminho):
-    df = pd.read_csv(caminho, low_memory=False, dtype=DTYPES_LEITURA)
+def ler_csv_padronizado(caminho, sep=None):
+    separador = sep or detectar_separador_csv(caminho)
+    df = pd.read_csv(
+        caminho,
+        low_memory=False,
+        sep=separador,
+        dtype=DTYPES_LEITURA, # type: ignore
+    )
     return padronizar_dataframe(df)
 
 

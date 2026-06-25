@@ -4,6 +4,8 @@ import sys
 import time
 from pathlib import Path
 
+import pandas as pd
+
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from execucoes_pipeline.config import criar_config_pre_validacao
@@ -115,6 +117,67 @@ def salvar_resumo_mestre_negativas(config, registros):
         json.dump(resumo, arquivo, ensure_ascii=False, indent=4)
 
     return caminho
+
+
+def salvar_auditoria_insumos_avaliacoes(config):
+    arquivos_auditoria = [
+        (
+            '02_locais_sem_contratacao',
+            config.pasta_resumo
+            / 'exec_02_contratacao'
+            / 'exec_02_locais_sem_contratacao.csv',
+        ),
+        (
+            '02_linhas_sem_contratacao',
+            config.pasta_resumo
+            / 'exec_02_contratacao'
+            / 'exec_02_linhas_sem_contratacao.csv',
+        ),
+        (
+            '04_class_nao_classificados',
+            config.pasta_resumo
+            / 'exec_04_classificacao'
+            / 'exec_04_classificacao_nao_classificados_detalhado.csv',
+        ),
+        (
+            '05_local_nao_encontrados',
+            config.pasta_resumo
+            / 'exec_05_local_editado'
+            / 'exec_05_local_editado_nao_encontrados.csv',
+        ),
+        (
+            '07_operadora_nao_class',
+            config.pasta_resumo
+            / 'exec_07_operadora'
+            / 'exec_07_operadora_nao_classificados.csv',
+        ),
+    ]
+
+    destinos = [
+        Path('saida_resumo_avaliacoes')
+        / 'auditoria_insumos'
+        / 'auditoria_pre_validacao_avaliacoes.xlsx',
+        config.arquivo_insumos.parent / 'auditoria_pre_validacao_avaliacoes.xlsx',
+    ]
+
+    caminhos_gerados = []
+    for destino in destinos:
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        with pd.ExcelWriter(destino, engine='openpyxl') as writer:
+            for nome_aba, caminho_csv in arquivos_auditoria:
+                if caminho_csv.exists():
+                    df = ler_csv_padronizado(caminho_csv)
+                else:
+                    df = pd.DataFrame([{
+                        'ARQUIVO_ESPERADO': str(caminho_csv),
+                        'STATUS': 'arquivo nao encontrado',
+                    }])
+
+                df.to_excel(writer, sheet_name=nome_aba, index=False)
+
+        caminhos_gerados.append(destino)
+
+    return caminhos_gerados
 
 
 def executar_negativas(config):
@@ -413,9 +476,12 @@ def executar_avaliacoes(config):
 
     config.arquivo_csv_final_pre_validacao.parent.mkdir(parents=True, exist_ok=True)
     salvar_csv_padronizado(df, config.arquivo_csv_final_pre_validacao)
+    caminhos_auditoria = salvar_auditoria_insumos_avaliacoes(config)
     caminho_resumo_mestre = salvar_resumo_mestre(config, registros)
 
     print(f'CSV final da pre-validacao gerado: {config.arquivo_csv_final_pre_validacao}')
+    for caminho_auditoria in caminhos_auditoria:
+        print(f'Auditoria de insumos gerada: {caminho_auditoria}')
     print(f'Resumo mestre gerado: {caminho_resumo_mestre}')
     print('Pipeline de pre-validacao de avaliacoes finalizada.')
     return 0
