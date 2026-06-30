@@ -31,10 +31,30 @@ def processar_contratacao(df, caminho_insumos):
     df_insumos['Local'] = df_insumos['Local'].astype('string').str.strip()
     df_insumos['contratacao'] = df_insumos['contratacao'].astype('string').str.strip().str.lower()
     df_insumos['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_insumos['Local'])
+    if 'UF' in df_insumos.columns and 'UF' in df.columns:
+        df_insumos['UF'] = df_insumos['UF'].astype('string').str.strip().str.upper()
+        df_insumos_uf = df_insumos[
+            df_insumos['LOCAL_COMPARACAO'].notna()
+            & df_insumos['UF'].notna()
+            & ~df_insumos['UF'].fillna('').isin(['', '-'])
+        ].drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
+        mapa_uf = df_insumos_uf.set_index('LOCAL_COMPARACAO')['UF']
+    else:
+        mapa_uf = None
+
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO', 'contratacao'])
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 
     mapa_contratacao = df_insumos.set_index('LOCAL_COMPARACAO')['contratacao']
+    if mapa_uf is not None:
+        uf_atual = df['UF'].astype('string').str.strip()
+        uf_insumo = df['LOCAL_COMPARACAO'].map(mapa_uf)
+        mascara_uf_sem_valor = uf_atual.isna() | uf_atual.fillna('').isin(['', '-'])
+        mascara_preencher_uf = mascara_uf_sem_valor & uf_insumo.notna()
+        df.loc[mascara_preencher_uf, 'UF'] = uf_insumo[mascara_preencher_uf]
+        total_uf_preenchida_por_insumo = int(mascara_preencher_uf.sum())
+    else:
+        total_uf_preenchida_por_insumo = 0
 
     df['CONTRATACAO'] = df['LOCAL_COMPARACAO'].map(mapa_contratacao)
     df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
@@ -64,6 +84,21 @@ def processar_contratacao(df, caminho_insumos):
     df_linhas_sem_contratacao = df_sem_contratacao[
         ['CDUSUARIO', 'UF', 'LOCAL', 'DIA', 'MES', 'ANO', 'ESPECIALIDADE']
     ].copy()
+    uf_atualizada = df['UF'].astype('string').str.strip()
+    mascara_sem_uf = uf_atualizada.isna() | uf_atualizada.fillna('').isin(['', '-'])
+    total_sem_uf = int(mascara_sem_uf.sum())
+    df_sem_uf = df[mascara_sem_uf].copy()
+    df_locais_sem_uf = (
+        df_sem_uf
+        .assign(
+            LOCAL=df_sem_uf['LOCAL'].fillna('VAZIO'),
+            CONTRATACAO=df_sem_uf['CONTRATACAO'].fillna('VAZIO'),
+        )
+        .groupby(['LOCAL', 'CONTRATACAO'], dropna=False)
+        .size()
+        .reset_index(name='QUANTIDADE')
+        .sort_values(['QUANTIDADE', 'LOCAL', 'CONTRATACAO'], ascending=[False, True, True])
+    )
 
     df = df.drop(columns=['LOCAL_COMPARACAO'])
     resumo = {
@@ -73,11 +108,14 @@ def processar_contratacao(df, caminho_insumos):
         'total_rede_propria': total_rede_propria,
         'total_rede_credenciada': total_rede_credenciada,
         'total_sem_contratacao': total_nao_encontrado,
+        'total_uf_preenchida_por_insumo': total_uf_preenchida_por_insumo,
+        'total_sem_uf': total_sem_uf,
         'locais_sem_contratacao': locais_sem_contratacao,
     }
     artefatos = {
         'locais_sem_contratacao': df_locais_sem_contratacao,
         'linhas_sem_contratacao': df_linhas_sem_contratacao,
+        'locais_sem_uf': df_locais_sem_uf,
     }
 
     return df, resumo, artefatos
@@ -94,9 +132,11 @@ def salvar_resumos_contratacao(
     pasta_destino.mkdir(parents=True, exist_ok=True)
     arquivo_locais_sem_contratacao_csv = pasta_destino / 'exec_02_locais_sem_contratacao.csv'
     arquivo_linhas_sem_contratacao_csv = pasta_destino / 'exec_02_linhas_sem_contratacao.csv'
+    arquivo_locais_sem_uf_csv = pasta_destino / 'exec_02_locais_sem_uf.csv'
 
     salvar_csv_padronizado(artefatos['locais_sem_contratacao'], arquivo_locais_sem_contratacao_csv)
     salvar_csv_padronizado(artefatos['linhas_sem_contratacao'], arquivo_linhas_sem_contratacao_csv)
+    salvar_csv_padronizado(artefatos['locais_sem_uf'], arquivo_locais_sem_uf_csv)
 
     resumo = {
         **resumo,
@@ -104,6 +144,7 @@ def salvar_resumos_contratacao(
         'arquivo_saida': str(arquivo_saida_resumo) if arquivo_saida_resumo else None,
         'arquivo_locais_sem_contratacao': str(arquivo_locais_sem_contratacao_csv),
         'arquivo_linhas_sem_contratacao': str(arquivo_linhas_sem_contratacao_csv),
+        'arquivo_locais_sem_uf': str(arquivo_locais_sem_uf_csv),
     }
 
     with open(pasta_destino / 'exec_02_contratacao_resumo.json', 'w', encoding='utf-8') as arquivo:
@@ -130,6 +171,8 @@ def salvar_resumos_contratacao(
         f"Total rede propria: {resumo['total_rede_propria']}",
         f"Total rede credenciada: {resumo['total_rede_credenciada']}",
         f"Total sem contratacao: {resumo['total_sem_contratacao']}",
+        f"Total UF preenchida pelo insumo: {resumo['total_uf_preenchida_por_insumo']}",
+        f"Total sem UF: {resumo['total_sem_uf']}",
         '',
         'Locais sem contratacao:',
     ])
@@ -139,6 +182,11 @@ def salvar_resumos_contratacao(
             linhas_txt.append(f'- {local}: {quantidade}')
     else:
         linhas_txt.append('- Nenhum local sem contratacao')
+
+    linhas_txt.extend([
+        '',
+        f"Arquivo de locais sem UF: {resumo['arquivo_locais_sem_uf']}",
+    ])
 
     with open(pasta_destino / 'exec_02_contratacao_resumo.txt', 'w', encoding='utf-8') as arquivo:
         arquivo.write('\n'.join(linhas_txt))
@@ -158,6 +206,8 @@ def executar(salvar_base=True):
     print(f"Total rede propria: {resumo['total_rede_propria']}")
     print(f"Total rede credenciada: {resumo['total_rede_credenciada']}")
     print(f"Total sem contratacao encontrada: {resumo['total_sem_contratacao']}")
+    print(f"Total UF preenchida pelo insumo: {resumo['total_uf_preenchida_por_insumo']}")
+    print(f"Total sem UF: {resumo['total_sem_uf']}")
 
     if salvar_base:
         print(f'Gravando arquivo da execucao 02: {arquivo_saida}')

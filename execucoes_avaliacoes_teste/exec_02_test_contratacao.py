@@ -7,6 +7,7 @@ import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
+from funcoes_auxiliares.normalizacao_local import normalizar_local_comparacao
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
@@ -21,6 +22,7 @@ ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_02_contratacao_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_02_contratacao_resumo.txt'
 ARQUIVO_LOCAIS_SEM_CONTRATACAO = PASTA_RESUMO / 'exec_02_locais_sem_contratacao.csv'
 ARQUIVO_LINHAS_SEM_CONTRATACAO = PASTA_RESUMO / 'exec_02_linhas_sem_contratacao.csv'
+ARQUIVO_LOCAIS_SEM_UF = PASTA_RESUMO / 'exec_02_locais_sem_uf.csv'
 
 COLUNAS_OBRIGATORIAS = ['LOCAL', 'CONTRATACAO']
 COLUNAS_OBRIGATORIAS_INSUMOS = ['Local', 'contratacao']
@@ -45,6 +47,7 @@ def validar_arquivos_obrigatorios():
         ARQUIVO_RESUMO_TXT,
         ARQUIVO_LOCAIS_SEM_CONTRATACAO,
         ARQUIVO_LINHAS_SEM_CONTRATACAO,
+        ARQUIVO_LOCAIS_SEM_UF,
     ]
     return [arquivo for arquivo in arquivos if not arquivo.exists()]
 
@@ -90,7 +93,7 @@ def validar_insumos_contratacao(df_insumos):
         return erros, None
 
     df_mapa = df_insumos.copy()
-    df_mapa['LOCAL_COMPARACAO'] = normalizar_texto(df_mapa['Local'])
+    df_mapa['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_mapa['Local'])
     df_mapa['CONTRATACAO_COMPARACAO'] = normalizar_texto(df_mapa['contratacao'])
 
     locais_vazios = df_mapa['LOCAL_COMPARACAO'] == ''
@@ -165,9 +168,24 @@ def validar_insumos_contratacao(df_insumos):
     return erros, mapa
 
 
+def criar_mapa_uf_insumos(df_insumos):
+    if 'UF' not in df_insumos.columns:
+        return pd.Series(dtype='string')
+
+    df_mapa = df_insumos.copy()
+    df_mapa['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_mapa['Local'])
+    df_mapa['UF_COMPARACAO'] = df_mapa['UF'].astype('string').str.strip().str.upper()
+    df_mapa = df_mapa[
+        df_mapa['LOCAL_COMPARACAO'].notna()
+        & df_mapa['UF_COMPARACAO'].notna()
+        & ~df_mapa['UF_COMPARACAO'].fillna('').isin(['', '-'])
+    ].drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
+    return df_mapa.set_index('LOCAL_COMPARACAO')['UF_COMPARACAO']
+
+
 def validar_contratacao_por_insumo(df_saida, mapa_contratacao):
     erros = []
-    locais = normalizar_texto(df_saida['LOCAL'])
+    locais = normalizar_local_comparacao(df_saida['LOCAL'])
     esperado = locais.map(mapa_contratacao)
     encontrado = normalizar_texto(df_saida['CONTRATACAO'])
 
@@ -215,6 +233,46 @@ def validar_contratacao_por_insumo(df_saida, mapa_contratacao):
     return erros
 
 
+def validar_uf_por_insumo(df_entrada, df_saida, mapa_uf):
+    erros = []
+    locais = normalizar_local_comparacao(df_entrada['LOCAL'])
+    uf_entrada = df_entrada['UF'].astype('string').str.strip()
+    uf_saida = df_saida['UF'].astype('string').str.strip().str.upper()
+    uf_insumo = locais.map(mapa_uf)
+
+    entrada_sem_uf = uf_entrada.isna() | uf_entrada.fillna('').isin(['', '-'])
+    deveria_preencher = entrada_sem_uf & uf_insumo.notna()
+    divergencias_preenchimento = deveria_preencher & (uf_saida != uf_insumo)
+
+    for linha, local, valor_saida, valor_esperado in zip(
+        df_saida.index[divergencias_preenchimento][:LIMITE_EXEMPLOS] + 2,
+        df_saida.loc[divergencias_preenchimento, 'LOCAL'].head(LIMITE_EXEMPLOS),
+        uf_saida[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
+        uf_insumo[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
+    ):
+        registrar_erro(
+            erros,
+            f"Linha {int(linha)} deveria receber UF do insumo para LOCAL "
+            f"'{local}': esperado '{valor_esperado}', encontrado '{valor_saida}'."
+        )
+
+    uf_entrada_comparacao = uf_entrada.str.upper()
+    saida_alterou_uf_valida = ~entrada_sem_uf & (uf_saida != uf_entrada_comparacao)
+    for linha, local, valor_original, valor_saida in zip(
+        df_saida.index[saida_alterou_uf_valida][:LIMITE_EXEMPLOS] + 2,
+        df_saida.loc[saida_alterou_uf_valida, 'LOCAL'].head(LIMITE_EXEMPLOS),
+        uf_entrada_comparacao[saida_alterou_uf_valida].head(LIMITE_EXEMPLOS),
+        uf_saida[saida_alterou_uf_valida].head(LIMITE_EXEMPLOS),
+    ):
+        registrar_erro(
+            erros,
+            f"Linha {int(linha)} alterou UF que ja existia para LOCAL "
+            f"'{local}': original '{valor_original}', encontrado '{valor_saida}'."
+        )
+
+    return erros, int(deveria_preencher.sum())
+
+
 def contar_contratacoes(df):
     valores = normalizar_texto(df['CONTRATACAO'])
     return {
@@ -224,12 +282,49 @@ def contar_contratacoes(df):
     }
 
 
-def validar_resumo_json(df_saida, resumo):
+def contar_sem_uf(df):
+    valores = df['UF'].astype('string').str.strip()
+    return int((valores.isna() | valores.fillna('').isin(['', '-'])).sum())
+
+
+def validar_arquivo_locais_sem_uf(df_saida):
+    erros = []
+    df_locais_sem_uf = carregar_csv(ARQUIVO_LOCAIS_SEM_UF)
+    colunas_esperadas = ['LOCAL', 'CONTRATACAO', 'QUANTIDADE']
+    colunas_faltando = [
+        coluna for coluna in colunas_esperadas
+        if coluna not in df_locais_sem_uf.columns
+    ]
+
+    for coluna in colunas_faltando:
+        registrar_erro(
+            erros,
+            f"Coluna obrigatoria ausente em {ARQUIVO_LOCAIS_SEM_UF}: {coluna}"
+        )
+
+    if colunas_faltando:
+        return erros
+
+    total_arquivo = int(df_locais_sem_uf['QUANTIDADE'].sum())
+    total_esperado = contar_sem_uf(df_saida)
+    if total_arquivo != total_esperado:
+        registrar_erro(
+            erros,
+            f"Arquivo de locais sem UF soma {total_arquivo}, "
+            f"mas o CSV final tem {total_esperado} linha(s) sem UF."
+        )
+
+    return erros
+
+
+def validar_resumo_json(df_saida, resumo, total_uf_preenchida_esperado):
     erros = []
     contagens = contar_contratacoes(df_saida)
 
     campos_esperados = {
         'total_linhas_entrada': int(len(df_saida)),
+        'total_uf_preenchida_por_insumo': total_uf_preenchida_esperado,
+        'total_sem_uf': contar_sem_uf(df_saida),
         **contagens,
     }
 
@@ -310,9 +405,20 @@ def executar():
         if mapa_contratacao is not None:
             erros.extend(validar_contratacao_por_insumo(df_saida, mapa_contratacao))
 
+        total_uf_preenchida_esperado = 0
+        if 'UF' in df_entrada.columns and 'UF' in df_saida.columns:
+            mapa_uf = criar_mapa_uf_insumos(df_insumos)
+            erros_uf, total_uf_preenchida_esperado = validar_uf_por_insumo(
+                df_entrada,
+                df_saida,
+                mapa_uf,
+            )
+            erros.extend(erros_uf)
+
         with open(ARQUIVO_RESUMO_JSON, 'r', encoding='utf-8') as arquivo:
             resumo = json.load(arquivo)
-        erros.extend(validar_resumo_json(df_saida, resumo))
+        erros.extend(validar_resumo_json(df_saida, resumo, total_uf_preenchida_esperado))
+        erros.extend(validar_arquivo_locais_sem_uf(df_saida))
         erros.extend(validar_tipos(df_saida))
 
     if erros:
@@ -330,6 +436,8 @@ def executar():
     print('Quantidade de linhas preservada.')
     print('Valores de CONTRATACAO validos.')
     print('CONTRATACAO bate com o insumo por LOCAL.')
+    print('UF vazia ou "-" foi preenchida pelo insumo sem sobrescrever UF existente.')
+    print('Resumo de locais sem UF foi gerado.')
     print('Resumo JSON bate com o CSV.')
     print('Schema das colunas esta padronizado.')
     return 0

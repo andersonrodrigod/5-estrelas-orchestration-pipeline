@@ -151,6 +151,12 @@ def salvar_auditoria_insumos_avaliacoes(config):
             / 'exec_07_operadora'
             / 'exec_07_operadora_nao_classificados.csv',
         ),
+        (
+            '02_locais_sem_uf',
+            config.pasta_resumo
+            / 'exec_02_contratacao'
+            / 'exec_02_locais_sem_uf.csv',
+        ),
     ]
 
     destinos = [
