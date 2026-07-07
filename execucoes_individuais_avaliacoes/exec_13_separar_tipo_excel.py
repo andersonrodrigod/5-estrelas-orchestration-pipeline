@@ -315,6 +315,8 @@ def salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recor
             f"- {registro['ROTULO']}: {registro['ARQUIVO_EXCEL']} | "
             f"{registro['LINHAS']} linha(s) | {registro['COLUNAS']} coluna(s)"
         )
+        if registro.get('ARQUIVO_COPIA_POWER_BI'):
+            linhas_txt.append(f"  Copia Power BI: {registro['ARQUIVO_COPIA_POWER_BI']}")
 
     linhas_txt.extend([
         '',

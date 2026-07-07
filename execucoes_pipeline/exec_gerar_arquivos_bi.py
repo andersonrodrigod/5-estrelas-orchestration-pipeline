@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -15,6 +16,16 @@ arquivo_entrada_padrao = config.arquivo_csv_final_pre_validacao
 
 arquivo_power_bi = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
 pasta_resumo = Path('saida_resumo_avaliacoes') / 'pipeline_arquivos_bi'
+pasta_copia_power_bi = Path(
+    r'G:\Superintendencia de Atendimento\Inteligência de Dados'
+    r'\3 - Bases Gerais\3.5 - Base 5 Estrelas Power BI'
+    r'\3.5.1 - Bases Consolidadas'
+)
+nomes_copia_power_bi = {
+    'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
+    'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
+    'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
+}
 
 
 def configurar_resumo_power_bi():
@@ -79,6 +90,30 @@ def executar_power_bi():
     return 0
 
 
+def copiar_excels_para_power_bi(registros):
+    print(f'Copiando Excels finais para: {pasta_copia_power_bi}')
+    pasta_copia_power_bi.mkdir(parents=True, exist_ok=True)
+
+    for registro in registros:
+        rotulo = registro['ROTULO']
+        nome_copia = nomes_copia_power_bi.get(rotulo)
+
+        if not nome_copia:
+            raise ValueError(f'Nome de copia nao configurado para: {rotulo}')
+
+        origem = Path(registro['ARQUIVO_EXCEL'])
+        destino = pasta_copia_power_bi / nome_copia
+
+        if not origem.exists():
+            raise OSError(f'Arquivo gerado nao encontrado para copia: {origem}')
+
+        print(f'Copiando {rotulo}: {origem} -> {destino}')
+        shutil.copy2(origem, destino)
+        registro['ARQUIVO_COPIA_POWER_BI'] = str(destino)
+
+    return registros
+
+
 def executar_separacao_excel():
     print('Iniciando etapa final 13 - gerar Excels separados por tipo...')
 
@@ -93,6 +128,7 @@ def executar_separacao_excel():
         registros, total_fora_recorte, tipos_fora_recorte = (
             separar_tipo.separar_e_gravar_excel(total_linhas)
         )
+        registros = copiar_excels_para_power_bi(registros)
     except (OSError, ValueError) as erro:
         print(f'ERRO - {erro}')
         return 1
