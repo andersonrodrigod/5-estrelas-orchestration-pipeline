@@ -1,5 +1,6 @@
 data/
 data_exec/
+auditoria/
 *.csv
 *.xls
 *.xlsx
