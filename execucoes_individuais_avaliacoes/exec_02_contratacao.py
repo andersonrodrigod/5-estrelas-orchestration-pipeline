@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -12,7 +12,7 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/01_base_limpa.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/02_base_com_contratacao.csv')
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_02_contratacao'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_02_contratacao'
 
 
 def obter_arquivo_insumos():

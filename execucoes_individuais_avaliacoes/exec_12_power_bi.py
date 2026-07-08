@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import csv
 import json
 import sys
@@ -10,7 +10,7 @@ import pandas as pd
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_12_power_bi'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_12_power_bi'
 arquivo_resumo_json = pasta_resumo / 'exec_12_power_bi_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_12_power_bi_resumo.txt'
 arquivo_colunas_csv = pasta_resumo / 'exec_12_power_bi_colunas.csv'
@@ -55,8 +55,8 @@ colunas_power_bi = [
     'tipo',
     'dt_resposta',
     'nota geral',
-    'contratação',
-    'CLASSIFICAÇÃO',
+    'contrataÃ§Ã£o',
+    'CLASSIFICAÃ‡ÃƒO',
     'operadora',
     'local editado',
     'Meta',
@@ -101,8 +101,8 @@ mapa_colunas_origem = {
     'tipo': 'TIPO',
     'dt_resposta': 'DT_RESPOSTA',
     'nota geral': 'NOTA GERAL',
-    'contratação': 'CONTRATACAO',
-    'CLASSIFICAÇÃO': 'CLASSIFICACAO',
+    'contrataÃ§Ã£o': 'CONTRATACAO',
+    'CLASSIFICAÃ‡ÃƒO': 'CLASSIFICACAO',
     'operadora': 'OPERADORA',
     'local editado': 'LOCAL EDITADO',
     'Meta': 'META',
@@ -111,8 +111,8 @@ mapa_colunas_origem = {
 }
 
 ajustes_classificacao = {
-    'CRED_ATEND EMERGÊNCIA': 'CRED_ATEND EMERGENCIA',
-    'CRED_INTERNAÇÃO': 'CRED_INTERNACAO',
+    'CRED_ATEND EMERGÃŠNCIA': 'CRED_ATEND EMERGENCIA',
+    'CRED_INTERNAÃ‡ÃƒO': 'CRED_INTERNACAO',
 }
 
 
@@ -156,8 +156,8 @@ def criar_base_power_bi(df):
     df_saida['data_atendimento'] = datas_atendimento.dt.strftime('%d/%m/%Y')
     df_saida.loc[datas_atendimento.isna(), 'data_atendimento'] = ''
 
-    classificacao_antes = df_saida['CLASSIFICAÇÃO'].copy()
-    df_saida['CLASSIFICAÇÃO'] = df_saida['CLASSIFICAÇÃO'].replace(ajustes_classificacao)
+    classificacao_antes = df_saida['CLASSIFICAÃ‡ÃƒO'].copy()
+    df_saida['CLASSIFICAÃ‡ÃƒO'] = df_saida['CLASSIFICAÃ‡ÃƒO'].replace(ajustes_classificacao)
 
     return df_saida, classificacao_antes
 
@@ -209,7 +209,7 @@ def salvar_resumos(df_entrada, df_saida, classificacao_antes):
     ])
     df_classificacao = contar_ajustes_classificacao(
         classificacao_antes,
-        df_saida['CLASSIFICAÇÃO'],
+        df_saida['CLASSIFICAÃ‡ÃƒO'],
     )
 
     salvar_csv_texto(df_colunas, arquivo_colunas_csv)

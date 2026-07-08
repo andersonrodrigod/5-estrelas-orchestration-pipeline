@@ -13,7 +13,7 @@ arquivo_grupos = Path('data/grupos_classificacao.json')
 arquivo_nomes = Path('data/nomes_classificacao.json')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao_legacy.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao_legacy'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_04_classificacao_legacy'
 arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_legacy_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_classificacao_legacy_resumo.txt'
 arquivo_auditoria_csv = pasta_resumo / 'exec_04_classificacao_legacy_auditoria.csv'

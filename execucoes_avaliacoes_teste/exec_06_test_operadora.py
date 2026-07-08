@@ -16,7 +16,7 @@ ARQUIVO_REGRAS = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/regras_operadora.xlsx'),
     Path('5 Estrelas/INSUMOS/regras_operadora.xlsx'),
 )
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_06_operadora'
+PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_06_operadora'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_06_operadora_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_06_operadora_resumo.txt'
 ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_06_operadora_resumo.csv'

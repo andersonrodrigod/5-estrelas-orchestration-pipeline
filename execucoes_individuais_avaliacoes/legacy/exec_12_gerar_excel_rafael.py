@@ -32,7 +32,7 @@ arquivos_entrada = [
 
 arquivo_saida_excel = Path('data_exec_indiv/avaliacoes/12_resultado_final.xlsx')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_12_gerar_excel_rafael'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_12_gerar_excel_rafael'
 arquivo_resumo_json = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.csv'

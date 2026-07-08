@@ -14,18 +14,10 @@ from execucoes_pipeline.config import criar_config_pre_validacao
 config = criar_config_pre_validacao()
 arquivo_entrada_padrao = config.arquivo_csv_final_pre_validacao
 
-arquivo_power_bi = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'pipeline_arquivos_bi'
-pasta_copia_power_bi = Path(
-    r'G:\Superintendencia de Atendimento\Inteligência de Dados'
-    r'\3 - Bases Gerais\3.5 - Base 5 Estrelas Power BI'
-    r'\3.5.1 - Bases Consolidadas'
-)
-nomes_copia_power_bi = {
-    'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
-    'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
-    'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
-}
+arquivo_power_bi = config.arquivo_power_bi
+pasta_resumo = config.pasta_resumo_arquivos_bi
+pasta_copia_power_bi = config.pasta_copia_power_bi
+nomes_copia_power_bi = config.nomes_copia_power_bi
 
 
 def configurar_resumo_power_bi():
@@ -48,6 +40,7 @@ def configurar_resumo_power_bi():
 
 def configurar_resumo_separacao():
     separar_tipo.arquivo_entrada = arquivo_power_bi
+    separar_tipo.arquivos_saida = config.arquivos_excel_power_bi
     separar_tipo.pasta_resumo = pasta_resumo / 'exec_13_separar_tipo_excel'
     separar_tipo.arquivo_resumo_json = (
         separar_tipo.pasta_resumo / 'exec_13_separar_tipo_excel_resumo.json'

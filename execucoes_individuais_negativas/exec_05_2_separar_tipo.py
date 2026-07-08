@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 import sys
 import unicodedata
@@ -15,7 +15,7 @@ arquivo_saida_tipo_1_a_3 = Path('data_exec_indiv/negativas/05_2_base_tipo_1_a_3.
 arquivo_saida_tipo_4_a_7 = Path('data_exec_indiv/negativas/05_2_base_tipo_4_a_7.csv')
 arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/negativas/05_2_base_tipo_8_ou_mais.csv')
 
-pasta_resumo = Path('saida_resumo_negativas') / 'exec_05_2_separar_tipo'
+pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_05_2_separar_tipo'
 arquivo_resumo_json = pasta_resumo / 'exec_05_2_separar_tipo_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_05_2_separar_tipo_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_05_2_separar_tipo_resumo.csv'

@@ -16,7 +16,7 @@ arquivo_insumos = resolver_caminho_onedrive_comercial(
     Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
 )
 arquivo_saida = Path('data_exec_indiv/negativas/02_base_com_contratacao.csv')
-pasta_resumo = Path('saida_resumo_negativas') / 'exec_02_contratacao'
+pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_02_contratacao'
 arquivo_resumo_json = pasta_resumo / 'exec_02_contratacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_02_contratacao_resumo.txt'
 arquivo_locais_sem_contratacao_csv = pasta_resumo / 'exec_02_locais_sem_contratacao.csv'

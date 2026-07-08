@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import re
 import sys
 import unicodedata
@@ -15,7 +15,7 @@ arquivo_regras_classificacao = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/regra_classificacao.xlsx'),
     Path('5 Estrelas/INSUMOS/regra_classificacao.xlsx'),
 )
-pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
+pasta_saida = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_04_classificacao'
 
 coluna_ordem_regra = '_ORDEM_REGRA_CLASSIFICACAO'
 coluna_nome_lista = '_NOME_LISTA_CLASSIFICACAO'

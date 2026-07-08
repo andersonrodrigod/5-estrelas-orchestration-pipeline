@@ -18,20 +18,20 @@ arquivo_entrada = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
 
 arquivos_saida = {
     'TIPO 1 A 3': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx'),
+        'arquivo': Path('data/arquivos_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
         'aba': 'tipos 1 a 3',
     },
     'TIPO 4 A 7': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx'),
+        'arquivo': Path('data/arquivos_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
         'aba': 'tipos 4 a 7',
     },
     'TIPO 8 OU MAIS': {
-        'arquivo': Path('data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx'),
+        'arquivo': Path('data/arquivos_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
         'aba': 'tipos 8 ou mais',
     },
 }
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_13_separar_tipo_excel'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_13_separar_tipo_excel'
 arquivo_resumo_json = pasta_resumo / 'exec_13_separar_tipo_excel_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_13_separar_tipo_excel_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_13_separar_tipo_excel_resumo.csv'
@@ -252,10 +252,10 @@ def separar_e_gravar_excel(total_linhas):
                 planilha['linhas'] += 1
 
             if processadas % intervalo_progresso == 0:
-                imprimir_progresso('Separacao/gravação', processadas, total_linhas, inicio)
+                imprimir_progresso('Separacao/gravacao', processadas, total_linhas, inicio)
 
     if processadas and processadas % intervalo_progresso != 0:
-        imprimir_progresso('Separacao/gravação', processadas, total_linhas, inicio)
+        imprimir_progresso('Separacao/gravacao', processadas, total_linhas, inicio)
 
     registros = []
     print('Salvando arquivos Excel em disco...', flush=True)
@@ -323,7 +323,7 @@ def salvar_resumos(total_linhas, registros, total_fora_recorte, tipos_fora_recor
         'Colunas numericas no Excel:',
         *[f'- {coluna}' for coluna in sorted(colunas_numericas)],
         '',
-        'Colunas forçadas como texto no Excel:',
+        'Colunas forcadas como texto no Excel:',
         *[f'- {coluna}' for coluna in sorted(colunas_texto_forcado)],
     ])
 

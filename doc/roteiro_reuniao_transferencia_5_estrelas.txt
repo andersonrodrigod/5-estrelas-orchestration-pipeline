@@ -1,0 +1,597 @@
+ROTEIRO DE REUNIAO - TRANSFERENCIA DO PROJETO 5 ESTRELAS
+
+Objetivo deste documento:
+Servir como roteiro de apresentacao para transferir o projeto 5 Estrelas para
+outra pessoa. A ideia e explicar o que precisa estar configurado, quais pastas
+importam, como funciona a extracao Oracle, como rodar a pipeline e onde conferir
+os resultados.
+
+Tempo sugerido para apresentacao: 40 minutos.
+
+
+1. ABERTURA - O QUE E ESTE PROJETO
+
+O projeto 5 Estrelas e uma automacao em Python para tratar a base de avaliacoes
+e negativas do processo 5 Estrelas.
+
+Ele faz quatro coisas principais:
+
+1. Extrai ou recebe a base bruta do Oracle.
+2. Trata e valida os dados de avaliacoes.
+3. Trata e valida os dados de negativas.
+4. Gera arquivos finais para Power BI e arquivos separados por classificacao.
+
+O projeto foi organizado para manter as regras em scripts Python e os ajustes de
+negocio em planilhas de insumos. Assim, a pessoa que assumir precisa saber onde
+ficam as regras, onde ficam as entradas e quais comandos executar.
+
+
+2. VISAO RAPIDA DO FLUXO
+
+Fluxo completo:
+
+1. Configurar ambiente Python e bibliotecas.
+2. Configurar acesso Oracle no arquivo local scripts/.env.oracle.
+3. Rodar a extracao Oracle, quando for necessario buscar a base.
+4. Colocar o CSV de entrada no caminho esperado pela pipeline.
+5. Rodar pre-validacao de avaliacoes.
+6. Rodar pre-validacao de negativas, se houver arquivo de negativas.
+7. Ajustar insumos/regras conforme as auditorias geradas.
+8. Rodar os arquivos finais para Power BI.
+9. Rodar a separacao por grupo/classificacao, quando necessario.
+10. Conferir os resumos e arquivos finais.
+
+
+3. ESTRUTURA DE PASTAS MAIS IMPORTANTE
+
+Pasta raiz do projeto:
+
+C:\Users\anderson.dossantos\Desktop\dev\5 Estrelas
+
+Pastas principais:
+
+scripts/
+Onde fica o exemplo de extracao Oracle e o arquivo local de configuracao.
+
+execucoes_pipeline/
+Onde ficam os comandos principais da pipeline atual.
+
+execucoes_individuais_avaliacoes/
+Onde ficam as regras individuais das etapas de avaliacoes.
+
+execucoes_individuais_negativas/
+Onde ficam as regras individuais das etapas de negativas.
+
+funcoes_auxiliares/
+Funcoes compartilhadas, como leitura padronizada de CSV, normalizacao de local
+e resolucao de caminho do OneDrive.
+
+utils/insumos/
+Planilhas de regras e insumos locais.
+
+data/
+Entradas brutas locais e arquivos auxiliares JSON.
+
+data_exec_indiv/
+Saidas tratadas que alimentam as proximas etapas.
+
+saida_resumo_avaliacoes/
+Auditorias e resumos das avaliacoes.
+
+saida_resumo_negativas/
+Auditorias e resumos das negativas.
+
+saida_resumo_separacao/
+Auditorias e resumos da separacao por grupo/classificacao.
+
+doc/
+Documentacoes do projeto.
+
+
+4. O QUE PRECISA CONFIGURAR NA MAQUINA
+
+4.1 Python
+
+Precisa ter Python instalado e disponivel no terminal.
+
+Comando para conferir:
+
+python --version
+
+4.2 Bibliotecas Python
+
+As principais bibliotecas usadas sao:
+
+pandas
+openpyxl
+oracledb
+
+Instalacao basica:
+
+pip install pandas openpyxl oracledb
+
+Dependendo do ambiente, outras bibliotecas podem ja estar instaladas. Se algum
+script reclamar que falta modulo, instalar o modulo informado na mensagem de
+erro.
+
+4.3 Oracle Client
+
+Para a extracao Oracle funcionar, a maquina precisa ter Oracle Client instalado.
+
+No ambiente atual, os caminhos usados como padrao sao:
+
+ORACLE_CLIENT_DIR
+C:\app\client\anderson.dossantos\product\19.0.0\client_1\bin
+
+TNS_ADMIN
+C:\app\client\anderson.dossantos\product\19.0.0\client_1\network\admin
+
+O TNS_ADMIN precisa apontar para a pasta onde fica o tnsnames.ora.
+
+4.4 Acesso ao Oracle
+
+A pessoa precisa ter:
+
+- usuario Oracle;
+- senha Oracle;
+- alias TNS configurado ou host/service do banco;
+- acesso liberado para consultar a tabela do 5 Estrelas.
+
+O alias padrao usado no projeto e:
+
+DBRAWZN
+
+Tabela padrao da extracao:
+
+USR_ATENDIMENTO_5ESTRELAS.RAW_LND_5_ESTRELAS_DETALHADO
+
+
+5. CONFIGURACAO DO ARQUIVO .ENV.ORACLE
+
+O arquivo local de configuracao fica em:
+
+scripts/.env.oracle
+
+Existe um modelo em:
+
+scripts/.env.oracle.example
+
+Passo para configurar:
+
+1. Copiar scripts/.env.oracle.example.
+2. Criar scripts/.env.oracle.
+3. Preencher usuario, senha, DSN, caminho do Oracle Client e pasta de saida.
+
+Exemplo de campos importantes:
+
+ORACLE_USER=usuario
+ORACLE_PASSWORD=senha
+ORACLE_DSN=DBRAWZN
+ORACLE_CLIENT_DIR=C:\app\client\anderson.dossantos\product\19.0.0\client_1\bin
+TNS_ADMIN=C:\app\client\anderson.dossantos\product\19.0.0\client_1\network\admin
+TABLE_NAME=USR_ATENDIMENTO_5ESTRELAS.RAW_LND_5_ESTRELAS_DETALHADO
+OUTPUT_FILE_NAME=5_ESTRELAS_EXTRACAO
+OUTPUT_DIR=data\oracle
+LOG_FILE_NAME=log_extracao_oracle.xlsx
+
+Ponto importante:
+scripts/.env.oracle nao deve ser enviado para GitHub e nao deve ser compartilhado
+com senha real. Ele e um arquivo local da maquina.
+
+
+6. COMO FUNCIONA A EXTRACAO ORACLE
+
+Script:
+
+scripts/extracao_oracle_exemplo.py
+
+Comando:
+
+python scripts/extracao_oracle_exemplo.py
+
+O que o script faz:
+
+1. Le o arquivo scripts/.env.oracle.
+2. Inicializa o Oracle Client.
+3. Conecta no banco usando ORACLE_DSN ou HOST/PORT/SERVICE.
+4. Monta um SELECT * FROM TABLE_NAME.
+5. Aplica SQL_WHERE, se estiver configurado.
+6. Gera um CSV separado por ponto e virgula.
+7. Gera um log Excel com data, duracao, tabela, filtro e quantidade de linhas.
+
+Filtro opcional:
+
+SQL_WHERE deve ser escrito sem a palavra WHERE.
+
+Exemplo:
+
+SQL_WHERE=ANO = 2026 AND MES = 6
+
+Saidas da extracao:
+
+data\oracle\5_ESTRELAS_EXTRACAO.csv
+data\oracle\log_extracao_oracle.xlsx
+
+Observacao:
+O nome exato depende de OUTPUT_DIR, OUTPUT_FILE_NAME e LOG_FILE_NAME no
+scripts/.env.oracle.
+
+
+7. ENTRADAS DA PIPELINE
+
+O arquivo de configuracao da pipeline fica em:
+
+execucoes_pipeline/config.py
+
+Entrada padrao de avaliacoes:
+
+data/junho_incompleto_5_estrelas.csv
+
+Entrada padrao de negativas:
+
+data/5_estrelas_maio_negativo.csv
+
+Esses caminhos podem ser trocados por variavel de ambiente.
+
+Para avaliacoes:
+
+PIPELINE_AVALIACOES_ENTRADA
+
+Para negativas:
+
+PIPELINE_NEGATIVAS_ENTRADA
+
+Exemplo no PowerShell para rodar usando o CSV extraido do Oracle:
+
+$env:PIPELINE_AVALIACOES_ENTRADA='data/oracle/5_ESTRELAS_EXTRACAO.csv'
+python execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+Remove-Item Env:\PIPELINE_AVALIACOES_ENTRADA
+
+
+8. INSUMOS E REGRAS DE NEGOCIO
+
+As regras de negocio ficam principalmente em planilhas dentro de:
+
+utils/insumos/
+
+Arquivos mais importantes:
+
+insumos 5 estrelas.xlsx
+regra_classificacao.xlsx
+regra_ajuste_final.xlsx
+regras_operadora.xlsx
+
+O projeto tenta usar primeiro a versao do OneDrive Comercial, se existir. Se nao
+existir, usa a versao local em utils/insumos.
+
+Caminho esperado no OneDrive:
+
+OneDriveCommercial\5 Estrelas\INSUMOS
+
+Explicacao dos arquivos:
+
+insumos 5 estrelas.xlsx
+Usado para contratacao, local editado, meta e outras tabelas auxiliares.
+
+regra_classificacao.xlsx
+Usado para definir a CLASSIFICACAO das linhas.
+
+regra_ajuste_final.xlsx
+Usado para ajustes finais e exclusoes controladas.
+
+regras_operadora.xlsx
+Usado para preencher OPERADORA.
+
+Ponto para explicar na reuniao:
+Quando uma auditoria mostrar locais, classificacoes ou operadoras sem match, a
+correcao normalmente e feita nessas planilhas de insumo/regra, nao diretamente
+no CSV final.
+
+
+9. COMANDOS PRINCIPAIS DA PIPELINE
+
+Rodar apenas avaliacoes:
+
+python execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+
+Rodar apenas negativas:
+
+python execucoes_pipeline/exec_pre_validacao_negativas.py
+
+Rodar avaliacoes e negativas em sequencia:
+
+python execucoes_pipeline/exec_pre_validacao.py
+
+Gerar arquivos finais para Power BI:
+
+python execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+Gerar separacao por grupo/classificacao:
+
+python execucoes_pipeline/exec_separacao.py
+
+
+10. O QUE A PRE-VALIDACAO DE AVALIACOES FAZ
+
+Entrada:
+
+data/junho_incompleto_5_estrelas.csv
+ou caminho configurado em PIPELINE_AVALIACOES_ENTRADA
+
+Saida final:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+Resumo mestre:
+
+saida_resumo_avaliacoes/pipeline_pre_validacao/pipeline_pre_validacao_resumo_mestre.json
+
+Etapas:
+
+00 - verificacao de campos
+Verifica campos importantes e gera auditorias de valores invalidos.
+
+01 - limpeza
+Padroniza colunas, remove linhas sem nota valida e prepara a base.
+
+02 - contratacao
+Preenche CONTRATACAO e, quando possivel, UF usando o insumo.
+
+03 - nota
+Calcula NOTA GERAL.
+
+04 - classificacao
+Aplica regra_classificacao.xlsx.
+
+05 - local editado
+Preenche LOCAL EDITADO usando insumos.
+
+06 - ajustes finais
+Aplica regra_ajuste_final.xlsx.
+
+07 - operadora
+Preenche OPERADORA usando regras_operadora.xlsx.
+
+08 - meta
+Preenche META.
+
+09 - resultado da unidade
+Calcula RESULTADO DA UNIDADE.
+
+10 - status unidade
+Define STATUS UNIDADE.
+
+11 - analise de dados
+Gera Excel e TXT de analise.
+
+
+11. O QUE A PRE-VALIDACAO DE NEGATIVAS FAZ
+
+Entrada:
+
+data/5_estrelas_maio_negativo.csv
+ou caminho configurado em PIPELINE_NEGATIVAS_ENTRADA
+
+Saida final:
+
+data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+
+Resumo mestre:
+
+saida_resumo_negativas/pipeline_pre_validacao_negativas/pipeline_pre_validacao_negativas_resumo_mestre.json
+
+Etapas:
+
+00 - verificacao de campos negativas
+01 - limpeza negativas
+02 - contratacao negativas
+03 - classificacao negativas
+04 - local editado negativas
+
+Observacao:
+Se nao existir arquivo de negativas, o fluxo completo avisa e ignora essa parte.
+
+
+12. ARQUIVOS FINAIS PARA POWER BI
+
+Comando:
+
+python execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+Entrada:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+Saida CSV Power BI:
+
+data_exec_indiv/avaliacoes/12_base_power_bi.csv
+
+Saidas Excel por tipo:
+
+data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+
+Recortes:
+
+TIPO 1 A 3
+TIPO 4 A 7
+TIPO 8 OU MAIS
+
+Copia final configurada para Power BI:
+
+G:\Superintendencia de Atendimento\Inteligencia de Dados\3 - Bases Gerais\3.5 - Base 5 Estrelas Power BI\3.5.1 - Bases Consolidadas
+
+Nomes das copias:
+
+5_ESTRELAS_JULHO_26_1.xlsx
+5_ESTRELAS_JULHO_26_2.xlsx
+5_ESTRELAS_JULHO_26_3.xlsx
+
+Ponto importante:
+O arquivo de Power BI preserva alguns nomes historicos de coluna. Um exemplo e
+"staus unidade", que fica assim por contrato do arquivo final.
+
+
+13. SEPARACAO POR GRUPO/CLASSIFICACAO
+
+Comando:
+
+python execucoes_pipeline/exec_separacao.py
+
+Entradas:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+data/nomes_classificacao.json
+
+Saida local, quando a pasta SharePoint/OneDrive nao estiver disponivel:
+
+data_exec_indiv/separacao/
+
+Saida preferencial, quando existir na maquina:
+
+C:\Users\anderson.dossantos\HAPVIDA ASSISTENCIA MEDICA LTDA\5 Estrelas - Documentos\Base de Dados 5 Estrelas\base de dados maio 26\atualizacoes das classificacoes
+
+Cada Excel gerado tem duas abas:
+
+avaliacoes
+negativas
+
+Grupos:
+
+ambulancia
+diagnostico
+hapclinica
+hospitalar
+med prev e programas especiais
+odontologia
+rede credenciada
+teleconsulta
+
+Para testar um grupo especifico:
+
+$env:GRUPOS_SEPARACAO='odontologia'
+python execucoes_pipeline/exec_separacao.py
+Remove-Item Env:\GRUPOS_SEPARACAO
+
+
+14. ONDE CONFERIR SE DEU CERTO
+
+Conferir pre-validacao de avaliacoes:
+
+saida_resumo_avaliacoes/pipeline_pre_validacao/
+
+Conferir pre-validacao de negativas:
+
+saida_resumo_negativas/pipeline_pre_validacao_negativas/
+
+Conferir BI:
+
+saida_resumo_avaliacoes/pipeline_arquivos_bi/
+
+Conferir separacao:
+
+saida_resumo_separacao/
+
+Arquivos de auditoria mais usados:
+
+exec_02_locais_sem_contratacao.csv
+exec_02_linhas_sem_contratacao.csv
+exec_02_locais_sem_uf.csv
+exec_04_classificacao_nao_classificados_detalhado.csv
+exec_05_local_editado_nao_encontrados.csv
+exec_07_operadora_nao_classificados.csv
+
+Excel consolidado de auditoria:
+
+saida_resumo_avaliacoes/auditoria_insumos/auditoria_pre_validacao_avaliacoes.xlsx
+
+
+15. PROBLEMAS COMUNS E COMO EXPLICAR
+
+Problema: a extracao Oracle nao conecta.
+
+Verificar:
+- usuario e senha no scripts/.env.oracle;
+- ORACLE_DSN;
+- TNS_ADMIN;
+- tnsnames.ora;
+- Oracle Client instalado.
+
+Problema: a pipeline nao encontra o CSV.
+
+Verificar:
+- se o arquivo existe no caminho configurado;
+- se PIPELINE_AVALIACOES_ENTRADA ou PIPELINE_NEGATIVAS_ENTRADA esta correto;
+- se o nome do arquivo foi alterado.
+
+Problema: a base final saiu com zero linhas.
+
+Verificar:
+- resumo da etapa 01;
+- se NOTA1 a NOTA5 vieram sem valores numericos validos;
+- se a limpeza removeu linhas sem nota valida.
+
+Problema: tem muitos locais sem contratacao ou sem UF.
+
+Verificar:
+- auditorias da etapa 02;
+- aba contratacao do insumos 5 estrelas.xlsx.
+
+Problema: tem linhas sem classificacao.
+
+Verificar:
+- auditoria da etapa 04;
+- regra_classificacao.xlsx.
+
+Problema: tem linhas sem operadora.
+
+Verificar:
+- auditoria da etapa 07;
+- regras_operadora.xlsx.
+
+Problema: Excel nao sobrescreve.
+
+Verificar:
+- se o arquivo esta aberto no Excel;
+- fechar o arquivo e rodar novamente.
+
+
+16. ORDEM RECOMENDADA PARA OPERACAO MENSAL
+
+1. Atualizar ou extrair a base Oracle.
+2. Colocar o CSV de avaliacoes no caminho correto.
+3. Colocar o CSV de negativas no caminho correto, se houver.
+4. Rodar:
+
+python execucoes_pipeline/exec_pre_validacao.py
+
+5. Abrir as auditorias principais.
+6. Ajustar insumos e regras, se necessario.
+7. Rodar novamente a pre-validacao.
+8. Quando estiver validado, rodar:
+
+python execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+9. Se precisar dos arquivos por grupo/classificacao, rodar:
+
+python execucoes_pipeline/exec_separacao.py
+
+10. Conferir os arquivos finais e entregar para o destino correto.
+
+
+17. RESUMO PARA ENCERRAR A APRESENTACAO
+
+Para a pessoa assumir o projeto, ela precisa dominar estes pontos:
+
+1. Configurar Python, bibliotecas e Oracle Client.
+2. Preencher scripts/.env.oracle sem versionar senha.
+3. Entender onde entra o CSV de avaliacoes e negativas.
+4. Saber que as regras de negocio ficam principalmente em utils/insumos.
+5. Rodar os comandos principais em execucoes_pipeline.
+6. Conferir as auditorias antes de gerar o BI final.
+7. Saber onde ficam os arquivos finais e os resumos.
+
+Com isso, a pessoa consegue operar o processo, investigar divergencias e ajustar
+os insumos sem precisar alterar codigo na maior parte dos casos.

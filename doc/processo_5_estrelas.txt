@@ -1,0 +1,734 @@
+DOCUMENTACAO DO PROCESSO 5 ESTRELAS
+Origem: scripts/extracao_oracle_exemplo.py
+
+Ultima revisao deste documento: 2026-07-06
+
+1. VISAO GERAL
+
+O processo 5 Estrelas começa na extracao dos dados do Oracle, gera uma base CSV
+bruta, roda a pre-validacao das avaliacoes, roda a pre-validacao das negativas
+quando houver arquivo de entrada, gera arquivos finais para Power BI e tambem
+pode separar avaliacoes e negativas por grupo/classificacao para envio.
+
+Fluxo macro:
+
+1. Extracao Oracle
+   scripts/extracao_oracle_exemplo.py
+
+2. Entrada bruta de avaliacoes
+   data/junho_incompleto_5_estrelas.csv
+   ou caminho definido em PIPELINE_AVALIACOES_ENTRADA
+
+3. Entrada bruta de negativas
+   data/5_estrelas_maio_negativo.csv
+   ou caminho definido em PIPELINE_NEGATIVAS_ENTRADA
+
+4. Pre-validacao de avaliacoes
+   execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+   ou, junto com negativas:
+   execucoes_pipeline/exec_pre_validacao.py
+
+5. Pre-validacao de negativas
+   execucoes_pipeline/exec_pre_validacao_negativas.py
+   ou, junto com avaliacoes:
+   execucoes_pipeline/exec_pre_validacao.py
+
+6. Arquivos finais de BI
+   execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+7. Separacao por classificacao/grupo
+   execucoes_pipeline/exec_separacao.py
+
+
+2. EXTRACAO ORACLE
+
+Arquivo principal:
+scripts/extracao_oracle_exemplo.py
+
+Arquivo de configuracao local:
+scripts/.env.oracle
+
+Modelo versionado, sem segredo:
+scripts/.env.oracle.example
+
+O arquivo scripts/.env.oracle deve ficar apenas na maquina local. Ele e ignorado
+pelo Git por causa das regras .env e .env.* no .gitignore. Nao colocar senha real
+em arquivos versionados.
+
+Dependencias esperadas:
+
+pip install oracledb pandas openpyxl
+
+Comando:
+
+python scripts/extracao_oracle_exemplo.py
+
+Variaveis principais do .env.oracle:
+
+ORACLE_USER
+ORACLE_PASSWORD
+ORACLE_DSN
+ORACLE_HOST
+ORACLE_PORT
+ORACLE_SERVICE
+ORACLE_CLIENT_DIR
+TNS_ADMIN
+TABLE_NAME
+OUTPUT_FILE_NAME
+OUTPUT_DIR
+LOG_FILE_NAME
+FETCH_SIZE
+PROGRESS_CADA
+SQL_WHERE
+
+Regra de conexao:
+
+- Se ORACLE_DSN estiver preenchido, o script usa o alias do tnsnames.ora.
+- O alias padrao e DBRAWZN.
+- Se ORACLE_DSN estiver vazio, o script exige ORACLE_HOST + ORACLE_SERVICE e
+  monta o DSN no formato //host:porta/service.
+- O TNS_ADMIN aponta para a pasta network/admin do Oracle Client.
+- O ORACLE_CLIENT_DIR aponta para a pasta bin do Oracle Client.
+
+Tabela padrao:
+
+USR_ATENDIMENTO_5ESTRELAS.RAW_LND_5_ESTRELAS_DETALHADO
+
+Filtro opcional:
+
+SQL_WHERE deve ser preenchido sem escrever a palavra WHERE.
+Exemplo:
+SQL_WHERE=ANO = 2026 AND MES = 6 AND DIA = 1
+
+Saida da extracao:
+
+O script cria OUTPUT_DIR, grava o CSV com separador ponto e virgula e encoding
+utf-8-sig em:
+
+OUTPUT_DIR/OUTPUT_FILE_NAME.csv
+
+Tambem grava ou atualiza um log Excel em:
+
+OUTPUT_DIR/LOG_FILE_NAME
+
+O log registra inicio, fim, duracao, usuario, dsn, tabela, filtro, arquivo CSV e
+quantidade de linhas extraidas.
+
+
+3. ENTRADA PARA A PIPELINE
+
+O arquivo execucoes_pipeline/config.py define os caminhos operacionais.
+
+Entrada de avaliacoes:
+
+Variavel de ambiente:
+PIPELINE_AVALIACOES_ENTRADA
+
+Padrao:
+data/junho_incompleto_5_estrelas.csv
+
+Entrada de negativas:
+
+Variavel de ambiente:
+PIPELINE_NEGATIVAS_ENTRADA
+
+Padrao:
+data/5_estrelas_maio_negativo.csv
+
+Depois da extracao Oracle, o CSV gerado deve ser disponibilizado no caminho
+esperado pela pipeline ou a variavel PIPELINE_AVALIACOES_ENTRADA deve apontar
+para o arquivo extraido.
+
+Leitura CSV:
+
+A leitura principal usa funcoes_auxiliares/padronizacao_csv.py. A funcao
+ler_csv_padronizado detecta automaticamente separador entre virgula, ponto e
+virgula, pipe e tab. Depois padroniza tipos de colunas importantes, mantendo
+identificadores como texto e notas/metas/resultados como numericos.
+
+Escrita CSV:
+
+A funcao salvar_csv_padronizado tambem reaplica a padronizacao antes de gravar
+CSV em utf-8-sig.
+
+
+4. INSUMOS E REGRAS
+
+Os caminhos de insumos usam funcoes_auxiliares/caminhos.py.
+
+A funcao resolver_caminho_onedrive_comercial tenta usar primeiro o arquivo no
+OneDrive Comercial, quando a variavel OneDriveCommercial existir e o arquivo
+estiver disponivel. Se nao encontrar, usa o arquivo local do projeto.
+
+Arquivos principais:
+
+utils/insumos/insumos 5 estrelas.xlsx
+OneDriveCommercial/5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx
+
+utils/insumos/regra_classificacao.xlsx
+OneDriveCommercial/5 Estrelas/INSUMOS/regra_classificacao.xlsx
+
+utils/insumos/regra_ajuste_final.xlsx
+OneDriveCommercial/5 Estrelas/INSUMOS/regra_ajuste_final.xlsx
+
+utils/insumos/regras_operadora.xlsx
+OneDriveCommercial/5 Estrelas/INSUMOS/regras_operadora.xlsx
+
+Insumos usados no processo:
+
+- contratacao: mapeia LOCAL para CONTRATACAO e pode preencher UF quando a base
+  estiver sem UF.
+- local editado: mapeia LOCAL/UF para LOCAL EDITADO.
+- meta: mapeia metas por combinacoes da base.
+- regra_classificacao.xlsx: define as regras ativas de CLASSIFICACAO.
+- regra_ajuste_final.xlsx: define ajustes e exclusoes finais.
+- regras_operadora.xlsx: define regras para preencher OPERADORA.
+
+
+5. PRE-VALIDACAO DE AVALIACOES
+
+Entry point somente avaliacoes:
+
+python execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+
+Entry point completo, avaliacoes e negativas:
+
+python execucoes_pipeline/exec_pre_validacao.py
+
+Saida final da pre-validacao de avaliacoes:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+Pasta de resumos:
+
+saida_resumo_avaliacoes/pipeline_pre_validacao/
+
+Resumo mestre:
+
+saida_resumo_avaliacoes/pipeline_pre_validacao/pipeline_pre_validacao_resumo_mestre.json
+
+Etapas executadas em memoria:
+
+00 - verificacao de campos
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_00_verificacao_campos.py
+
+Objetivo:
+Verifica campos importantes da base, gera resumos de valores invalidos, linhas
+com LOCAL/ESPECIALIDADE invalidos, linhas com UF vazio e linhas com TIPO vazio.
+
+Principais auditorias:
+exec_00_verificacao_campos_resumo.csv
+exec_00_verificacao_campos_valores_invalidos.csv
+exec_00_verificacao_campos_local_especialidade_invalidos.csv
+exec_00_verificacao_campos_uf_vazio.csv
+exec_00_verificacao_campos_tipo_vazio.csv
+
+01 - limpeza
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_01_limpeza.py
+
+Objetivo:
+Renomeia colunas historicas para o padrao atual, cria colunas obrigatorias
+quando ausentes, remove ponto final do LOCAL, converte NOTA1 a NOTA5 para numero
+e remove linhas sem nenhuma nota valida. Tambem zera NOTA GERAL para calculo
+posterior.
+
+Auditoria:
+exec_01_base_auditoria_classificacao.csv
+
+02 - contratacao
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_02_contratacao.py
+
+Objetivo:
+Normaliza LOCAL, consulta a aba contratacao do arquivo de insumos e preenche
+CONTRATACAO. Quando possivel, tambem preenche UF usando o mesmo insumo, somente
+onde UF estiver vazia ou invalida.
+
+Auditorias:
+exec_02_locais_sem_contratacao.csv
+exec_02_linhas_sem_contratacao.csv
+exec_02_locais_sem_uf.csv
+
+03 - nota
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_03_nota.py
+
+Objetivo:
+Calcula NOTA GERAL a partir das notas validas da linha.
+
+04 - classificacao
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_04_classificacao.py
+
+Objetivo:
+Aplica regras de classificacao vindas de regra_classificacao.xlsx. Preserva
+classificacoes ja existentes quando aplicavel, registra auditoria por regra,
+sobrescritas e detalhes de nao classificados.
+
+Auditorias:
+exec_04_classificacao_auditoria.csv
+exec_04_classificacao_sobrescritas.csv
+exec_04_classificacao_nao_classificados_detalhado.csv
+
+05 - local editado
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_05_local_editado.py
+
+Objetivo:
+Usa o arquivo de insumos para preencher LOCAL EDITADO. Gera arquivos de linhas
+atualizadas e nao encontradas.
+
+Auditorias:
+exec_05_local_editado_atualizados.csv
+exec_05_local_editado_nao_encontrados.csv
+
+06 - ajustes finais
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_06_ajustes_finais.py
+
+Objetivo:
+Aplica regra_ajuste_final.xlsx. As regras ativas podem ajustar valores ou excluir
+linhas. Cada regra tem ORDEM, ACAO, COLUNA_AJUSTAR, VALOR_NOVO, filtros e
+controle de sobrescrita. Tambem aceita VALOR_NOVO no formato COLUNA:NOME_DA_COLUNA
+para copiar o valor de outra coluna.
+
+Comparadores validos:
+igual, diferente, em_lista, fora_lista, contem, nao_contem, vazio, nao_vazio
+
+Acoes validas:
+ajustar, excluir
+
+Auditorias:
+exec_06_ajustes_finais_regras.csv
+exec_06_ajustes_finais_auditoria.csv
+
+07 - operadora
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_07_operadora.py
+
+Objetivo:
+Aplica regras_operadora.xlsx para preencher OPERADORA. Gera auditoria, lista de
+LOCAL EDITADO x OPERADORA, nao classificados, sobrescritos e distintos Hapvida.
+
+Auditorias:
+exec_07_operadora_auditoria.csv
+exec_07_operadora_local_editado_operadora.csv
+exec_07_operadora_nao_classificados.csv
+exec_07_operadora_sobrescritos.csv
+exec_07_operadora_hapvida_distintos.csv
+
+08 - meta
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_08_meta.py
+
+Objetivo:
+Preenche META a partir do arquivo de insumos e gera detalhamento de linhas nao
+encontradas.
+
+Auditoria:
+exec_08_meta_nao_encontrados_detalhado.csv
+
+09 - resultado da unidade
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_09_resultado_unidade.py
+
+Objetivo:
+Calcula RESULTADO DA UNIDADE por agrupamentos de CLASSIFICACAO, LOCAL EDITADO e
+UF. Gera inspecoes de grupos e linhas com chave vazia.
+
+Auditorias:
+exec_09_resultado_unidade_inspecao_grupos.csv
+exec_09_resultado_unidade_linhas_chave_vazia.csv
+
+10 - status unidade
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_10_status_unidade.py
+
+Objetivo:
+Define STATUS UNIDADE a partir do resultado/meta e gera resumo de status.
+
+Auditoria:
+exec_10_status_unidade_status.csv
+
+11 - analise de dados
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_11_analise_dados.py
+
+Objetivo:
+Gera um Excel de analise e um TXT explicativo para apoiar a revisao da base
+tratada.
+
+Saidas:
+saida_resumo_avaliacoes/pipeline_pre_validacao/exec_11_analise_dados/exec_11_analise_dados.xlsx
+saida_resumo_avaliacoes/pipeline_pre_validacao/exec_11_analise_dados/exec_11_analise_dados_explicacao.txt
+
+
+6. AUDITORIA CONSOLIDADA DE INSUMOS
+
+Ao final da pre-validacao de avaliacoes, o processo consolida auditorias em um
+Excel:
+
+saida_resumo_avaliacoes/auditoria_insumos/auditoria_pre_validacao_avaliacoes.xlsx
+
+Tambem tenta gravar uma copia na pasta dos insumos usada pela pipeline:
+
+<pasta dos insumos>/auditoria_pre_validacao_avaliacoes.xlsx
+
+Abas geradas:
+
+02_locais_sem_contratacao
+02_linhas_sem_contratacao
+04_class_nao_classificados
+05_local_nao_encontrados
+07_operadora_nao_class
+02_locais_sem_uf
+
+Se algum CSV esperado nao existir, a aba correspondente e criada com uma linha
+informando que o arquivo nao foi encontrado.
+
+
+7. PRE-VALIDACAO DE NEGATIVAS
+
+Entry point somente negativas:
+
+python execucoes_pipeline/exec_pre_validacao_negativas.py
+
+Entry point completo, avaliacoes e negativas:
+
+python execucoes_pipeline/exec_pre_validacao.py
+
+Se o arquivo de negativas nao existir, o fluxo completo apenas avisa e ignora a
+pre-validacao de negativas.
+
+Saida final:
+
+data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+
+Pasta de resumos:
+
+saida_resumo_negativas/pipeline_pre_validacao_negativas/
+
+Resumo mestre:
+
+saida_resumo_negativas/pipeline_pre_validacao_negativas/pipeline_pre_validacao_negativas_resumo_mestre.json
+
+Etapas:
+
+00 - verificacao de campos negativas
+Verifica LOCAL, ESPECIALIDADE e UF, gerando resumo, valores invalidos e linhas
+com LOCAL/ESPECIALIDADE invalidos.
+
+01 - limpeza negativas
+Garante colunas obrigatorias e gera a base limpa de negativas.
+
+02 - contratacao negativas
+Usa a aba contratacao do insumo para preencher CONTRATACAO e UF quando possivel.
+Gera locais sem contratacao, linhas sem contratacao e locais sem UF.
+
+03 - classificacao negativas
+Aplica regra_classificacao.xlsx para classificar negativas e gera auditoria,
+sobrescritas e nao classificados detalhado.
+
+04 - local editado negativas
+Usa o arquivo de insumos para preencher LOCAL EDITADO e gera atualizados e nao
+encontrados.
+
+
+8. GERACAO DE ARQUIVOS PARA POWER BI
+
+Entry point:
+
+python execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+Entrada:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+Etapa 12 - Power BI:
+
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_12_power_bi.py
+
+Saida:
+data_exec_indiv/avaliacoes/12_base_power_bi.csv
+
+Objetivo:
+Gerar CSV no layout historico esperado pelo Power BI. A etapa seleciona e
+renomeia colunas, formata data_atendimento como dd/mm/aaaa e aplica ajustes de
+classificacao para manter o padrao historico.
+
+Observacao importante:
+O cabecalho de saida do BI mantem o nome historico "staus unidade".
+
+Resumos:
+saida_resumo_avaliacoes/pipeline_arquivos_bi/exec_12_power_bi/
+
+Etapa 13 - separar tipo Excel:
+
+Arquivo de regra:
+execucoes_individuais_avaliacoes/exec_13_separar_tipo_excel.py
+
+Entrada:
+data_exec_indiv/avaliacoes/12_base_power_bi.csv
+
+Saidas locais:
+
+data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+
+Recortes:
+
+TIPO 1 A 3: tipo entre 1 e 3
+TIPO 4 A 7: tipo entre 4 e 7
+TIPO 8 OU MAIS: tipo maior ou igual a 8
+
+Abas:
+
+tipos 1 a 3
+tipos 4 a 7
+tipos 8 ou mais
+
+Campos forcados como texto no Excel:
+
+cdatendimento
+num_beneficiario
+cdempresa
+cdusuario
+telefone
+data_atendimento
+
+Campos numericos no Excel:
+
+nota1, nota2, nota3, nota4, nota5, mes, dia, ano, tipo, nota geral, Meta,
+resultado da unidade
+
+Copia para pasta Power BI:
+
+G:\Superintendencia de Atendimento\Inteligencia de Dados\3 - Bases Gerais\3.5 - Base 5 Estrelas Power BI\3.5.1 - Bases Consolidadas
+
+Nomes de copia configurados:
+
+TIPO 1 A 3 -> 5_ESTRELAS_JULHO_26_1.xlsx
+TIPO 4 A 7 -> 5_ESTRELAS_JULHO_26_2.xlsx
+TIPO 8 OU MAIS -> 5_ESTRELAS_JULHO_26_3.xlsx
+
+Resumos:
+saida_resumo_avaliacoes/pipeline_arquivos_bi/exec_13_separar_tipo_excel/
+
+
+9. SEPARACAO POR GRUPO/CLASSIFICACAO
+
+Entry point:
+
+python execucoes_pipeline/exec_separacao.py
+
+Entradas:
+
+Avaliacoes:
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+Negativas:
+data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+
+Nomes de classificacao:
+data/nomes_classificacao.json
+
+Saida preferencial:
+
+C:\Users\anderson.dossantos\HAPVIDA ASSISTENCIA MEDICA LTDA\5 Estrelas - Documentos\Base de Dados 5 Estrelas\base de dados maio 26\atualizacoes das classificacoes
+
+Saida local, se a pasta SharePoint/OneDrive nao existir:
+
+data_exec_indiv/separacao/
+
+Prefixo dos arquivos:
+
+base de dados 5 estrelas maio_26 -
+
+Cada arquivo gerado possui duas abas:
+
+avaliacoes
+negativas
+
+Grupos gerados:
+
+ambulancia
+diagnostico
+hapclinica
+hospitalar
+med prev e programas especiais
+odontologia
+rede credenciada
+teleconsulta
+
+Filtro opcional para rodar apenas alguns grupos:
+
+GRUPOS_SEPARACAO=odontologia
+
+Para mais de um grupo, separar por ponto e virgula:
+
+GRUPOS_SEPARACAO=odontologia;hospitalar
+
+Resumos:
+
+saida_resumo_separacao/exec_separacao_resumo.json
+saida_resumo_separacao/exec_separacao_resumo.txt
+saida_resumo_separacao/exec_separacao_quantidades_por_arquivo.csv
+saida_resumo_separacao/exec_separacao_classificacoes_por_grupo.csv
+saida_resumo_separacao/exec_separacao_classificacoes_nao_enviadas.csv
+
+
+10. COMANDOS MAIS USADOS
+
+Extrair Oracle:
+
+python scripts/extracao_oracle_exemplo.py
+
+Rodar somente pre-validacao de avaliacoes:
+
+python execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+
+Rodar somente pre-validacao de negativas:
+
+python execucoes_pipeline/exec_pre_validacao_negativas.py
+
+Rodar pre-validacao completa:
+
+python execucoes_pipeline/exec_pre_validacao.py
+
+Gerar arquivos finais de BI:
+
+python execucoes_pipeline/exec_gerar_arquivos_bi.py
+
+Gerar separacao por grupo/classificacao:
+
+python execucoes_pipeline/exec_separacao.py
+
+Rodar separacao apenas para odontologia no PowerShell:
+
+$env:GRUPOS_SEPARACAO='odontologia'
+python execucoes_pipeline/exec_separacao.py
+Remove-Item Env:\GRUPOS_SEPARACAO
+
+Rodar pre-validacao apontando para outro CSV de avaliacoes no PowerShell:
+
+$env:PIPELINE_AVALIACOES_ENTRADA='data/oracle/5_ESTRELAS_EXTRACAO.csv'
+python execucoes_pipeline/exec_pre_validacao_avaliacoes.py
+Remove-Item Env:\PIPELINE_AVALIACOES_ENTRADA
+
+
+11. ARTEFATOS FINAIS PRINCIPAIS
+
+CSV final de avaliacoes pre-validadas:
+
+data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+
+CSV final de negativas pre-validadas:
+
+data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+
+CSV Power BI:
+
+data_exec_indiv/avaliacoes/12_base_power_bi.csv
+
+Excels Power BI por tipo:
+
+data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
+data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+
+Excel de analise:
+
+saida_resumo_avaliacoes/pipeline_pre_validacao/exec_11_analise_dados/exec_11_analise_dados.xlsx
+
+Auditoria consolidada de insumos:
+
+saida_resumo_avaliacoes/auditoria_insumos/auditoria_pre_validacao_avaliacoes.xlsx
+
+Excels separados por grupo/classificacao:
+
+data_exec_indiv/separacao/
+ou pasta SharePoint/OneDrive configurada em execucoes_pipeline/exec_separacao.py
+
+
+12. CUIDADOS OPERACIONAIS
+
+1. Nao versionar scripts/.env.oracle, senhas ou arquivos .env reais.
+
+2. Confirmar se o CSV gerado na extracao esta no caminho usado pela pipeline ou
+   se PIPELINE_AVALIACOES_ENTRADA foi configurado corretamente.
+
+3. Fechar arquivos XLSX antes de rerodar etapas que sobrescrevem Excel. Se o
+   arquivo estiver aberto no Excel, pode ocorrer PermissionError.
+
+4. Quando existirem arquivos de insumo no OneDrive Comercial, eles tem
+   prioridade sobre os arquivos locais.
+
+5. Para investigar problemas, olhar primeiro os resumos em:
+   saida_resumo_avaliacoes/pipeline_pre_validacao/
+   saida_resumo_negativas/pipeline_pre_validacao_negativas/
+   saida_resumo_avaliacoes/pipeline_arquivos_bi/
+   saida_resumo_separacao/
+
+6. Para problema de base zerada, conferir primeiro o resumo da etapa 01. Linhas
+   sem nota valida sao removidas na limpeza.
+
+7. Para problema de classificacao, conferir:
+   exec_04_classificacao_auditoria.csv
+   exec_04_classificacao_sobrescritas.csv
+   exec_04_classificacao_nao_classificados_detalhado.csv
+
+8. Para problema de LOCAL/CONTRATACAO/UF, conferir:
+   exec_02_locais_sem_contratacao.csv
+   exec_02_linhas_sem_contratacao.csv
+   exec_02_locais_sem_uf.csv
+
+9. Para problema de OPERADORA, conferir:
+   exec_07_operadora_nao_classificados.csv
+   exec_07_operadora_sobrescritos.csv
+   exec_07_operadora_auditoria.csv
+
+10. Para problema nos arquivos finais do Power BI, conferir se a etapa 12 leu o
+    CSV final correto da pre-validacao e se a etapa 13 gerou os tres recortes
+    por tipo.
+
+
+13. MAPA RAPIDO DE PASTAS
+
+scripts/
+Extracao Oracle e arquivos .env de exemplo.
+
+execucoes_pipeline/
+Orquestradores atuais do processo em memoria.
+
+execucoes_individuais_avaliacoes/
+Regras e execucoes individuais de avaliacoes. A pipeline importa as funcoes
+destes arquivos.
+
+execucoes_individuais_negativas/
+Regras e execucoes individuais de negativas.
+
+funcoes_auxiliares/
+Leitura/escrita padronizada, normalizacao de local e resolucao de caminhos.
+
+utils/insumos/
+Insumos e planilhas de regras locais.
+
+data/
+Entradas brutas locais, JSONs auxiliares e arquivos de origem quando usados no
+projeto.
+
+data_exec_indiv/
+Saidas tratadas e finais usadas pelas etapas seguintes.
+
+saida_resumo_avaliacoes/
+Resumos, auditorias e analises de avaliacoes.
+
+saida_resumo_negativas/
+Resumos e auditorias de negativas.
+
+saida_resumo_separacao/
+Resumos da separacao por grupo/classificacao.

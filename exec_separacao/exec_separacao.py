@@ -18,7 +18,7 @@ config = criar_config_pre_validacao()
 arquivo_avaliacoes = config.arquivo_csv_final_pre_validacao
 arquivo_negativas = config.arquivo_csv_final_pre_validacao_negativas
 arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
-pasta_resumo = Path('saida_resumo_separacao')
+pasta_resumo = config.pasta_resumo_pipeline / 'exec_separacao'
 pasta_saida_excel_local = Path('data_exec_indiv/separacao')
 pasta_saida_excel_sharepoint = Path(
     r'C:\Users\anderson.dossantos\HAPVIDA ASSISTÊNCIA MÉDICA LTDA'

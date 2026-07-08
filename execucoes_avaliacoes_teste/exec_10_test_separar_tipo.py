@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -14,7 +14,7 @@ ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.cs
 ARQUIVO_NOMES = Path('data/nomes_classificacao.json')
 ARQUIVO_SAIDA_1_A_7 = Path('data_exec_indiv/avaliacoes/10_base_tipo_1_a_7.csv')
 ARQUIVO_SAIDA_8_OU_MAIS = Path('data_exec_indiv/avaliacoes/10_base_tipo_8_ou_mais.csv')
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_10_separar_tipo'
+PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_10_separar_tipo'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_10_separar_tipo_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_10_separar_tipo_resumo.txt'
 ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_10_separar_tipo_resumo.csv'
@@ -109,7 +109,7 @@ def validar_integridade_linhas(df_entrada, df_1_a_7, df_8_ou_mais):
             f'Total de linhas separadas divergente: esperado {total_esperado}, encontrado {total_saida}.',
         )
 
-    # Verifica sobreposição por chave técnica simples (hash da linha inteira)
+    # Verifica sobreposiÃ§Ã£o por chave tÃ©cnica simples (hash da linha inteira)
     hash_1 = pd.util.hash_pandas_object(df_1_a_7.astype('string').fillna(''), index=False)
     hash_8 = pd.util.hash_pandas_object(df_8_ou_mais.astype('string').fillna(''), index=False)
     intersec = len(set(hash_1.tolist()).intersection(set(hash_8.tolist())))

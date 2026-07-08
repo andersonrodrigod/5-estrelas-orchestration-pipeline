@@ -16,7 +16,7 @@ arquivo_insumos = resolver_caminho_onedrive_comercial(
 )
 arquivo_saida = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
 
-pasta_resumo = Path('saida_resumo_negativas') / 'exec_04_local_editado'
+pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_04_local_editado'
 arquivo_resumo_json = pasta_resumo / 'exec_04_local_editado_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_04_local_editado_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_04_local_editado_resumo.csv'

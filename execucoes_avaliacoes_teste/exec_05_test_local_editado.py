@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -16,14 +16,14 @@ ARQUIVO_INSUMOS = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/insumos 5 estrelas.xlsx'),
     Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
 )
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_05_local_editado'
+PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_05_local_editado'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_05_local_editado_resumo.json'
 ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_05_local_editado_resumo.csv'
 ARQUIVO_ATUALIZADOS = PASTA_RESUMO / 'exec_05_local_editado_atualizados.csv'
 ARQUIVO_NAO_ENCONTRADOS = PASTA_RESUMO / 'exec_05_local_editado_nao_encontrados.csv'
 
 COLUNAS_OBRIGATORIAS = ['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO']
-COLUNAS_OBRIGATORIAS_INSUMOS = ['Local', 'local editado']
+COLUNAS_OBRIGATORIAS_INSUMOS = ['Local', 'Local editado']
 COLUNA_QUANTIDADE = 'QUANTIDADE'
 LIMITE_EXEMPLOS = 20
 
@@ -66,7 +66,7 @@ def validar_colunas(df, colunas, contexto):
 
 
 def carregar_insumos_local_editado():
-    return pd.read_excel(ARQUIVO_INSUMOS, sheet_name='insumos')
+    return pd.read_excel(ARQUIVO_INSUMOS, sheet_name='contratacao')
 
 
 def validar_insumos(df_insumos):
@@ -80,7 +80,7 @@ def validar_insumos(df_insumos):
 
     df_mapa = df_insumos.copy()
     df_mapa['LOCAL_COMPARACAO'] = normalizar_chave(df_mapa['Local'])
-    df_mapa['LOCAL_EDITADO_COMPARACAO'] = normalizar_texto(df_mapa['local editado'])
+    df_mapa['LOCAL_EDITADO_COMPARACAO'] = normalizar_texto(df_mapa['Local editado'])
 
     locais_vazios = df_mapa['LOCAL_COMPARACAO'] == ''
     for linha in df_mapa.index[locais_vazios][:LIMITE_EXEMPLOS] + 2:

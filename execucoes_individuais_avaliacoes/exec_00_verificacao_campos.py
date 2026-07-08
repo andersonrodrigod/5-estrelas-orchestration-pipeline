@@ -10,12 +10,12 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 arquivo_entrada = Path('data/premissa_5_estrelas_maio.csv')
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_00_verificacao_campos'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_00_verificacao_campos'
 
 colunas_verificacao = ['LOCAL', 'ESPECIALIDADE', 'UF']
 coluna_tipo = 'TIPO'
-regex_letra = re.compile(r'[A-Za-zÀ-ÖØ-öø-ÿ]')
-regex_apenas_especial = re.compile(r'^[^A-Za-zÀ-ÖØ-öø-ÿ0-9]+$')
+regex_letra = re.compile(r'[^\W\d_]')
+regex_apenas_especial = re.compile(r'^[\W_]+$')
 
 
 def preparar_texto(serie):

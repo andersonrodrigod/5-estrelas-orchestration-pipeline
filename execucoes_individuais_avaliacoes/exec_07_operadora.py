@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -14,7 +14,7 @@ arquivo_regras_operadora_local = Path('utils/insumos/regras_operadora.xlsx')
 arquivo_regras_operadora_onedrive = Path('5 Estrelas/INSUMOS/regras_operadora.xlsx')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/07_base_com_operadora.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_07_operadora'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_07_operadora'
 arquivo_resumo_json = pasta_resumo / 'exec_07_operadora_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_07_operadora_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_07_operadora_resumo.csv'

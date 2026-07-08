@@ -160,7 +160,7 @@ def salvar_auditoria_insumos_avaliacoes(config):
     ]
 
     destinos = [
-        Path('saida_resumo_avaliacoes')
+        config.pasta_resumo_avaliacoes
         / 'auditoria_insumos'
         / 'auditoria_pre_validacao_avaliacoes.xlsx',
         config.arquivo_insumos.parent / 'auditoria_pre_validacao_avaliacoes.xlsx',

@@ -5,9 +5,16 @@ from pathlib import Path
 
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 
+# criar um loop
+
 
 @dataclass(frozen=True)
 class PipelineConfig:
+    pasta_auditoria: Path
+    pasta_resumo_avaliacoes: Path
+    pasta_resumo_pipeline: Path
+    pasta_resumo_negativa: Path
+    pasta_resumo_separacao: Path
     arquivo_entrada_bruta: Path
     arquivo_entrada_negativas: Path
     arquivo_insumos: Path
@@ -19,9 +26,20 @@ class PipelineConfig:
     arquivo_csv_final_pre_validacao: Path
     arquivo_csv_final_pre_validacao_negativas: Path
     arquivo_csv_final: Path
+    arquivo_power_bi: Path
+    pasta_resumo_arquivos_bi: Path
+    arquivos_excel_power_bi: dict
+    pasta_copia_power_bi: Path
+    nomes_copia_power_bi: dict
 
 
 def criar_config_pre_validacao():
+    pasta_auditoria = Path('auditoria')
+    pasta_resumo_avaliacoes = pasta_auditoria / 'saida_resumo_avaliacoes'
+    pasta_resumo_pipeline = pasta_auditoria / 'saida_resumo_pipeline'
+    pasta_resumo_negativa = pasta_auditoria / 'saida_resumo_negativa'
+    pasta_resumo_separacao = pasta_auditoria / 'saida_resumo_separacao'
+
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
@@ -36,6 +54,11 @@ def criar_config_pre_validacao():
     )
 
     return PipelineConfig(
+        pasta_auditoria=pasta_auditoria,
+        pasta_resumo_avaliacoes=pasta_resumo_avaliacoes,
+        pasta_resumo_pipeline=pasta_resumo_pipeline,
+        pasta_resumo_negativa=pasta_resumo_negativa,
+        pasta_resumo_separacao=pasta_resumo_separacao,
         arquivo_entrada_bruta=arquivo_entrada_bruta,
         arquivo_entrada_negativas=arquivo_entrada_negativas,
         arquivo_insumos=resolver_caminho_onedrive_comercial(
@@ -54,9 +77,9 @@ def criar_config_pre_validacao():
             Path('utils/insumos/regras_operadora.xlsx'),
             Path('5 Estrelas/INSUMOS/regras_operadora.xlsx'),
         ),
-        pasta_resumo=Path('saida_resumo_avaliacoes') / 'pipeline_pre_validacao',
+        pasta_resumo=pasta_resumo_pipeline / 'exec_pre_validacao_avaliacoes',
         pasta_resumo_negativas=(
-            Path('saida_resumo_negativas') / 'pipeline_pre_validacao_negativas'
+            pasta_resumo_pipeline / 'exec_pre_validacao_negativas'
         ),
         arquivo_csv_final_pre_validacao=(
             Path('data_exec_indiv/avaliacoes')
@@ -70,4 +93,32 @@ def criar_config_pre_validacao():
             Path('data_exec_indiv/avaliacoes')
             / 'pipeline_final_base_final.csv'
         ),
+        arquivo_power_bi=Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv'),
+        pasta_resumo_arquivos_bi=(
+            pasta_resumo_pipeline / 'exec_gerar_arquivos_bi'
+        ),
+        arquivos_excel_power_bi={
+            'TIPO 1 A 3': {
+                'arquivo': Path('data/arquivos_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
+                'aba': 'tipos 1 a 3',
+            },
+            'TIPO 4 A 7': {
+                'arquivo': Path('data/arquivos_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
+                'aba': 'tipos 4 a 7',
+            },
+            'TIPO 8 OU MAIS': {
+                'arquivo': Path('data/arquivos_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
+                'aba': 'tipos 8 ou mais',
+            },
+        },
+        pasta_copia_power_bi=Path(
+            r'G:\Superintendencia de Atendimento\Inteligência de Dados'
+            r'\3 - Bases Gerais\3.5 - Base 5 Estrelas Power BI'
+            r'\3.5.1 - Bases Consolidadas'
+        ),
+        nomes_copia_power_bi={
+            'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
+            'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
+            'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
+        },
     )

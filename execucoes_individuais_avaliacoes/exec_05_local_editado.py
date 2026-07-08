@@ -15,7 +15,7 @@ arquivo_insumos_local = Path('utils/insumos/insumos 5 estrelas.xlsx')
 arquivo_insumos_onedrive = Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_05_local_editado'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_05_local_editado'
 arquivo_resumo_json = pasta_resumo / 'exec_05_local_editado_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_05_local_editado_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_05_local_editado_resumo.csv'
@@ -61,20 +61,20 @@ def transformar_em_lista_registros(df_base, colunas):
 
 def processar_local_editado(df_base, caminho_insumos):
     df = df_base.copy()
-    df_insumos = pd.read_excel(caminho_insumos, sheet_name='insumos')
+    df_insumos = pd.read_excel(caminho_insumos, sheet_name='contratacao')
 
     df['LOCAL'] = normalizar_texto(df['LOCAL'])
     df['LOCAL EDITADO'] = normalizar_texto(df['LOCAL EDITADO'])
     df['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df['LOCAL'])
 
     df_insumos['Local'] = normalizar_texto(df_insumos['Local'])
-    df_insumos['local editado'] = normalizar_texto(df_insumos['local editado'])
+    df_insumos['Local editado'] = normalizar_texto(df_insumos['Local editado'])
     df_insumos['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_insumos['Local'])
 
     df_insumos = df_insumos.dropna(subset=['LOCAL_COMPARACAO'])
     df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 
-    mapa_local_editado = df_insumos.set_index('LOCAL_COMPARACAO')['local editado']
+    mapa_local_editado = df_insumos.set_index('LOCAL_COMPARACAO')['Local editado']
 
     local_editado_antes = df['LOCAL EDITADO'].copy()
     local_editado_novo = df['LOCAL_COMPARACAO'].map(mapa_local_editado)

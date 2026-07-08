@@ -11,7 +11,7 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_
 
 arquivo_entrada = Path('data/5_estrelas_abril_negativa.csv')
 
-pasta_resumo = Path('saida_resumo_negativas') / 'exec_00_verificacao_campos'
+pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_00_verificacao_campos'
 arquivo_resumo_json = pasta_resumo / 'exec_00_verificacao_campos_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_00_verificacao_campos_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_00_verificacao_campos_resumo.csv'

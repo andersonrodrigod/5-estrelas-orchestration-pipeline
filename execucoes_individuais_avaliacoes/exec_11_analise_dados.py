@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 import sys
 from pathlib import Path
 
@@ -9,7 +9,7 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado
 
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 
-pasta_saida = Path('saida_resumo_avaliacoes') / 'exec_11_analise_dados'
+pasta_saida = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_analise_dados'
 arquivo_saida_excel = pasta_saida / 'exec_11_analise_dados.xlsx'
 arquivo_documentacao_txt = pasta_saida / 'exec_11_analise_dados_explicacao.txt'
 
@@ -28,17 +28,17 @@ ordem_classificacao = [
     'HAPCLINICA',
     'TELECONSULTA ELETIVA',
     'HOSPITALAR',
-    'LABORATÓRIO',
-    'TELECONSULTA URGÊNCIA',
+    'LABORATÃ“RIO',
+    'TELECONSULTA URGÃŠNCIA',
     'CRED_TRATAMENTO',
     'VIDA IMAGEM',
     'ODONTOLOGIA',
     'MED PREV',
     'QUALIVIDA',
     'NASCER BEM',
-    'CRED_LABORATÓRIO',
+    'CRED_LABORATÃ“RIO',
     'CRED_ATEND ELETIVO',
-    'INTERNAÇÃO',
+    'INTERNAÃ‡ÃƒO',
     'CASE',
     'CRED_ATEND EMERGENCIA',
     'PRODUTO COORDENADO',
@@ -47,9 +47,9 @@ ordem_classificacao = [
     'TELECONSULTA PGC',
     'CRED_EXAMES',
     'CRED_INTERNACAO',
-    'INTERNAÇÃO PGC',
+    'INTERNAÃ‡ÃƒO PGC',
     'TELEMEDICINA',
-    'TRANSFUSÃO DE SANGUE',
+    'TRANSFUSÃƒO DE SANGUE',
     'TRANSPLANTE RENAL',
 ]
 

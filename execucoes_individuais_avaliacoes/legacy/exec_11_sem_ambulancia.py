@@ -13,7 +13,7 @@ from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_
 arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/11_base_sem_ambulancia.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_sem_ambulancia'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_sem_ambulancia'
 arquivo_resumo_json = pasta_resumo / 'exec_11_sem_ambulancia_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_11_sem_ambulancia_resumo.txt'
 arquivo_excluidas_csv = pasta_resumo / 'exec_11_sem_ambulancia_excluidas.csv'

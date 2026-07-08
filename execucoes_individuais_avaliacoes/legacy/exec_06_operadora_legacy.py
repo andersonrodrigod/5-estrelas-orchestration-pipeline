@@ -17,7 +17,7 @@ arquivo_insumos_ndi = resolver_caminho_onedrive_comercial(
 )
 arquivo_saida = Path('data_exec_indiv/avaliacoes/06_base_com_operadora_legacy.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_06_operadora_legacy'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_06_operadora_legacy'
 arquivo_resumo_json = pasta_resumo / 'exec_06_operadora_legacy_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_06_operadora_legacy_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_06_operadora_legacy_resumo.csv'

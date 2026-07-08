@@ -14,7 +14,7 @@ arquivo_nomes_classificacao = Path('data/nomes_classificacao.json')
 arquivo_saida_tipo_1_a_7 = Path('data_exec_indiv/avaliacoes/11_base_tipo_1_a_7.csv')
 arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/11_base_tipo_8_ou_mais.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_11_separar_tipo'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_separar_tipo'
 arquivo_resumo_json = pasta_resumo / 'exec_11_separar_tipo_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_11_separar_tipo_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_11_separar_tipo_resumo.csv'

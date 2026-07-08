@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -16,7 +16,7 @@ ARQUIVO_REGRAS = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/regra_classificacao.xlsx'),
     Path('5 Estrelas/INSUMOS/regra_classificacao.xlsx'),
 )
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_04_classificacao'
+PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_04_classificacao'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_04_classificacao_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_04_classificacao_resumo.txt'
 ARQUIVO_AUDITORIA = PASTA_RESUMO / 'exec_04_classificacao_auditoria.csv'

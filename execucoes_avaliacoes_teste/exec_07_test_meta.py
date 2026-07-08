@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -17,7 +17,7 @@ ARQUIVO_INSUMOS = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/insumos 5 estrelas.xlsx'),
     Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
 )
-PASTA_RESUMO = Path('saida_resumo_avaliacoes') / 'exec_07_meta'
+PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_07_meta'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_07_meta_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_07_meta_resumo.txt'
 

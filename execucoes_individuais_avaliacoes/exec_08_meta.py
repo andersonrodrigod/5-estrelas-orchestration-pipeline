@@ -15,7 +15,7 @@ arquivo_insumos_local = Path('utils/insumos/insumos 5 estrelas.xlsx')
 arquivo_insumos_onedrive = Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx')
 arquivo_saida = Path('data_exec_indiv/avaliacoes/08_base_com_meta.csv')
 
-pasta_resumo = Path('saida_resumo_avaliacoes') / 'exec_08_meta'
+pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_08_meta'
 arquivo_resumo_json = pasta_resumo / 'exec_08_meta_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_08_meta_resumo.txt'
 arquivo_nao_encontrados_detalhado_csv = pasta_resumo / 'exec_08_meta_nao_encontrados_detalhado.csv'

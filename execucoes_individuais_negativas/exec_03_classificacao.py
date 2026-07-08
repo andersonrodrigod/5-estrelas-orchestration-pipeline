@@ -17,7 +17,7 @@ arquivo_regras_classificacao = resolver_caminho_onedrive_comercial(
 )
 arquivo_saida = Path('data_exec_indiv/negativas/03_base_com_classificacao.csv')
 
-pasta_resumo = Path('saida_resumo_negativas') / 'exec_03_classificacao'
+pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_03_classificacao'
 arquivo_resumo_json = pasta_resumo / 'exec_03_classificacao_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_03_classificacao_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_03_classificacao_resumo.csv'
