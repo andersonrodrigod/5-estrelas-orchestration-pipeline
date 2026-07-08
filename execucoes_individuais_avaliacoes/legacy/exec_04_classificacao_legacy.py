@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -8,10 +8,10 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/03_base_com_nota.csv')
 arquivo_grupos = Path('data/grupos_classificacao.json')
 arquivo_nomes = Path('data/nomes_classificacao.json')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao_legacy.csv')
+arquivo_saida = Path('data_exec/avaliacoes/04_base_com_classificacao_legacy.csv')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_04_classificacao_legacy'
 arquivo_resumo_json = pasta_resumo / 'exec_04_classificacao_legacy_resumo.json'

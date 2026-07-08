@@ -43,13 +43,13 @@ def criar_config_pre_validacao():
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
-            'data/junho_incompleto_5_estrelas.csv',
+            'data/manual/junho_incompleto_5_estrelas.csv',
         )
     )
     arquivo_entrada_negativas = Path(
         os.environ.get(
             'PIPELINE_NEGATIVAS_ENTRADA',
-            'data/5_estrelas_maio_negativo.csv',
+            'data/manual/5_estrelas_maio_negativo.csv',
         )
     )
 
@@ -82,32 +82,32 @@ def criar_config_pre_validacao():
             pasta_resumo_pipeline / 'exec_pre_validacao_negativas'
         ),
         arquivo_csv_final_pre_validacao=(
-            Path('data_exec_indiv/avaliacoes')
+            Path('data_exec/pipeline')
             / 'pipeline_pre_validacao_avaliacoes_base_final.csv'
         ),
         arquivo_csv_final_pre_validacao_negativas=(
-            Path('data_exec_indiv/negativas')
+            Path('data_exec/pipeline')
             / 'pipeline_pre_validacao_negativas_base_final.csv'
         ),
         arquivo_csv_final=(
-            Path('data_exec_indiv/avaliacoes')
+            Path('data_exec/pipeline')
             / 'pipeline_final_base_final.csv'
         ),
-        arquivo_power_bi=Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv'),
+        arquivo_power_bi=Path('data_exec/pipeline/12_base_power_bi.csv'),
         pasta_resumo_arquivos_bi=(
             pasta_resumo_pipeline / 'exec_gerar_arquivos_bi'
         ),
         arquivos_excel_power_bi={
             'TIPO 1 A 3': {
-                'arquivo': Path('data/arquivos_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
+                'arquivo': Path('data_exec/excel_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
                 'aba': 'tipos 1 a 3',
             },
             'TIPO 4 A 7': {
-                'arquivo': Path('data/arquivos_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
+                'arquivo': Path('data_exec/excel_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
                 'aba': 'tipos 4 a 7',
             },
             'TIPO 8 OU MAIS': {
-                'arquivo': Path('data/arquivos_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
+                'arquivo': Path('data_exec/excel_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
                 'aba': 'tipos 8 ou mais',
             },
         },
@@ -117,8 +117,8 @@ def criar_config_pre_validacao():
             r'\3.5.1 - Bases Consolidadas'
         ),
         nomes_copia_power_bi={
-            'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
-            'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
-            'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
+            'TIPO 1 A 3': '5_ESTRELAS_JUNHO_26_1.xlsx',
+            'TIPO 4 A 7': '5_ESTRELAS_JUNHO_26_2.xlsx',
+            'TIPO 8 OU MAIS': '5_ESTRELAS_JUNHO_26_3.xlsx',
         },
     )

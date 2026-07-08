@@ -197,7 +197,7 @@ python execucoes_pipeline/exec_pre_validacao.py
 
 Saida final da pre-validacao de avaliacoes:
 
-data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_avaliacoes_base_final.csv
 
 Pasta de resumos:
 
@@ -404,7 +404,7 @@ pre-validacao de negativas.
 
 Saida final:
 
-data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_negativas_base_final.csv
 
 Pasta de resumos:
 
@@ -444,7 +444,7 @@ python execucoes_pipeline/exec_gerar_arquivos_bi.py
 
 Entrada:
 
-data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_avaliacoes_base_final.csv
 
 Etapa 12 - Power BI:
 
@@ -452,7 +452,7 @@ Arquivo de regra:
 execucoes_individuais_avaliacoes/exec_12_power_bi.py
 
 Saida:
-data_exec_indiv/avaliacoes/12_base_power_bi.csv
+data_exec/pipeline/12_base_power_bi.csv
 
 Objetivo:
 Gerar CSV no layout historico esperado pelo Power BI. A etapa seleciona e
@@ -471,13 +471,13 @@ Arquivo de regra:
 execucoes_individuais_avaliacoes/exec_13_separar_tipo_excel.py
 
 Entrada:
-data_exec_indiv/avaliacoes/12_base_power_bi.csv
+data_exec/pipeline/12_base_power_bi.csv
 
 Saidas locais:
 
-data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
-data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
-data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_1_a_3_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_4_a_7_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_8_ou_mais_power_bi.xlsx
 
 Recortes:
 
@@ -528,10 +528,10 @@ python execucoes_pipeline/exec_separacao.py
 Entradas:
 
 Avaliacoes:
-data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_avaliacoes_base_final.csv
 
 Negativas:
-data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_negativas_base_final.csv
 
 Nomes de classificacao:
 data/nomes_classificacao.json
@@ -542,7 +542,7 @@ C:\Users\anderson.dossantos\HAPVIDA ASSISTENCIA MEDICA LTDA\5 Estrelas - Documen
 
 Saida local, se a pasta SharePoint/OneDrive nao existir:
 
-data_exec_indiv/separacao/
+data_exec/separacao/
 
 Prefixo dos arquivos:
 
@@ -624,21 +624,21 @@ Remove-Item Env:\PIPELINE_AVALIACOES_ENTRADA
 
 CSV final de avaliacoes pre-validadas:
 
-data_exec_indiv/avaliacoes/pipeline_pre_validacao_avaliacoes_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_avaliacoes_base_final.csv
 
 CSV final de negativas pre-validadas:
 
-data_exec_indiv/negativas/pipeline_pre_validacao_negativas_base_final.csv
+data_exec/pipeline/pipeline_pre_validacao_negativas_base_final.csv
 
 CSV Power BI:
 
-data_exec_indiv/avaliacoes/12_base_power_bi.csv
+data_exec/pipeline/12_base_power_bi.csv
 
 Excels Power BI por tipo:
 
-data_exec_indiv/avaliacoes/13_base_tipo_1_a_3_power_bi.xlsx
-data_exec_indiv/avaliacoes/13_base_tipo_4_a_7_power_bi.xlsx
-data_exec_indiv/avaliacoes/13_base_tipo_8_ou_mais_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_1_a_3_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_4_a_7_power_bi.xlsx
+data_exec/excel_bi/13_base_tipo_8_ou_mais_power_bi.xlsx
 
 Excel de analise:
 
@@ -650,7 +650,7 @@ saida_resumo_avaliacoes/auditoria_insumos/auditoria_pre_validacao_avaliacoes.xls
 
 Excels separados por grupo/classificacao:
 
-data_exec_indiv/separacao/
+data_exec/separacao/
 ou pasta SharePoint/OneDrive configurada em execucoes_pipeline/exec_separacao.py
 
 
@@ -721,7 +721,7 @@ data/
 Entradas brutas locais, JSONs auxiliares e arquivos de origem quando usados no
 projeto.
 
-data_exec_indiv/
+data_exec/
 Saidas tratadas e finais usadas pelas etapas seguintes.
 
 saida_resumo_avaliacoes/

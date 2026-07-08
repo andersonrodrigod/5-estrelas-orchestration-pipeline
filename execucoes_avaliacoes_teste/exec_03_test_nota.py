@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -9,8 +9,8 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
-ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/02_base_com_contratacao.csv')
-ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
+ARQUIVO_ENTRADA = Path('data_exec/avaliacoes/02_base_com_contratacao.csv')
+ARQUIVO_SAIDA = Path('data_exec/avaliacoes/03_base_com_nota.csv')
 PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_03_nota'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_03_nota_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_03_nota_resumo.txt'

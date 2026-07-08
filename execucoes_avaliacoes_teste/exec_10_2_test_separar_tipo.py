@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -10,11 +10,11 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
-ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/09_base_com_status_unidade.csv')
+ARQUIVO_ENTRADA = Path('data_exec/avaliacoes/09_base_com_status_unidade.csv')
 ARQUIVO_NOMES = Path('data/nomes_classificacao.json')
-ARQUIVO_SAIDA_1_A_3 = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_1_a_3.csv')
-ARQUIVO_SAIDA_4_A_7 = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_4_a_7.csv')
-ARQUIVO_SAIDA_8_OU_MAIS = Path('data_exec_indiv/avaliacoes/10_2_base_tipo_8_ou_mais.csv')
+ARQUIVO_SAIDA_1_A_3 = Path('data_exec/avaliacoes/10_2_base_tipo_1_a_3.csv')
+ARQUIVO_SAIDA_4_A_7 = Path('data_exec/avaliacoes/10_2_base_tipo_4_a_7.csv')
+ARQUIVO_SAIDA_8_OU_MAIS = Path('data_exec/avaliacoes/10_2_base_tipo_8_ou_mais.csv')
 PASTA_RESUMO = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_10_2_separar_tipo'
 ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_10_2_separar_tipo_resumo.json'
 ARQUIVO_RESUMO_TXT = PASTA_RESUMO / 'exec_10_2_separar_tipo_resumo.txt'

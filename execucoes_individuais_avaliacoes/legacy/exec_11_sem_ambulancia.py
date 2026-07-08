@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import sys
 import unicodedata
@@ -10,8 +10,8 @@ sys.path.append(str(Path(__file__).resolve().parents[2]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/11_base_sem_ambulancia.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/10_base_com_status_unidade.csv')
+arquivo_saida = Path('data_exec/avaliacoes/11_base_sem_ambulancia.csv')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_sem_ambulancia'
 arquivo_resumo_json = pasta_resumo / 'exec_11_sem_ambulancia_resumo.json'

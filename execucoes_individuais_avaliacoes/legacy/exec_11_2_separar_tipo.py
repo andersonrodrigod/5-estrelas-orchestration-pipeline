@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -8,10 +8,10 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/14_base_power_bi.csv')
-arquivo_saida_tipo_1_a_3 = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_1_a_3.csv')
-arquivo_saida_tipo_4_a_7 = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_4_a_7.csv')
-arquivo_saida_tipo_8_ou_mais = Path('data_exec_indiv/avaliacoes/11_2_base_tipo_8_ou_mais.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/14_base_power_bi.csv')
+arquivo_saida_tipo_1_a_3 = Path('data_exec/avaliacoes/11_2_base_tipo_1_a_3.csv')
+arquivo_saida_tipo_4_a_7 = Path('data_exec/avaliacoes/11_2_base_tipo_4_a_7.csv')
+arquivo_saida_tipo_8_ou_mais = Path('data_exec/avaliacoes/11_2_base_tipo_8_ou_mais.csv')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_2_separar_tipo'
 arquivo_resumo_json = pasta_resumo / 'exec_11_2_separar_tipo_resumo.json'

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/04_base_com_classificacao.csv')
 arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 
 # Preencha com o valor desejado ou deixe None para nao filtrar a coluna.

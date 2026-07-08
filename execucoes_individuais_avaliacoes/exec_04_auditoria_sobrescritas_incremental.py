@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import re
 import sys
 import unicodedata
@@ -10,7 +10,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/03_base_com_nota.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/03_base_com_nota.csv')
 arquivo_regras_classificacao = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/regra_classificacao.xlsx'),
     Path('5 Estrelas/INSUMOS/regra_classificacao.xlsx'),

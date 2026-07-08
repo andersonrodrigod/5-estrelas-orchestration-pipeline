@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -9,12 +9,12 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/negativas/03_base_com_classificacao.csv')
+arquivo_entrada = Path('data_exec/negativas/03_base_com_classificacao.csv')
 arquivo_insumos = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/insumos 5 estrelas.xlsx'),
     Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
 )
-arquivo_saida = Path('data_exec_indiv/negativas/04_base_com_local_editado.csv')
+arquivo_saida = Path('data_exec/negativas/04_base_com_local_editado.csv')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_negativa' / 'exec_04_local_editado'
 arquivo_resumo_json = pasta_resumo / 'exec_04_local_editado_resumo.json'

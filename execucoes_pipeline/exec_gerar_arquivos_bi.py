@@ -59,6 +59,12 @@ def executar_power_bi():
 
     if not arquivo_entrada_padrao.exists():
         print(f'ERRO - arquivo de entrada validada nao encontrado: {arquivo_entrada_padrao}')
+        print(
+            'Execute antes: python execucoes_pipeline/exec_pre_validacao_avaliacoes.py'
+        )
+        print(
+            'Esse comando gera o CSV final que serve de entrada para os arquivos BI.'
+        )
         return 1
 
     inicio = time.monotonic()

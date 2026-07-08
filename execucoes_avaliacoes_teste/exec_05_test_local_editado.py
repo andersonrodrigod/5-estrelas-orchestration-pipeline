@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from pathlib import Path
 import json
 import sys
@@ -10,8 +10,8 @@ from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
-ARQUIVO_ENTRADA = Path('data_exec_indiv/avaliacoes/04_base_com_classificacao.csv')
-ARQUIVO_SAIDA = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
+ARQUIVO_ENTRADA = Path('data_exec/avaliacoes/04_base_com_classificacao.csv')
+ARQUIVO_SAIDA = Path('data_exec/avaliacoes/05_base_com_local_editado.csv')
 ARQUIVO_INSUMOS = resolver_caminho_onedrive_comercial(
     Path('utils/insumos/insumos 5 estrelas.xlsx'),
     Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),

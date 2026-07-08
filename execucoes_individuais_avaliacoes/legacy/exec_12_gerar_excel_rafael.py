@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import csv
 import json
 import sys
@@ -15,22 +15,22 @@ from funcoes_auxiliares.padronizacao_csv import salvar_csv_padronizado
 arquivos_entrada = [
     {
         'rotulo': 'TIPO 1 A 3',
-        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_1_a_3.csv'),
+        'arquivo': Path('data_exec/avaliacoes/11_2_base_tipo_1_a_3.csv'),
         'aba': 'TIPO_1_A_3',
     },
     {
         'rotulo': 'TIPO 4 A 7',
-        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_4_a_7.csv'),
+        'arquivo': Path('data_exec/avaliacoes/11_2_base_tipo_4_a_7.csv'),
         'aba': 'TIPO_4_A_7',
     },
     {
         'rotulo': 'TIPO 8 OU MAIS',
-        'arquivo': Path('data_exec_indiv/avaliacoes/11_2_base_tipo_8_ou_mais.csv'),
+        'arquivo': Path('data_exec/avaliacoes/11_2_base_tipo_8_ou_mais.csv'),
         'aba': 'TIPO_8_OU_MAIS',
     },
 ]
 
-arquivo_saida_excel = Path('data_exec_indiv/avaliacoes/12_resultado_final.xlsx')
+arquivo_saida_excel = Path('data_exec/avaliacoes/12_resultado_final.xlsx')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_12_gerar_excel_rafael'
 arquivo_resumo_json = pasta_resumo / 'exec_12_gerar_excel_rafael_resumo.json'

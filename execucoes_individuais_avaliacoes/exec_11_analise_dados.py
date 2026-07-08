@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import sys
 from pathlib import Path
 
@@ -7,7 +7,7 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/10_base_com_status_unidade.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/10_base_com_status_unidade.csv')
 
 pasta_saida = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_analise_dados'
 arquivo_saida_excel = pasta_saida / 'exec_11_analise_dados.xlsx'

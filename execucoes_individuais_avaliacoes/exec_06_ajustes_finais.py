@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import json
 import sys
 from pathlib import Path
@@ -10,10 +10,10 @@ from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, salvar_csv_padronizado
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/05_base_com_local_editado.csv')
+arquivo_entrada = Path('data_exec/avaliacoes/05_base_com_local_editado.csv')
 arquivo_regras_ajuste_local = Path('utils/insumos/regra_ajuste_final.xlsx')
 arquivo_regras_ajuste_onedrive = Path('5 Estrelas/INSUMOS/regra_ajuste_final.xlsx')
-arquivo_saida = Path('data_exec_indiv/avaliacoes/06_base_com_ajustes_finais.csv')
+arquivo_saida = Path('data_exec/avaliacoes/06_base_com_ajustes_finais.csv')
 
 pasta_resumo = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_06_ajustes_finais'
 arquivo_resumo_json = pasta_resumo / 'exec_06_ajustes_finais_resumo.json'

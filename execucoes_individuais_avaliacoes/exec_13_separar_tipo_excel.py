@@ -14,19 +14,19 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.padronizacao_csv import salvar_csv_padronizado
 
 
-arquivo_entrada = Path('data_exec_indiv/avaliacoes/12_base_power_bi.csv')
+arquivo_entrada = Path('data_exec/pipeline/12_base_power_bi.csv')
 
 arquivos_saida = {
     'TIPO 1 A 3': {
-        'arquivo': Path('data/arquivos_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
+        'arquivo': Path('data_exec/excel_bi/13_base_tipo_1_a_3_power_bi.xlsx'),
         'aba': 'tipos 1 a 3',
     },
     'TIPO 4 A 7': {
-        'arquivo': Path('data/arquivos_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
+        'arquivo': Path('data_exec/excel_bi/13_base_tipo_4_a_7_power_bi.xlsx'),
         'aba': 'tipos 4 a 7',
     },
     'TIPO 8 OU MAIS': {
-        'arquivo': Path('data/arquivos_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
+        'arquivo': Path('data_exec/excel_bi/13_base_tipo_8_ou_mais_power_bi.xlsx'),
         'aba': 'tipos 8 ou mais',
     },
 }
@@ -178,6 +178,21 @@ def obter_rotulo_tipo(valor):
     return None
 
 
+def corrigir_nome_coluna(nome):
+    correcoes = {
+        'contrataÃ§Ã£o': 'contratação',
+        'contrataÃƒÂ§ÃƒÂ£o': 'contratação',
+        'CLASSIFICAÇÃO': 'CLASSIFICAÇÃO',
+        'CLASSIFICAÃ‡ÃƒO': 'CLASSIFICAÇÃO',
+        'CLASSIFICAÃƒâ€¡ÃƒÆ’O': 'CLASSIFICAÇÃO',
+    }
+    return correcoes.get(nome, nome)
+
+
+def corrigir_cabecalho(cabecalho):
+    return [corrigir_nome_coluna(coluna) for coluna in cabecalho]
+
+
 def criar_planilhas(cabecalho):
     planilhas = {}
 
@@ -212,7 +227,7 @@ def separar_e_gravar_excel(total_linhas):
 
     with open(arquivo_entrada, 'r', encoding='utf-8-sig', newline='') as arquivo:
         leitor = csv.reader(arquivo)
-        cabecalho = next(leitor)
+        cabecalho = corrigir_cabecalho(next(leitor))
         colunas_faltando = validar_cabecalho(cabecalho)
 
         if colunas_faltando:
