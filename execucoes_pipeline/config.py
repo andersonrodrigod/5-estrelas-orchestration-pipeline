@@ -23,9 +23,13 @@ class PipelineConfig:
     arquivo_regras_operadora: Path
     pasta_resumo: Path
     pasta_resumo_negativas: Path
+    pasta_resumo_exec_separacao: Path
     arquivo_csv_final_pre_validacao: Path
     arquivo_csv_final_pre_validacao_negativas: Path
     arquivo_csv_final: Path
+    arquivo_nomes_classificacao: Path
+    pasta_saida_excel_separacao_local: Path
+    pasta_saida_excel_separacao_sharepoint: Path
     arquivo_power_bi: Path
     pasta_resumo_arquivos_bi: Path
     arquivos_excel_power_bi: dict
@@ -43,7 +47,7 @@ def criar_config_pre_validacao():
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
-            'data/manual/junho_incompleto_5_estrelas.csv',
+            'data/oracle/5_estrelas_junho_2026.csv',
         )
     )
     arquivo_entrada_negativas = Path(
@@ -81,6 +85,9 @@ def criar_config_pre_validacao():
         pasta_resumo_negativas=(
             pasta_resumo_pipeline / 'exec_pre_validacao_negativas'
         ),
+        pasta_resumo_exec_separacao=(
+            pasta_resumo_separacao / 'exec_separacao'
+        ),
         arquivo_csv_final_pre_validacao=(
             Path('data_exec/pipeline')
             / 'pipeline_pre_validacao_avaliacoes_base_final.csv'
@@ -92,6 +99,13 @@ def criar_config_pre_validacao():
         arquivo_csv_final=(
             Path('data_exec/pipeline')
             / 'pipeline_final_base_final.csv'
+        ),
+        arquivo_nomes_classificacao=Path('data/nomes_classificacao.json'),
+        pasta_saida_excel_separacao_local=Path('data_exec/separacao'),
+        pasta_saida_excel_separacao_sharepoint=Path(
+            r'C:\Users\anderson.dossantos\HAPVIDA ASSISTÊNCIA MÉDICA LTDA'
+            r'\5 Estrelas - Documentos\Base de Dados 5 Estrelas'
+            r'\base de dados junho 26\atualizações das classificações'
         ),
         arquivo_power_bi=Path('data_exec/pipeline/12_base_power_bi.csv'),
         pasta_resumo_arquivos_bi=(

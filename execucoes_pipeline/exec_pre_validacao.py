@@ -119,6 +119,27 @@ def salvar_resumo_mestre_negativas(config, registros):
     return caminho
 
 
+def salvar_auditoria_insumos(arquivos_auditoria, destinos):
+    caminhos_gerados = []
+    for destino in destinos:
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        with pd.ExcelWriter(destino, engine='openpyxl') as writer:
+            for nome_aba, caminho_csv in arquivos_auditoria:
+                if caminho_csv.exists():
+                    df = ler_csv_padronizado(caminho_csv)
+                else:
+                    df = pd.DataFrame([{
+                        'ARQUIVO_ESPERADO': str(caminho_csv),
+                        'STATUS': 'arquivo nao encontrado',
+                    }])
+
+                df.to_excel(writer, sheet_name=nome_aba, index=False)
+
+        caminhos_gerados.append(destino)
+
+    return caminhos_gerados
+
+
 def salvar_auditoria_insumos_avaliacoes(config):
     arquivos_auditoria = [
         (
@@ -166,24 +187,51 @@ def salvar_auditoria_insumos_avaliacoes(config):
         config.arquivo_insumos.parent / 'auditoria_pre_validacao_avaliacoes.xlsx',
     ]
 
-    caminhos_gerados = []
-    for destino in destinos:
-        destino.parent.mkdir(parents=True, exist_ok=True)
-        with pd.ExcelWriter(destino, engine='openpyxl') as writer:
-            for nome_aba, caminho_csv in arquivos_auditoria:
-                if caminho_csv.exists():
-                    df = ler_csv_padronizado(caminho_csv)
-                else:
-                    df = pd.DataFrame([{
-                        'ARQUIVO_ESPERADO': str(caminho_csv),
-                        'STATUS': 'arquivo nao encontrado',
-                    }])
+    return salvar_auditoria_insumos(arquivos_auditoria, destinos)
 
-                df.to_excel(writer, sheet_name=nome_aba, index=False)
 
-        caminhos_gerados.append(destino)
+def salvar_auditoria_insumos_negativas(config):
+    arquivos_auditoria = [
+        (
+            '02_locais_sem_contratacao',
+            config.pasta_resumo_negativas
+            / 'exec_02_contratacao'
+            / 'exec_02_locais_sem_contratacao.csv',
+        ),
+        (
+            '02_linhas_sem_contratacao',
+            config.pasta_resumo_negativas
+            / 'exec_02_contratacao'
+            / 'exec_02_linhas_sem_contratacao.csv',
+        ),
+        (
+            '03_class_nao_classificados',
+            config.pasta_resumo_negativas
+            / 'exec_03_classificacao'
+            / 'exec_03_classificacao_nao_classificados_detalhado.csv',
+        ),
+        (
+            '04_local_nao_encontrados',
+            config.pasta_resumo_negativas
+            / 'exec_04_local_editado'
+            / 'exec_04_local_editado_nao_encontrados.csv',
+        ),
+        (
+            '02_locais_sem_uf',
+            config.pasta_resumo_negativas
+            / 'exec_02_contratacao'
+            / 'exec_02_locais_sem_uf.csv',
+        ),
+    ]
 
-    return caminhos_gerados
+    destinos = [
+        config.pasta_resumo_negativa
+        / 'auditoria_insumos'
+        / 'auditoria_pre_validacao_negativas.xlsx',
+        config.arquivo_insumos.parent / 'auditoria_pre_validacao_negativas.xlsx',
+    ]
+
+    return salvar_auditoria_insumos(arquivos_auditoria, destinos)
 
 
 def executar_negativas(config):
@@ -281,12 +329,15 @@ def executar_negativas(config):
         exist_ok=True,
     )
     salvar_csv_padronizado(df, config.arquivo_csv_final_pre_validacao_negativas)
+    caminhos_auditoria = salvar_auditoria_insumos_negativas(config)
     caminho_resumo_mestre = salvar_resumo_mestre_negativas(config, registros)
 
     print(
         'CSV final da pre-validacao de negativas gerado: '
         f'{config.arquivo_csv_final_pre_validacao_negativas}'
     )
+    for caminho_auditoria in caminhos_auditoria:
+        print(f'Auditoria de insumos negativas gerada: {caminho_auditoria}')
     print(f'Resumo mestre negativas gerado: {caminho_resumo_mestre}')
     print('Pipeline de pre-validacao de negativas finalizada.')
     return caminho_resumo_mestre
