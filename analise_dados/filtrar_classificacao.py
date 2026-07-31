@@ -3,15 +3,15 @@ from pathlib import Path
 
 import pandas as pd
 
-arquivo_entrada = Path('data_exec/avaliacoes/04_base_com_classificacao.csv')
+arquivo_entrada = Path('data_exec/pipeline/pipeline_pre_validacao_avaliacoes_base_final.csv')
 arquivo_saida = Path('analise_dados/resultado_filtro_classificacao.csv')
 
 # Preencha com o valor desejado ou deixe None para nao filtrar a coluna.
-filtro_tipo = 5
+filtro_tipo = None
 filtro_contratacao = None
-filtro_local = None
+filtro_local = "MEDICINA PREVENTIVA BOA VISTA"
 filtro_local_editado = None
-filtro_especialidade = None
+filtro_especialidade = "PLANEJAMENTO FAMILIAR- NB"
 filtro_classificacao = None
 
 # Preencha com o valor que deve ser excluido ou deixe None para nao aplicar.

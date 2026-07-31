@@ -85,7 +85,7 @@ regras_grupos = {
         'TELECONSULTA ELETIVA',
         'TELEMEDICINA',
         'TELECONSULTA CASE',
-        'TELECONSULTA URG\u00caNCIA',
+        'TELECONSULTA URGENCIA',
     ],
 }
 

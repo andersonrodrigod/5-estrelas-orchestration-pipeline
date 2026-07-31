@@ -1,5 +1,5 @@
 DOCUMENTAÇÃO DO PROCESSO 5 ESTRELAS
-Última revisão deste documento: 2026-07-28
+Última revisão deste documento: 2026-07-08
 
 1. VISÃO GERAL
 
@@ -216,26 +216,6 @@ O código de contratação lê essa aba para preencher:
 O código de local editado também deve consultar essa aba para preencher:
 - `LOCAL EDITADO`
 
-Ponto importante sobre a manutenção manual:
-Hoje, para a parte de locais, contratação, local editado e UF, a manutenção deve ser centralizada na aba `contratacao`. Antes o processo podia depender de conferências distribuídas em mais de uma aba, mas a lógica atual do código usa essa aba como principal referência para:
-- identificar a `CONTRATACAO` do local;
-- preencher `UF` quando a base vier vazia, nula ou marcada com `-`;
-- preencher o `LOCAL EDITADO` padronizado.
-
-Na prática, quando a auditoria apontar local sem contratação, local sem UF ou local editado não encontrado, a correção esperada deve ser feita na aba `contratacao` do arquivo de insumos. Essa aba precisa manter o local de entrada na coluna `Local` e os retornos esperados nas colunas `contratacao`, `UF` e `Local editado`.
-
-Arquivo de auditoria usado como apoio para saneamento:
-`auditoria/saida_resumo_avaliacoes/auditoria_insumos/auditoria_pre_validacao_avaliacoes.xlsx`
-
-Esse arquivo também pode ser copiado para a pasta do próprio insumo como:
-`auditoria_pre_validacao_avaliacoes.xlsx`
-
-Ele deve ser usado como devolutiva para atualizar a aba `contratacao`, principalmente nos casos de:
-- locais sem contratação;
-- linhas sem contratação;
-- locais sem UF;
-- locais editados não encontrados.
-
 `regra_classificacao.xlsx`
 Contém a aba `regras_classificacao`. Essa planilha é o motor de classificação da etapa 04.
 
@@ -391,15 +371,6 @@ O que ela faz:
 6. Preenche `CONTRATACAO` a partir do de-para.
 7. Conta rede própria, rede credenciada, sem contratação e sem UF.
 
-Orientação atual de manutenção:
-A etapa 02 deve ser saneada pela aba `contratacao` do arquivo `insumos 5 estrelas.xlsx`. Portanto, quando a auditoria indicar que um local não encontrou contratação ou UF, a correção deve ser feita nessa aba, garantindo que o `Local` esteja cadastrado e que as colunas `contratacao` e `UF` estejam preenchidas corretamente.
-
-Essa mesma aba também serve de referência para o `LOCAL EDITADO`, usado na etapa 05. Por isso, o ideal é que cada local relevante tenha, na mesma linha do insumo:
-- `Local`;
-- `contratacao`;
-- `UF`;
-- `Local editado`.
-
 Saída individual:
 - `data_exec/avaliacoes/02_base_com_contratacao.csv`
 
@@ -434,28 +405,6 @@ O cálculo usa as notas válidas nas colunas:
 - `NOTA5`
 
 A nota geral é calculada pela média das notas válidas da linha. Se uma linha tem menos de cinco notas, a média considera apenas as notas preenchidas e numéricas.
-
-Detalhamento do cálculo:
-Antes de calcular, o sistema converte `NOTA1` a `NOTA5` para número. Valores vazios, textos ou valores inválidos não entram na média, porque são tratados como nota inválida.
-
-O sistema também calcula a coluna `Quantidade notas validas`, que representa quantas notas numéricas aquela linha possui entre `NOTA1` e `NOTA5`.
-
-Regra aplicada:
-`NOTA GERAL = média das notas válidas entre NOTA1, NOTA2, NOTA3, NOTA4 e NOTA5`
-
-Exemplo:
-- `NOTA1 = 5`
-- `NOTA2 = 4`
-- `NOTA3 = 5`
-- `NOTA4 = vazio`
-- `NOTA5 = 4`
-
-Nesse caso:
-- `Quantidade notas validas = 4`
-- `NOTA GERAL = (5 + 4 + 5 + 4) / 4`
-- `NOTA GERAL = 4,50`
-
-O resultado é arredondado para duas casas decimais.
 
 Saída individual:
 - `data_exec/avaliacoes/03_base_com_nota.csv`
@@ -517,7 +466,6 @@ Quando duvidar:
 - Se uma classificação mudou inesperadamente, verificar `exec_04_classificacao_sobrescritas.csv`.
 - Se uma linha ficou sem classificação, verificar `exec_04_classificacao_nao_classificados_detalhado.csv`.
 - Se a execução parar com erro de regra, a planilha tem regra inválida: coluna inexistente, comparador inválido, ordem vazia, regex inválido ou regra ativa incompleta.
-- Analisar as regras por etapa para identificar em qual momento cada registro deixou de atender aos critérios de uma classificação e passou para outra, ou entender por que determinada regra não foi aplicada. Para isso, acesse a planilha regra_classificacao.xlsx e realize a análise etapa a etapa.
 
 
 8.6. Execução 05 - Local editado
@@ -613,26 +561,6 @@ Preencher `META`.
 
 A meta é usada depois para calcular o status da unidade. Sem meta, a etapa de status pode ficar vazia ou incoerente.
 
-Detalhamento da regra:
-A `META` não é calculada por fórmula matemática dentro da base. Ela é buscada no arquivo `insumos 5 estrelas.xlsx`, aba `insumos`, usando a `CLASSIFICACAO` como chave.
-
-Antes da comparação, o sistema padroniza os textos para reduzir divergências:
-- remove espaços extras;
-- remove acentos;
-- converte para maiúsculo.
-
-Regra aplicada:
-`META = valor cadastrado no insumo para a CLASSIFICACAO correspondente`
-
-Exemplo:
-- `CLASSIFICACAO` da base: `HOSPITALAR`
-- grupo correspondente no insumo: `HOSPITALAR`
-- meta cadastrada no insumo: `4,25`
-
-Nesse caso, todas as linhas com essa classificação recebem `META = 4,25`.
-
-Quando a classificação não é encontrada no insumo, a meta fica vazia e o caso aparece na auditoria de não encontrados da etapa 08.
-
 Saída individual:
 - `data_exec/avaliacoes/08_base_com_meta.csv`
 
@@ -663,34 +591,6 @@ Para cada grupo, a etapa calcula a média de `NOTA GERAL`. Essa média é gravad
 
 Exemplo conceitual:
 Se uma unidade tem 20 avaliações para a mesma classificação, mesmo local editado e mesma UF, o resultado da unidade será a média das 20 notas gerais.
-
-Detalhamento do cálculo:
-O `RESULTADO DA UNIDADE` é uma média consolidada. Ele não é calculado linha a linha de forma isolada; ele é calculado por grupo.
-
-O grupo é formado pela combinação:
-`CLASSIFICACAO + LOCAL EDITADO + UF`
-
-Regra aplicada:
-`RESULTADO DA UNIDADE = média da NOTA GERAL de todas as linhas do mesmo grupo`
-
-Exemplo:
-- `CLASSIFICACAO`: `HOSPITALAR`
-- `LOCAL EDITADO`: `HOSPITAL SAO BERNARDO`
-- `UF`: `SP`
-
-Notas gerais encontradas para esse mesmo grupo:
-- `5,00`
-- `4,00`
-- `4,50`
-- `5,00`
-
-Então:
-`RESULTADO DA UNIDADE = (5,00 + 4,00 + 4,50 + 5,00) / 4`
-
-Resultado:
-`RESULTADO DA UNIDADE = 4,63`
-
-Todas as linhas desse mesmo grupo recebem o mesmo valor de `RESULTADO DA UNIDADE`.
 
 Um detalhe atual:
 Quando `UF` está vazia, vazia textual ou marcada como `vazio`, a etapa preenche `UF` como `CE` antes do agrupamento.
@@ -725,26 +625,6 @@ Essa etapa depende de:
 - `RESULTADO DA UNIDADE`
 
 A regra geral é comparar o resultado da unidade com a meta. Se o resultado atinge ou supera a meta, a unidade fica em situação positiva. Se fica abaixo, a unidade fica em situação negativa.
-
-Detalhamento da regra:
-- Se `RESULTADO DA UNIDADE` for maior ou igual à `META`, o status será `dentro da meta`.
-- Se `RESULTADO DA UNIDADE` for menor que a `META`, o status será `fora da meta`.
-- Se `RESULTADO DA UNIDADE` ou `META` estiver vazio, o status fica sem preenchimento.
-
-Regra aplicada:
-`STATUS UNIDADE = dentro da meta` quando `RESULTADO DA UNIDADE >= META`
-
-`STATUS UNIDADE = fora da meta` quando `RESULTADO DA UNIDADE < META`
-
-Exemplo:
-- `META = 4,25`
-- `RESULTADO DA UNIDADE = 4,63`
-- `STATUS UNIDADE = dentro da meta`
-
-Outro exemplo:
-- `META = 4,25`
-- `RESULTADO DA UNIDADE = 4,10`
-- `STATUS UNIDADE = fora da meta`
 
 Saída individual:
 - `data_exec/avaliacoes/10_base_com_status_unidade.csv`

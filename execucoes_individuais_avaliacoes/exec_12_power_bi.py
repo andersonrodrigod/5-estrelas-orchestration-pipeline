@@ -102,7 +102,7 @@ mapa_colunas_origem = {
     'dt_resposta': 'DT_RESPOSTA',
     'nota geral': 'NOTA GERAL',
     'contratação': 'CONTRATACAO',
-    'classificação': 'CLASSIFICACAO',
+    'CLASSIFICAÇÃO': 'CLASSIFICACAO',
     'operadora': 'OPERADORA',
     'local editado': 'LOCAL EDITADO',
     'Meta': 'META',
@@ -156,8 +156,8 @@ def criar_base_power_bi(df):
     df_saida['data_atendimento'] = datas_atendimento.dt.strftime('%d/%m/%Y')
     df_saida.loc[datas_atendimento.isna(), 'data_atendimento'] = ''
 
-    classificacao_antes = df_saida['classificação'].copy()
-    df_saida['classificação'] = df_saida['classificação'].replace(ajustes_classificacao)
+    classificacao_antes = df_saida['CLASSIFICAÇÃO'].copy()
+    df_saida['CLASSIFICAÇÃO'] = df_saida['CLASSIFICAÇÃO'].replace(ajustes_classificacao)
 
     return df_saida, classificacao_antes
 
@@ -209,7 +209,7 @@ def salvar_resumos(df_entrada, df_saida, classificacao_antes):
     ])
     df_classificacao = contar_ajustes_classificacao(
         classificacao_antes,
-        df_saida['classificação'],
+        df_saida['CLASSIFICAÇÃO'],
     )
 
     salvar_csv_texto(df_colunas, arquivo_colunas_csv)

@@ -123,17 +123,17 @@ def caminho_saida_excel():
     return CONSULTA_OUTPUT_DIR / nome
 
 
-def executar_consulta_df(conn, sql, parametros):
+def executar_consulta_df(conn, sql, binds):
     nomes_binds = set(re.findall(r":([A-Za-z_][A-Za-z0-9_]*)", sql))
-    parametros_consulta = {
+    binds_consulta = {
         nome: valor
-        for nome, valor in parametros.items()
+        for nome, valor in binds.items()
         if nome in nomes_binds
     }
 
     with conn.cursor() as cursor:
         cursor.arraysize = FETCH_SIZE
-        cursor.execute(sql, parametros_consulta)
+        cursor.execute(sql, binds_consulta)
         colunas = [coluna[0] for coluna in cursor.description]
         linhas = []
 
@@ -159,12 +159,6 @@ def montar_consultas(tabela):
             FROM {tabela}
             WHERE {filtros_validos}
             UNION ALL
-            SELECT 'NQA' AS INDICADOR, COUNT(*) AS QUANTIDADE
-            FROM {tabela}
-            WHERE ANO = :ano
-              AND MES = :mes
-              AND NOTA1 = 'NQA'
-            UNION ALL
             SELECT 'N/A' AS INDICADOR, COUNT(*) AS QUANTIDADE
             FROM {tabela}
             WHERE ANO = :ano
@@ -179,11 +173,21 @@ def montar_consultas(tabela):
         """,
         "quantidade_por_dia": f"""
             SELECT
-                TRUNC(TO_DATE(DT_RESPOSTA, 'YYYY-MM-DD HH24:MI:SS')) AS DIA,
+                DIA,
                 COUNT(*) AS QUANTIDADE
-            FROM {tabela}
-            WHERE {filtros_validos}
-            GROUP BY TRUNC(TO_DATE(DT_RESPOSTA, 'YYYY-MM-DD HH24:MI:SS'))
+            FROM (
+                SELECT
+                    TRUNC(
+                        TO_DATE(
+                            DT_RESPOSTA DEFAULT NULL ON CONVERSION ERROR,
+                            'YYYY-MM-DD HH24:MI:SS'
+                        )
+                    ) AS DIA
+                FROM {tabela}
+                WHERE {filtros_validos}
+            )
+            WHERE DIA IS NOT NULL
+            GROUP BY DIA
             ORDER BY DIA
         """,
         "urgencia": """
@@ -219,14 +223,12 @@ def montar_resumo_unico(dfs):
         for _, linha in dfs["contagens_5_estrelas"].iterrows()
     }
     validos = contagens.get("VALIDOS", 0)
-    nqa = contagens.get("NQA", 0)
     n_a = contagens.get("N/A", 0)
     ign = contagens.get("IGN", 0)
     urgencia = int(dfs["urgencia"].iloc[0]["TOTAL_ATENDIMENTOS"])
     eletivos = int(dfs["eletivos"].iloc[0]["TOTAL_ATENDIMENTOS"])
-    avaliacoes_mais_nqa = validos + nqa
     atendimentos = urgencia + eletivos
-    percentual = avaliacoes_mais_nqa / atendimentos if atendimentos else 0
+    percentual = validos / atendimentos if atendimentos else 0
 
     return pd.DataFrame(
         [
@@ -234,14 +236,12 @@ def montar_resumo_unico(dfs):
                 "ANO": CONSULTA_ANO,
                 "MES": CONSULTA_MES,
                 "VALIDOS": validos,
-                "NQA": nqa,
                 "N/A": n_a,
                 "IGN": ign,
-                "AVALIACOES_MAIS_NQA": avaliacoes_mais_nqa,
                 "URGENCIA": urgencia,
                 "ELETIVOS": eletivos,
                 "ATENDIMENTOS": atendimentos,
-                "PERCENTUAL_AVALIACOES_NQA_SOBRE_ATENDIMENTOS": percentual,
+                "PERCENTUAL_VALIDOS_SOBRE_ATENDIMENTOS": percentual,
             }
         ]
     )
@@ -254,7 +254,7 @@ def escrever_aba_resumo(writer, resumo_df, quantidade_por_dia_df):
     worksheet = writer.sheets[sheet_name]
 
     percentual_coluna = resumo_df.columns.get_loc(
-        "PERCENTUAL_AVALIACOES_NQA_SOBRE_ATENDIMENTOS"
+        "PERCENTUAL_VALIDOS_SOBRE_ATENDIMENTOS"
     ) + 1
     worksheet.cell(row=2, column=percentual_coluna).number_format = "0.00%"
 
@@ -281,7 +281,7 @@ def consultar():
     ultimo_dia = monthrange(CONSULTA_ANO, CONSULTA_MES)[1]
     data_inicio = datetime(CONSULTA_ANO, CONSULTA_MES, 1)
     data_fim = datetime(CONSULTA_ANO, CONSULTA_MES, ultimo_dia, 23, 59, 59)
-    parametros = {
+    binds = {
         "ano": CONSULTA_ANO,
         "mes": CONSULTA_MES,
         "data_inicio": data_inicio,
@@ -299,7 +299,7 @@ def consultar():
         dfs = {}
         for nome, sql in consultas.items():
             print(f"Executando consulta: {nome}")
-            dfs[nome] = executar_consulta_df(conn, sql, parametros)
+            dfs[nome] = executar_consulta_df(conn, sql, binds)
             print(f"Linhas retornadas em {nome}: {len(dfs[nome]):,}")
 
     fim = datetime.now()
