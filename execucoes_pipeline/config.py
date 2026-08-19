@@ -3,8 +3,6 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
-
 # criar um loop
 
 
@@ -47,13 +45,13 @@ def criar_config_pre_validacao():
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
-            'data/oracle/5_estrelas_junho_2026.csv',
+            'data/oracle/5_estrelas_julho.csv',
         )
     )
     arquivo_entrada_negativas = Path(
         os.environ.get(
             'PIPELINE_NEGATIVAS_ENTRADA',
-            'data/manual/5_estrelas_maio_negativo.csv',
+            'data/oracle/5_estrelas_negativas_julho.csv',
         )
     )
 
@@ -65,22 +63,12 @@ def criar_config_pre_validacao():
         pasta_resumo_separacao=pasta_resumo_separacao,
         arquivo_entrada_bruta=arquivo_entrada_bruta,
         arquivo_entrada_negativas=arquivo_entrada_negativas,
-        arquivo_insumos=resolver_caminho_onedrive_comercial(
-            Path('utils/insumos/insumos 5 estrelas.xlsx'),
-            Path('5 Estrelas/INSUMOS/insumos 5 estrelas.xlsx'),
+        arquivo_insumos=Path('utils/insumos/insumos 5 estrelas.xlsx'),
+        arquivo_regras_classificacao=Path(
+            'utils/insumos/regra_classificacao.xlsx'
         ),
-        arquivo_regras_classificacao=resolver_caminho_onedrive_comercial(
-            Path('utils/insumos/regra_classificacao.xlsx'),
-            Path('5 Estrelas/INSUMOS/regra_classificacao.xlsx'),
-        ),
-        arquivo_regras_ajuste=resolver_caminho_onedrive_comercial(
-            Path('utils/insumos/regra_ajuste_final.xlsx'),
-            Path('5 Estrelas/INSUMOS/regra_ajuste_final.xlsx'),
-        ),
-        arquivo_regras_operadora=resolver_caminho_onedrive_comercial(
-            Path('utils/insumos/regras_operadora.xlsx'),
-            Path('5 Estrelas/INSUMOS/regras_operadora.xlsx'),
-        ),
+        arquivo_regras_ajuste=Path('utils/insumos/regra_ajuste_final.xlsx'),
+        arquivo_regras_operadora=Path('utils/insumos/regras_operadora.xlsx'),
         pasta_resumo=pasta_resumo_pipeline / 'exec_pre_validacao_avaliacoes',
         pasta_resumo_negativas=(
             pasta_resumo_pipeline / 'exec_pre_validacao_negativas'
@@ -105,7 +93,7 @@ def criar_config_pre_validacao():
         pasta_saida_excel_separacao_sharepoint=Path(
             r'C:\Users\anderson.dossantos\HAPVIDA ASSISTÊNCIA MÉDICA LTDA'
             r'\5 Estrelas - Documentos\Base de Dados 5 Estrelas'
-            r'\base de dados junho 26\atualizações das classificações'
+            r'\base de dados julho 26\atualizações das classificações'
         ),
         arquivo_power_bi=Path('data_exec/pipeline/12_base_power_bi.csv'),
         pasta_resumo_arquivos_bi=(
@@ -131,8 +119,8 @@ def criar_config_pre_validacao():
             r'\3.5.1 - Bases Consolidadas'
         ),
         nomes_copia_power_bi={
-            'TIPO 1 A 3': '5_ESTRELAS_JUNHO_26_1.xlsx',
-            'TIPO 4 A 7': '5_ESTRELAS_JUNHO_26_2.xlsx',
-            'TIPO 8 OU MAIS': '5_ESTRELAS_JUNHO_26_3.xlsx',
+            'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
+            'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
+            'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
         },
     )
