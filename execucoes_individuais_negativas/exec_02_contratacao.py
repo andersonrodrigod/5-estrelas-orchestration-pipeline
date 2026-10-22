@@ -37,31 +37,11 @@ df_insumos = pd.read_excel(arquivo_insumos, sheet_name='contratacao')
 df_insumos['Local'] = df_insumos['Local'].astype('string').str.strip()
 df_insumos['contratacao'] = df_insumos['contratacao'].astype('string').str.strip().str.lower()
 df_insumos['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_insumos['Local'])
-if 'UF' in df_insumos.columns and 'UF' in df.columns:
-    df_insumos['UF'] = df_insumos['UF'].astype('string').str.strip().str.upper()
-    df_insumos_uf = df_insumos[
-        df_insumos['LOCAL_COMPARACAO'].notna()
-        & df_insumos['UF'].notna()
-        & ~df_insumos['UF'].fillna('').isin(['', '-'])
-    ].drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
-    mapa_uf = df_insumos_uf.set_index('LOCAL_COMPARACAO')['UF']
-else:
-    mapa_uf = None
-
 df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO', 'contratacao'])
 df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 
 mapa_contratacao = df_insumos.set_index('LOCAL_COMPARACAO')['contratacao']
-
-if mapa_uf is not None:
-    uf_atual = df['UF'].astype('string').str.strip()
-    uf_insumo = df['LOCAL_COMPARACAO'].map(mapa_uf)
-    mascara_uf_sem_valor = uf_atual.isna() | uf_atual.fillna('').isin(['', '-'])
-    mascara_preencher_uf = mascara_uf_sem_valor & uf_insumo.notna()
-    df.loc[mascara_preencher_uf, 'UF'] = uf_insumo[mascara_preencher_uf]
-    total_uf_preenchida_por_insumo = int(mascara_preencher_uf.sum())
-else:
-    total_uf_preenchida_por_insumo = 0
+total_uf_preenchida_por_insumo = 0
 
 df['CONTRATACAO'] = df['LOCAL_COMPARACAO'].map(mapa_contratacao)
 df['CONTRATACAO'] = df['CONTRATACAO'].astype('string').str.strip().str.lower()
@@ -77,20 +57,37 @@ locais_sem_contratacao = (
     .to_dict()
 )
 df_sem_contratacao = df[mascara_sem_contratacao].copy()
+colunas_grupo_sem_contratacao = [
+    coluna for coluna in ['UF', 'LOCAL', 'TIPO'] if coluna in df_sem_contratacao.columns
+]
 df_locais_sem_contratacao = (
     df_sem_contratacao
-    .assign(
-        UF=df_sem_contratacao['UF'].fillna('VAZIO'),
-        LOCAL=df_sem_contratacao['LOCAL'].fillna('VAZIO')
-    )
-    .groupby(['UF', 'LOCAL'], dropna=False)
+    .assign(**{
+        coluna: df_sem_contratacao[coluna].fillna('VAZIO')
+        for coluna in colunas_grupo_sem_contratacao
+    })
+    .groupby(colunas_grupo_sem_contratacao, dropna=False)
     .size()
     .reset_index(name='QUANTIDADE')
-    .sort_values(['QUANTIDADE', 'UF', 'LOCAL'], ascending=[False, True, True])
+    .sort_values(
+        ['QUANTIDADE', *colunas_grupo_sem_contratacao],
+        ascending=[False, *([True] * len(colunas_grupo_sem_contratacao))],
+    )
 )
-df_linhas_sem_contratacao = df_sem_contratacao[
-    ['CDUSUARIO', 'UF', 'LOCAL', 'DIA', 'MES', 'ANO', 'ESPECIALIDADE']
-].copy()
+colunas_linhas_sem_contratacao = [
+    coluna for coluna in [
+        'CDUSUARIO',
+        'UF',
+        'LOCAL',
+        'TIPO',
+        'DIA',
+        'MES',
+        'ANO',
+        'ESPECIALIDADE',
+    ]
+    if coluna in df_sem_contratacao.columns
+]
+df_linhas_sem_contratacao = df_sem_contratacao[colunas_linhas_sem_contratacao].copy()
 uf_atualizada = df['UF'].astype('string').str.strip()
 mascara_sem_uf = uf_atualizada.isna() | uf_atualizada.fillna('').isin(['', '-'])
 total_sem_uf = int(mascara_sem_uf.sum())

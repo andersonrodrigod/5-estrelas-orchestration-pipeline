@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import shutil
 import sys
 from pathlib import Path
 
@@ -12,10 +13,12 @@ arquivo_entrada = Path('data_exec/avaliacoes/10_base_com_status_unidade.csv')
 pasta_saida = Path('auditoria') / 'saida_resumo_avaliacoes' / 'exec_11_analise_dados'
 arquivo_saida_excel = pasta_saida / 'exec_11_analise_dados.xlsx'
 arquivo_documentacao_txt = pasta_saida / 'exec_11_analise_dados_explicacao.txt'
+arquivo_saida_excel_insumos = Path('utils') / 'insumos' / 'exec_11_analise_dados.xlsx'
 
 coluna_nota = 'NOTA GERAL'
 coluna_classificacao = 'CLASSIFICACAO'
 coluna_operadora = 'OPERADORA'
+coluna_contratacao = 'CONTRATACAO'
 coluna_unidade = 'LOCAL EDITADO'
 coluna_uf = 'UF'
 coluna_tipo = 'TIPO'
@@ -82,6 +85,7 @@ def validar_colunas_obrigatorias(df):
         coluna_nota,
         coluna_classificacao,
         coluna_operadora,
+        coluna_contratacao,
         coluna_unidade,
         coluna_uf,
         coluna_tipo,
@@ -216,9 +220,37 @@ def criar_linha_operadora_consolidada(df, nome, operadoras):
     }
 
 
+def aplicar_contagem_rede_credenciada_por_contratacao(df, resumo):
+    mascara_rede_credenciada = (
+        df[coluna_contratacao].astype('string').str.strip().str.lower()
+        == 'rede credenciada'
+    )
+    df_rede_credenciada = df.loc[mascara_rede_credenciada]
+    media = pd.to_numeric(df_rede_credenciada[coluna_nota], errors='coerce').mean()
+    valor_media = round(float(media), 2) if pd.notna(media) else pd.NA
+
+    linha_rede_credenciada = resumo[coluna_operadora] == 'REDE CREDENCIADA'
+    if linha_rede_credenciada.any():
+        resumo.loc[linha_rede_credenciada, 'QUANTIDADE'] = int(len(df_rede_credenciada))
+        resumo.loc[linha_rede_credenciada, 'MEDIA_NOTA_GERAL'] = valor_media
+    else:
+        resumo = pd.concat([
+            resumo,
+            pd.DataFrame([{
+                coluna_operadora: 'REDE CREDENCIADA',
+                'QUANTIDADE': int(len(df_rede_credenciada)),
+                'MEDIA_NOTA_GERAL': valor_media,
+                'TIPO_LINHA': 'OPERADORA',
+            }]),
+        ], ignore_index=True)
+
+    return resumo
+
+
 def criar_analise_operadora(df):
     resumo = criar_analise_por_coluna(df, coluna_operadora)
     resumo['TIPO_LINHA'] = 'OPERADORA'
+    resumo = aplicar_contagem_rede_credenciada_por_contratacao(df, resumo)
 
     consolidados = pd.DataFrame([
         criar_linha_operadora_consolidada(
@@ -267,6 +299,7 @@ def salvar_documentacao(caminho_documentacao=arquivo_documentacao_txt, caminho_e
         '1. RESUMO: totais gerais da base e media geral da NOTA GERAL.',
         '2. CLASSIFICACAO: quantidade e media da NOTA GERAL por CLASSIFICACAO, seguindo a ordem solicitada.',
         '3. OPERADORA: quantidade e media da NOTA GERAL por OPERADORA, ordenado da maior quantidade para a menor.',
+        '   A linha REDE CREDENCIADA usa a quantidade e media filtrando CONTRATACAO = rede credenciada.',
         '   Ao final da aba OPERADORA sao adicionadas linhas consolidadas:',
         '   - ATENDIMENTO PRESENCIAL = soma de HAPVIDA + PROMED.',
         '   - HAPVIDA CORPORATIVO = soma de HAPVIDA, NDI SP E RJ, TELECONSULTA, CLINIPAN, NDI MG, CCG, PROMED e ODONTOLOGIA.',
@@ -295,6 +328,7 @@ def processar_analise_dados(df_base):
     for coluna in [
         coluna_classificacao,
         coluna_operadora,
+        coluna_contratacao,
         coluna_unidade,
         coluna_uf,
         coluna_especialidade,
@@ -329,6 +363,8 @@ def salvar_analise_dados(analises, pasta_destino):
         )
 
     salvar_documentacao(destino_documentacao, destino_excel)
+    arquivo_saida_excel_insumos.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(destino_excel, arquivo_saida_excel_insumos)
     return destino_excel, destino_documentacao
 
 

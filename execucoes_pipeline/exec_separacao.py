@@ -40,7 +40,7 @@ arquivo_quantidades_csv = pasta_resumo / 'exec_separacao_quantidades_por_arquivo
 arquivo_classificacoes_csv = pasta_resumo / 'exec_separacao_classificacoes_por_grupo.csv'
 arquivo_nao_enviadas_csv = pasta_resumo / 'exec_separacao_classificacoes_nao_enviadas.csv'
 
-prefixo_saida = 'base de dados 5 estrelas maio_26 - '
+prefixo_saida = 'base de dados 5 estrelas setembro_26 - '
 coluna_classificacao = 'CLASSIFICACAO'
 
 regras_grupos = {
@@ -282,6 +282,14 @@ def carregar_json(caminho):
         return json.load(arquivo)
 
 
+def carregar_base_ou_vazia(caminho, cabecalhos, origem):
+    if caminho.exists():
+        return ler_csv_padronizado(caminho)
+
+    print(f'AVISO - base de {origem} nao encontrada; seguindo com {origem} vazio: {caminho}')
+    return pd.DataFrame(columns=cabecalhos)
+
+
 def criar_mapa_nomes_envio(nomes_classificacao):
     mapa = {}
 
@@ -446,8 +454,16 @@ print(f'Lendo avaliacoes: {arquivo_avaliacoes}')
 print(f'Lendo negativas: {arquivo_negativas}')
 print(f'Lendo nomes de classificacao para envio: {arquivo_nomes_classificacao}')
 
-df_avaliacoes = ler_csv_padronizado(arquivo_avaliacoes)
-df_negativas = ler_csv_padronizado(arquivo_negativas)
+df_avaliacoes = carregar_base_ou_vazia(
+    arquivo_avaliacoes,
+    cabecalhos_avaliacoes,
+    'avaliacoes',
+)
+df_negativas = carregar_base_ou_vazia(
+    arquivo_negativas,
+    cabecalhos_negativas,
+    'negativas',
+)
 nomes_classificacao = carregar_json(arquivo_nomes_classificacao)
 mapa_nomes_envio = criar_mapa_nomes_envio(nomes_classificacao)
 

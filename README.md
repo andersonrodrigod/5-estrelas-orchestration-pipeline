@@ -199,10 +199,10 @@ auditoria/saida_resumo_pipeline/exec_separacao
 | --- | --- | --- |
 | 00 | `exec_00_verificacao_campos.py` | Verifica campos vazios, inválidos e inconsistências iniciais. |
 | 01 | `exec_01_limpeza.py` | Padroniza colunas e remove linhas sem nota válida. |
-| 02 | `exec_02_contratacao.py` | Preenche contratação e completa UF pela aba `contratacao`. |
+| 02 | `exec_02_contratacao.py` | Preenche contratação pela aba `contratacao` e preserva UF vazia. |
 | 03 | `exec_03_nota.py` | Calcula `NOTA GERAL`. |
 | 04 | `exec_04_classificacao.py` | Aplica regras de classificação. |
-| 05 | `exec_05_local_editado.py` | Preenche `LOCAL EDITADO`. |
+| 05 | `exec_05_local_editado.py` | Preenche `LOCAL EDITADO` e completa UF vazia quando o LOCAL existe no insumo. |
 | 06 | `exec_06_ajustes_finais.py` | Aplica ajustes finais após a classificação. |
 | 07 | `exec_07_operadora.py` | Preenche ou revisa `OPERADORA`. |
 | 08 | `exec_08_meta.py` | Preenche `META`. |
@@ -218,7 +218,8 @@ As auditorias ajudam a explicar por que um dado foi preenchido, ficou vazio ou m
 
 Pontos comuns de investigação:
 
-- contratação ou UF vazia: consultar auditorias da etapa 02;
+- contratação vazia: consultar auditorias da etapa 02;
+- UF vazia apos de/para de LOCAL: consultar auditorias da etapa 05;
 - classificação vazia ou incorreta: consultar auditorias da etapa 04;
 - local editado vazio: consultar auditorias da etapa 05;
 - operadora vazia ou alterada: consultar auditorias da etapa 07;

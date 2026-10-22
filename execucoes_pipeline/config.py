@@ -45,13 +45,13 @@ def criar_config_pre_validacao():
     arquivo_entrada_bruta = Path(
         os.environ.get(
             'PIPELINE_AVALIACOES_ENTRADA',
-            'data/oracle/5_estrelas_julho.csv',
+            'data/oracle/5_estrelas_setembro.csv',
         )
     )
     arquivo_entrada_negativas = Path(
         os.environ.get(
             'PIPELINE_NEGATIVAS_ENTRADA',
-            'data/oracle/5_estrelas_negativas_julho.csv',
+            'data/oracle/5_estrelas_setembro_negativas.csv',
         )
     )
 
@@ -61,7 +61,7 @@ def criar_config_pre_validacao():
         pasta_resumo_pipeline=pasta_resumo_pipeline,
         pasta_resumo_negativa=pasta_resumo_negativa,
         pasta_resumo_separacao=pasta_resumo_separacao,
-        arquivo_entrada_bruta=arquivo_entrada_bruta,
+        arquivo_entrada_bruta=arquivo_entrada_bruta, 
         arquivo_entrada_negativas=arquivo_entrada_negativas,
         arquivo_insumos=Path('utils/insumos/insumos 5 estrelas.xlsx'),
         arquivo_regras_classificacao=Path(
@@ -93,7 +93,7 @@ def criar_config_pre_validacao():
         pasta_saida_excel_separacao_sharepoint=Path(
             r'C:\Users\anderson.dossantos\HAPVIDA ASSISTÊNCIA MÉDICA LTDA'
             r'\5 Estrelas - Documentos\Base de Dados 5 Estrelas'
-            r'\base de dados julho 26\atualizações das classificações'
+            r'\base de dados setembro 26\atualizações das classificações'
         ),
         arquivo_power_bi=Path('data_exec/pipeline/12_base_power_bi.csv'),
         pasta_resumo_arquivos_bi=(
@@ -119,8 +119,8 @@ def criar_config_pre_validacao():
             r'\3.5.1 - Bases Consolidadas'
         ),
         nomes_copia_power_bi={
-            'TIPO 1 A 3': '5_ESTRELAS_JULHO_26_1.xlsx',
-            'TIPO 4 A 7': '5_ESTRELAS_JULHO_26_2.xlsx',
-            'TIPO 8 OU MAIS': '5_ESTRELAS_JULHO_26_3.xlsx',
+            'TIPO 1 A 3': '5_ESTRELAS_SETEMBRO_26_1.xlsx',
+            'TIPO 4 A 7': '5_ESTRELAS_SETEMBRO_26_2.xlsx',
+            'TIPO 8 OU MAIS': '5_ESTRELAS_SETEMBRO_26_3.xlsx',
         },
     )

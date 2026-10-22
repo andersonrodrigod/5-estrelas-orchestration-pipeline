@@ -140,7 +140,91 @@ def salvar_auditoria_insumos(arquivos_auditoria, destinos):
     return caminhos_gerados
 
 
-def salvar_auditoria_insumos_avaliacoes(config):
+def normalizar_valor_auditoria(valor):
+    if pd.isna(valor):
+        return ''
+    return ' '.join(str(valor).strip().lower().split())
+
+
+def listar_distintos_auditoria(serie):
+    valores = (
+        serie.astype('string')
+        .fillna('')
+        .str.strip()
+    )
+    valores = sorted(valor for valor in valores.unique() if valor != '')
+    return ' | '.join(valores)
+
+
+def salvar_auditoria_rede_credenciada_operadora(config, df):
+    caminho = (
+        config.pasta_resumo
+        / 'exec_07_operadora'
+        / 'exec_07_rede_credenciada_operadora_divergente.csv'
+    )
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+
+    colunas_obrigatorias = ['CONTRATACAO', 'OPERADORA', 'LOCAL EDITADO']
+    colunas_faltando = [coluna for coluna in colunas_obrigatorias if coluna not in df.columns]
+    if colunas_faltando:
+        auditoria = pd.DataFrame([{
+            'STATUS': 'colunas obrigatorias ausentes',
+            'COLUNAS_AUSENTES': ', '.join(colunas_faltando),
+        }])
+        salvar_csv_padronizado(auditoria, caminho)
+        return caminho
+
+    contratacao = df['CONTRATACAO'].map(normalizar_valor_auditoria)
+    operadora = df['OPERADORA'].map(normalizar_valor_auditoria)
+    mascara = (
+        (contratacao == 'rede credenciada')
+        & (operadora != 'rede credenciada')
+    )
+    df_filtrado = df.loc[mascara].copy()
+
+    if df_filtrado.empty:
+        auditoria = pd.DataFrame(columns=[
+            'LOCAL EDITADO',
+            'QUANTIDADE',
+            'OPERADORAS',
+            'CLASSIFICACOES',
+            'UFS',
+        ])
+        salvar_csv_padronizado(auditoria, caminho)
+        return caminho
+
+    agregacoes = {
+        'QUANTIDADE': ('LOCAL EDITADO', 'size'),
+        'OPERADORAS': ('OPERADORA', listar_distintos_auditoria),
+    }
+    if 'CLASSIFICACAO' in df_filtrado.columns:
+        agregacoes['CLASSIFICACOES'] = ('CLASSIFICACAO', listar_distintos_auditoria)
+    if 'UF' in df_filtrado.columns:
+        agregacoes['UFS'] = ('UF', listar_distintos_auditoria)
+
+    auditoria = (
+        df_filtrado
+        .assign(**{'LOCAL EDITADO': df_filtrado['LOCAL EDITADO'].fillna('VAZIO')})
+        .groupby('LOCAL EDITADO', dropna=False)
+        .agg(**agregacoes)
+        .reset_index()
+        .sort_values(['QUANTIDADE', 'LOCAL EDITADO'], ascending=[False, True])
+    )
+
+    salvar_csv_padronizado(auditoria, caminho)
+    return caminho
+
+
+def salvar_auditoria_insumos_avaliacoes(config, df_avaliacoes=None):
+    caminho_rede_credenciada_operadora = (
+        salvar_auditoria_rede_credenciada_operadora(config, df_avaliacoes)
+        if df_avaliacoes is not None
+        else (
+            config.pasta_resumo
+            / 'exec_07_operadora'
+            / 'exec_07_rede_credenciada_operadora_divergente.csv'
+        )
+    )
     arquivos_auditoria = [
         (
             '02_locais_sem_contratacao',
@@ -173,10 +257,20 @@ def salvar_auditoria_insumos_avaliacoes(config):
             / 'exec_07_operadora_nao_classificados.csv',
         ),
         (
-            '02_locais_sem_uf',
+            '05_locais_sem_uf',
             config.pasta_resumo
-            / 'exec_02_contratacao'
-            / 'exec_02_locais_sem_uf.csv',
+            / 'exec_05_local_editado'
+            / 'exec_05_local_editado_locais_sem_uf.csv',
+        ),
+        (
+            '06_ajustes_resumo',
+            config.pasta_resumo
+            / 'exec_06_ajustes_finais'
+            / 'exec_06_ajustes_finais_auditoria_resumida.csv',
+        ),
+        (
+            '07_rede_cred_oper_div',
+            caminho_rede_credenciada_operadora,
         ),
     ]
 
@@ -217,10 +311,10 @@ def salvar_auditoria_insumos_negativas(config):
             / 'exec_04_local_editado_nao_encontrados.csv',
         ),
         (
-            '02_locais_sem_uf',
+            '04_locais_sem_uf',
             config.pasta_resumo_negativas
-            / 'exec_02_contratacao'
-            / 'exec_02_locais_sem_uf.csv',
+            / 'exec_04_local_editado'
+            / 'exec_04_local_editado_locais_sem_uf.csv',
         ),
     ]
 
@@ -533,7 +627,7 @@ def executar_avaliacoes(config):
 
     config.arquivo_csv_final_pre_validacao.parent.mkdir(parents=True, exist_ok=True)
     salvar_csv_padronizado(df, config.arquivo_csv_final_pre_validacao)
-    caminhos_auditoria = salvar_auditoria_insumos_avaliacoes(config)
+    caminhos_auditoria = salvar_auditoria_insumos_avaliacoes(config, df)
     caminho_resumo_mestre = salvar_resumo_mestre(config, registros)
 
     print(f'CSV final da pre-validacao gerado: {config.arquivo_csv_final_pre_validacao}')

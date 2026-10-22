@@ -22,6 +22,7 @@ arquivo_resumo_txt = pasta_resumo / 'exec_04_local_editado_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_04_local_editado_resumo.csv'
 arquivo_atualizados_csv = pasta_resumo / 'exec_04_local_editado_atualizados.csv'
 arquivo_nao_encontrados_csv = pasta_resumo / 'exec_04_local_editado_nao_encontrados.csv'
+arquivo_locais_sem_uf_csv = pasta_resumo / 'exec_04_local_editado_locais_sem_uf.csv'
 
 
 def normalizar_texto(serie):
@@ -72,6 +73,11 @@ df_insumos = df_insumos.dropna(subset=['LOCAL_COMPARACAO'])
 df_insumos = df_insumos.drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
 
 mapa_local_editado = df_insumos.set_index('LOCAL_COMPARACAO')['local editado']
+if 'UF' in df.columns and 'UF' in df_insumos.columns:
+    df_insumos['UF'] = normalizar_texto(df_insumos['UF']).str.upper()
+    mapa_uf = df_insumos.set_index('LOCAL_COMPARACAO')['UF']
+else:
+    mapa_uf = None
 
 local_editado_antes = df['LOCAL EDITADO'].copy()
 local_editado_novo = df['LOCAL_COMPARACAO'].map(mapa_local_editado)
@@ -89,6 +95,16 @@ nao_alterados = encontrados & (local_editado_antes.fillna('') == local_editado_n
 atualizados = encontrados & ~nao_alterados
 
 df.loc[atualizados, 'LOCAL EDITADO'] = local_editado_novo.loc[atualizados]
+if mapa_uf is not None:
+    uf_atual = df['UF'].astype('string').str.strip()
+    uf_nova = df['LOCAL_COMPARACAO'].map(mapa_uf)
+    mascara_uf_sem_valor = uf_atual.isna() | uf_atual.fillna('').isin(['', '-'])
+    mascara_uf_insumo_valida = uf_nova.notna() & ~uf_nova.fillna('').isin(['', '-'])
+    mascara_preencher_uf = mascara_uf_sem_valor & mascara_uf_insumo_valida
+    df.loc[mascara_preencher_uf, 'UF'] = uf_nova.loc[mascara_preencher_uf]
+    total_uf_preenchida_por_local = int(mascara_preencher_uf.sum())
+else:
+    total_uf_preenchida_por_local = 0
 df = df.drop(columns=['LOCAL_COMPARACAO'])
 
 resumo_atualizados = (
@@ -112,6 +128,28 @@ resumo_nao_encontrados = (
     .reset_index(name='QUANTIDADE')
     .sort_values(['QUANTIDADE', 'LOCAL'], ascending=[False, True])
 )
+if 'UF' in df.columns:
+    uf_atualizada = df['UF'].astype('string').str.strip()
+    mascara_sem_uf = uf_atualizada.isna() | uf_atualizada.fillna('').isin(['', '-'])
+    total_sem_uf = int(mascara_sem_uf.sum())
+    df_sem_uf = df.loc[mascara_sem_uf].copy()
+    resumo_locais_sem_uf = (
+        df_sem_uf
+        .assign(
+            LOCAL=df_sem_uf['LOCAL'].fillna('VAZIO'),
+            **{'LOCAL EDITADO': df_sem_uf['LOCAL EDITADO'].fillna('VAZIO')},
+            CONTRATACAO=df_sem_uf['CONTRATACAO'].fillna('VAZIO'),
+        )
+        .groupby(['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO'], dropna=False)
+        .size()
+        .reset_index(name='QUANTIDADE')
+        .sort_values(['QUANTIDADE', 'LOCAL', 'LOCAL EDITADO'], ascending=[False, True, True])
+    )
+else:
+    total_sem_uf = 0
+    resumo_locais_sem_uf = pd.DataFrame(
+        columns=['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO', 'QUANTIDADE']
+    )
 
 total_atualizados = int(atualizados.sum())
 total_nao_alterados = int(nao_alterados.sum())
@@ -121,6 +159,8 @@ print(f'Total de linhas recebidas: {len(df)}')
 print(f'Total atualizadas: {total_atualizados}')
 print(f'Total nao alteradas: {total_nao_alterados}')
 print(f'Total nao encontradas: {total_nao_encontrados}')
+print(f'Total UF preenchida por local: {total_uf_preenchida_por_local}')
+print(f'Total sem UF apos local editado: {total_sem_uf}')
 print(f'Gravando arquivo da execucao 04: {arquivo_saida}')
 
 arquivo_saida.parent.mkdir(exist_ok=True)
@@ -136,6 +176,8 @@ resumo = {
     'total_atualizados': total_atualizados,
     'total_nao_alterados': total_nao_alterados,
     'total_nao_encontrados': total_nao_encontrados,
+    'total_uf_preenchida_por_local': total_uf_preenchida_por_local,
+    'total_sem_uf': total_sem_uf,
     'valores_atualizados': transformar_em_lista_registros(
         resumo_atualizados,
         ['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO', 'QUANTIDADE']
@@ -164,6 +206,8 @@ linhas_txt = [
     f"Registros atualizados: {resumo['total_atualizados']}",
     f"Registros nao alterados: {resumo['total_nao_alterados']}",
     f"Registros nao encontrados: {resumo['total_nao_encontrados']}",
+    f"Total UF preenchida por local: {resumo['total_uf_preenchida_por_local']}",
+    f"Total sem UF apos local editado: {resumo['total_sem_uf']}",
     '',
     'PRINCIPAIS LOCAIS NAO ENCONTRADOS:'
 ]
@@ -186,12 +230,15 @@ df_resumo_csv = pd.DataFrame([
         'TOTAL_LINHAS_ENTRADA': resumo['total_linhas_entrada'],
         'TOTAL_ATUALIZADOS': resumo['total_atualizados'],
         'TOTAL_NAO_ALTERADOS': resumo['total_nao_alterados'],
-        'TOTAL_NAO_ENCONTRADOS': resumo['total_nao_encontrados']
+        'TOTAL_NAO_ENCONTRADOS': resumo['total_nao_encontrados'],
+        'TOTAL_UF_PREENCHIDA_POR_LOCAL': resumo['total_uf_preenchida_por_local'],
+        'TOTAL_SEM_UF': resumo['total_sem_uf'],
     }
 ])
 salvar_csv_padronizado(df_resumo_csv, arquivo_resumo_csv)
 
 salvar_csv_padronizado(resumo_atualizados, arquivo_atualizados_csv)
 salvar_csv_padronizado(resumo_nao_encontrados, arquivo_nao_encontrados_csv)
+salvar_csv_padronizado(resumo_locais_sem_uf, arquivo_locais_sem_uf_csv)
 
 print('Execucao 04 negativas finalizada.')

@@ -20,6 +20,7 @@ arquivo_resumo_json = pasta_resumo / 'exec_06_ajustes_finais_resumo.json'
 arquivo_resumo_txt = pasta_resumo / 'exec_06_ajustes_finais_resumo.txt'
 arquivo_resumo_csv = pasta_resumo / 'exec_06_ajustes_finais_resumo.csv'
 arquivo_auditoria_csv = pasta_resumo / 'exec_06_ajustes_finais_auditoria.csv'
+arquivo_auditoria_resumida_csv = pasta_resumo / 'exec_06_ajustes_finais_auditoria_resumida.csv'
 arquivo_regras_csv = pasta_resumo / 'exec_06_ajustes_finais_regras.csv'
 
 
@@ -131,6 +132,14 @@ def transformar_em_lista_registros(df_base, colunas):
         registros.append(item)
 
     return registros
+
+
+def primeiro_valor_preenchido(serie):
+    valores = serie.astype('string').fillna('').str.strip()
+    valores = valores[valores != '']
+    if valores.empty:
+        return ''
+    return valores.iloc[0]
 
 
 def carregar_regras(caminho):
@@ -310,12 +319,17 @@ def aplicar_ajustes(df_base, df_regras):
     auditorias = []
     resumos = []
     colunas_auditaveis = [
+        'CDUSUARIO',
         'CDATENDIMENTO',
         'NUM_BENEFICIARIO',
-        'LOCAL',
         'UF',
-        'CLASSIFICACAO',
+        'TIPO',
+        'CONTRATACAO',
+        'LOCAL',
         'LOCAL EDITADO',
+        'ESPECIALIDADE',
+        'OPERADORA',
+        'CLASSIFICACAO',
     ]
     colunas_auditaveis = [coluna for coluna in colunas_auditaveis if coluna in df_base.columns]
 
@@ -408,6 +422,60 @@ def aplicar_ajustes(df_base, df_regras):
     return df_base, pd.DataFrame(resumos), df_auditoria
 
 
+def resumir_auditoria_ajustes(df_auditoria):
+    colunas_contexto = [
+        'UF',
+        'TIPO',
+        'CONTRATACAO',
+        'LOCAL',
+        'LOCAL EDITADO',
+        'ESPECIALIDADE',
+        'OPERADORA',
+    ]
+    colunas_mudanca = [
+        'ORDEM_REGRA',
+        'DESCRICAO',
+        'ACAO',
+        'COLUNA_AJUSTAR',
+        'VALOR_ANTERIOR',
+        'VALOR_NOVO',
+    ]
+    colunas_saida = [
+        *colunas_contexto,
+        *colunas_mudanca,
+        'CDUSUARIO_EXEMPLO',
+        'QUANTIDADE',
+    ]
+
+    if df_auditoria.empty:
+        return pd.DataFrame(columns=colunas_saida)
+
+    df = df_auditoria.copy()
+    for coluna in [*colunas_contexto, *colunas_mudanca, 'CDUSUARIO']:
+        if coluna not in df.columns:
+            df[coluna] = ''
+
+    for coluna in [*colunas_contexto, *colunas_mudanca]:
+        df[coluna] = df[coluna].astype('string').fillna('VAZIO').str.strip()
+        df.loc[df[coluna] == '', coluna] = 'VAZIO'
+
+    agrupado = (
+        df
+        .groupby([*colunas_contexto, *colunas_mudanca], dropna=False)
+        .agg(
+            CDUSUARIO_EXEMPLO=('CDUSUARIO', primeiro_valor_preenchido),
+            QUANTIDADE=('CDUSUARIO', 'size'),
+        )
+        .reset_index()
+        .sort_values(
+            ['ORDEM_REGRA', 'ACAO', 'COLUNA_AJUSTAR', 'QUANTIDADE'],
+            ascending=[True, True, True, False],
+        )
+    )
+
+    return agrupado[colunas_saida]
+
+
 def processar_ajustes_finais(df_base, caminho_regras_ajuste):
     df = df_base.copy()
     df_regras = carregar_regras(caminho_regras_ajuste)
@@ -417,6 +485,7 @@ def processar_ajustes_finais(df_base, caminho_regras_ajuste):
         raise ValueError('\n'.join(erros_regras))
 
     df_saida, df_regras_resumo, df_auditoria = aplicar_ajustes(df, df_regras)
+    df_auditoria_resumida = resumir_auditoria_ajustes(df_auditoria)
     total_alteradas = (
         int(df_regras_resumo['TOTAL_ALTERADAS'].sum())
         if not df_regras_resumo.empty
@@ -453,6 +522,7 @@ def processar_ajustes_finais(df_base, caminho_regras_ajuste):
     artefatos = {
         'regras_resumo': df_regras_resumo,
         'auditoria': df_auditoria,
+        'auditoria_resumida': df_auditoria_resumida,
     }
 
     return df_saida, resumo, artefatos
@@ -472,12 +542,17 @@ def salvar_resumos_ajustes_finais(
     destino_resumo_txt = pasta_destino / 'exec_06_ajustes_finais_resumo.txt'
     destino_resumo_csv = pasta_destino / 'exec_06_ajustes_finais_resumo.csv'
     destino_auditoria_csv = pasta_destino / 'exec_06_ajustes_finais_auditoria.csv'
+    destino_auditoria_resumida_csv = (
+        pasta_destino / 'exec_06_ajustes_finais_auditoria_resumida.csv'
+    )
     destino_regras_csv = pasta_destino / 'exec_06_ajustes_finais_regras.csv'
 
     df_regras_resumo = artefatos['regras_resumo']
     df_auditoria = artefatos['auditoria']
+    df_auditoria_resumida = artefatos['auditoria_resumida']
     salvar_csv_padronizado(df_regras_resumo, destino_regras_csv)
     salvar_csv_padronizado(df_auditoria, destino_auditoria_csv)
+    salvar_csv_padronizado(df_auditoria_resumida, destino_auditoria_resumida_csv)
 
     resumo_saida = dict(resumo)
     resumo_saida.update({
@@ -485,6 +560,7 @@ def salvar_resumos_ajustes_finais(
         'arquivo_saida': str(arquivo_saida_resumo) if arquivo_saida_resumo else '',
         'arquivo_regras_csv': str(destino_regras_csv),
         'arquivo_auditoria_csv': str(destino_auditoria_csv),
+        'arquivo_auditoria_resumida_csv': str(destino_auditoria_resumida_csv),
     })
 
     with open(destino_resumo_json, 'w', encoding='utf-8') as arquivo:
@@ -497,6 +573,7 @@ def salvar_resumos_ajustes_finais(
         f"Arquivo de regras: {resumo_saida['arquivo_regras_ajuste']}",
         f"Arquivo de saida: {resumo_saida['arquivo_saida']}",
         f"Auditoria: {resumo_saida['arquivo_auditoria_csv']}",
+        f"Auditoria resumida: {resumo_saida['arquivo_auditoria_resumida_csv']}",
         '',
         f"Total de linhas na entrada: {resumo_saida['total_linhas_entrada']}",
         f"Total de linhas na saida: {resumo_saida['total_linhas_saida']}",
@@ -570,6 +647,7 @@ def salvar_resumos(df_entrada, df_saida, df_regras_resumo, df_auditoria):
     artefatos = {
         'regras_resumo': df_regras_resumo,
         'auditoria': df_auditoria,
+        'auditoria_resumida': resumir_auditoria_ajustes(df_auditoria),
     }
     salvar_resumos_ajustes_finais(
         resumo,

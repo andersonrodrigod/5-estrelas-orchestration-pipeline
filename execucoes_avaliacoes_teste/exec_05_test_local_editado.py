@@ -7,6 +7,7 @@ import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from funcoes_auxiliares.caminhos import resolver_caminho_onedrive_comercial
+from funcoes_auxiliares.normalizacao_local import normalizar_local_comparacao
 from funcoes_auxiliares.padronizacao_csv import ler_csv_padronizado, validar_tipos_dataframe
 
 
@@ -21,8 +22,9 @@ ARQUIVO_RESUMO_JSON = PASTA_RESUMO / 'exec_05_local_editado_resumo.json'
 ARQUIVO_RESUMO_CSV = PASTA_RESUMO / 'exec_05_local_editado_resumo.csv'
 ARQUIVO_ATUALIZADOS = PASTA_RESUMO / 'exec_05_local_editado_atualizados.csv'
 ARQUIVO_NAO_ENCONTRADOS = PASTA_RESUMO / 'exec_05_local_editado_nao_encontrados.csv'
+ARQUIVO_LOCAIS_SEM_UF = PASTA_RESUMO / 'exec_05_local_editado_locais_sem_uf.csv'
 
-COLUNAS_OBRIGATORIAS = ['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO']
+COLUNAS_OBRIGATORIAS = ['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO', 'UF']
 COLUNAS_OBRIGATORIAS_INSUMOS = ['Local', 'Local editado']
 COLUNA_QUANTIDADE = 'QUANTIDADE'
 LIMITE_EXEMPLOS = 20
@@ -41,7 +43,7 @@ def normalizar_texto(serie):
 
 
 def normalizar_chave(serie):
-    return normalizar_texto(serie).str.lower()
+    return normalizar_local_comparacao(serie)
 
 
 def validar_arquivos_obrigatorios():
@@ -53,6 +55,7 @@ def validar_arquivos_obrigatorios():
         ARQUIVO_RESUMO_CSV,
         ARQUIVO_ATUALIZADOS,
         ARQUIVO_NAO_ENCONTRADOS,
+        ARQUIVO_LOCAIS_SEM_UF,
     ]
     return [arquivo for arquivo in arquivos if not arquivo.exists()]
 
@@ -160,6 +163,22 @@ def validar_insumos(df_insumos):
     return erros, mapa
 
 
+def criar_mapa_uf_insumos(df_insumos):
+    if 'UF' not in df_insumos.columns:
+        return pd.Series(dtype='string')
+
+    df_mapa = df_insumos.copy()
+    df_mapa['LOCAL_COMPARACAO'] = normalizar_chave(df_mapa['Local'])
+    df_mapa['UF_COMPARACAO'] = normalizar_texto(df_mapa['UF']).str.upper()
+    df_mapa = df_mapa[
+        df_mapa['LOCAL_COMPARACAO'].notna()
+        & (df_mapa['LOCAL_COMPARACAO'] != '')
+        & df_mapa['UF_COMPARACAO'].notna()
+        & ~df_mapa['UF_COMPARACAO'].fillna('').isin(['', '-'])
+    ].drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
+    return df_mapa.set_index('LOCAL_COMPARACAO')['UF_COMPARACAO']
+
+
 def calcular_mascaras(df_entrada, df_saida, mapa_local_editado):
     locais = normalizar_chave(df_saida['LOCAL'])
     esperado = locais.map(mapa_local_editado)
@@ -227,6 +246,51 @@ def validar_local_editado_por_insumo(df_saida, mascaras):
     return erros
 
 
+def validar_uf_por_local(df_entrada, df_saida, mapa_uf):
+    erros = []
+    locais = normalizar_chave(df_entrada['LOCAL'])
+    uf_entrada = df_entrada['UF'].astype('string').str.strip()
+    uf_saida = df_saida['UF'].astype('string').str.strip().str.upper()
+    uf_insumo = locais.map(mapa_uf)
+
+    entrada_sem_uf = uf_entrada.isna() | uf_entrada.fillna('').isin(['', '-'])
+    deveria_preencher = entrada_sem_uf & uf_insumo.notna()
+    divergencias_preenchimento = deveria_preencher & (uf_saida != uf_insumo)
+
+    for linha, local, valor_saida, valor_esperado in zip(
+        df_saida.index[divergencias_preenchimento][:LIMITE_EXEMPLOS] + 2,
+        df_saida.loc[divergencias_preenchimento, 'LOCAL'].head(LIMITE_EXEMPLOS),
+        uf_saida[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
+        uf_insumo[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
+    ):
+        registrar_erro(
+            erros,
+            f"Linha {int(linha)} deveria preencher UF por LOCAL "
+            f"'{local}': esperado '{valor_esperado}', encontrado '{valor_saida}'."
+        )
+
+    uf_entrada_comparacao = uf_entrada.str.upper()
+    saida_alterou_uf_valida = ~entrada_sem_uf & (uf_saida != uf_entrada_comparacao)
+    for linha, local, valor_original, valor_saida in zip(
+        df_saida.index[saida_alterou_uf_valida][:LIMITE_EXEMPLOS] + 2,
+        df_saida.loc[saida_alterou_uf_valida, 'LOCAL'].head(LIMITE_EXEMPLOS),
+        uf_entrada_comparacao[saida_alterou_uf_valida].head(LIMITE_EXEMPLOS),
+        uf_saida[saida_alterou_uf_valida].head(LIMITE_EXEMPLOS),
+    ):
+        registrar_erro(
+            erros,
+            f"Linha {int(linha)} alterou UF que ja existia para LOCAL "
+            f"'{local}': original '{valor_original}', encontrado '{valor_saida}'."
+        )
+
+    return erros, int(deveria_preencher.sum())
+
+
+def contar_sem_uf(df):
+    valores = df['UF'].astype('string').str.strip()
+    return int((valores.isna() | valores.fillna('').isin(['', '-'])).sum())
+
+
 def calcular_totais(mascaras):
     return {
         'total_atualizados': int(mascaras['atualizados'].sum()),
@@ -235,10 +299,12 @@ def calcular_totais(mascaras):
     }
 
 
-def validar_resumo_json(df_saida, mascaras, resumo):
+def validar_resumo_json(df_saida, mascaras, resumo, total_uf_preenchida_por_local):
     erros = []
     totais = {
         'total_linhas_entrada': int(len(df_saida)),
+        'total_uf_preenchida_por_local': total_uf_preenchida_por_local,
+        'total_sem_uf': contar_sem_uf(df_saida),
         **calcular_totais(mascaras),
     }
 
@@ -265,6 +331,8 @@ def validar_resumo_csv(df_resumo_csv, resumo):
         'TOTAL_ATUALIZADOS': 'total_atualizados',
         'TOTAL_NAO_ALTERADOS': 'total_nao_alterados',
         'TOTAL_NAO_ENCONTRADOS': 'total_nao_encontrados',
+        'TOTAL_UF_PREENCHIDA_POR_LOCAL': 'total_uf_preenchida_por_local',
+        'TOTAL_SEM_UF': 'total_sem_uf',
     }
 
     for coluna_csv, campo_json in campos.items():
@@ -328,6 +396,39 @@ def validar_arquivo_nao_encontrados(df_nao_encontrados, resumo):
     return erros
 
 
+def validar_arquivo_locais_sem_uf(df_locais_sem_uf, df_saida):
+    erros = []
+    colunas_esperadas = ['LOCAL', 'LOCAL EDITADO', 'CONTRATACAO', 'QUANTIDADE']
+    colunas_faltando = [
+        coluna for coluna in colunas_esperadas
+        if coluna not in df_locais_sem_uf.columns
+    ]
+
+    for coluna in colunas_faltando:
+        registrar_erro(
+            erros,
+            f"Coluna obrigatoria ausente em {ARQUIVO_LOCAIS_SEM_UF}: {coluna}"
+        )
+
+    if colunas_faltando:
+        return erros
+
+    total_arquivo = int(
+        pd.to_numeric(df_locais_sem_uf['QUANTIDADE'], errors='coerce')
+        .fillna(0)
+        .sum()
+    )
+    total_esperado = contar_sem_uf(df_saida)
+    if total_arquivo != total_esperado:
+        registrar_erro(
+            erros,
+            f"Arquivo de locais sem UF soma {total_arquivo}, "
+            f"mas a saida tem {total_esperado} linha(s) sem UF."
+        )
+
+    return erros
+
+
 def validar_tipos(df_saida):
     return [
         f"Coluna {item['coluna']} com tipo {item['tipo_encontrado']} "
@@ -369,6 +470,7 @@ def executar():
     df_resumo_csv = pd.read_csv(ARQUIVO_RESUMO_CSV, low_memory=False)
     df_atualizados = pd.read_csv(ARQUIVO_ATUALIZADOS, low_memory=False)
     df_nao_encontrados = pd.read_csv(ARQUIVO_NAO_ENCONTRADOS, low_memory=False)
+    df_locais_sem_uf = pd.read_csv(ARQUIVO_LOCAIS_SEM_UF, low_memory=False)
 
     with open(ARQUIVO_RESUMO_JSON, 'r', encoding='utf-8') as arquivo:
         resumo = json.load(arquivo)
@@ -392,10 +494,25 @@ def executar():
     ):
         mascaras = calcular_mascaras(df_entrada, df_saida, mapa_local_editado)
         erros.extend(validar_local_editado_por_insumo(df_saida, mascaras))
-        erros.extend(validar_resumo_json(df_saida, mascaras, resumo))
+        mapa_uf = criar_mapa_uf_insumos(df_insumos)
+        erros_uf, total_uf_preenchida_por_local = validar_uf_por_local(
+            df_entrada,
+            df_saida,
+            mapa_uf,
+        )
+        erros.extend(erros_uf)
+        erros.extend(
+            validar_resumo_json(
+                df_saida,
+                mascaras,
+                resumo,
+                total_uf_preenchida_por_local,
+            )
+        )
         erros.extend(validar_resumo_csv(df_resumo_csv, resumo))
         erros.extend(validar_arquivo_atualizados(df_atualizados, resumo))
         erros.extend(validar_arquivo_nao_encontrados(df_nao_encontrados, resumo))
+        erros.extend(validar_arquivo_locais_sem_uf(df_locais_sem_uf, df_saida))
         erros.extend(validar_tipos(df_saida))
 
     if erros:
@@ -412,8 +529,10 @@ def executar():
     print(f"Nao encontrados: {totais['total_nao_encontrados']}")
     print('Quantidade de linhas preservada.')
     print('LOCAL EDITADO bate com o insumo por LOCAL.')
+    print('UF vazia ou "-" foi preenchida pelo insumo quando LOCAL foi encontrado.')
     print('Resumo JSON e resumo CSV batem com o CSV.')
     print('Arquivos de atualizados e nao encontrados batem com o resumo.')
+    print('Arquivo de locais sem UF apos local editado bate com o CSV.')
     print('Schema das colunas esta padronizado.')
     return 0
 

@@ -168,21 +168,6 @@ def validar_insumos_contratacao(df_insumos):
     return erros, mapa
 
 
-def criar_mapa_uf_insumos(df_insumos):
-    if 'UF' not in df_insumos.columns:
-        return pd.Series(dtype='string')
-
-    df_mapa = df_insumos.copy()
-    df_mapa['LOCAL_COMPARACAO'] = normalizar_local_comparacao(df_mapa['Local'])
-    df_mapa['UF_COMPARACAO'] = df_mapa['UF'].astype('string').str.strip().str.upper()
-    df_mapa = df_mapa[
-        df_mapa['LOCAL_COMPARACAO'].notna()
-        & df_mapa['UF_COMPARACAO'].notna()
-        & ~df_mapa['UF_COMPARACAO'].fillna('').isin(['', '-'])
-    ].drop_duplicates(subset=['LOCAL_COMPARACAO'], keep='first')
-    return df_mapa.set_index('LOCAL_COMPARACAO')['UF_COMPARACAO']
-
-
 def validar_contratacao_por_insumo(df_saida, mapa_contratacao):
     erros = []
     locais = normalizar_local_comparacao(df_saida['LOCAL'])
@@ -233,27 +218,24 @@ def validar_contratacao_por_insumo(df_saida, mapa_contratacao):
     return erros
 
 
-def validar_uf_por_insumo(df_entrada, df_saida, mapa_uf):
+def validar_uf_preservada(df_entrada, df_saida):
     erros = []
-    locais = normalizar_local_comparacao(df_entrada['LOCAL'])
     uf_entrada = df_entrada['UF'].astype('string').str.strip()
     uf_saida = df_saida['UF'].astype('string').str.strip().str.upper()
-    uf_insumo = locais.map(mapa_uf)
 
     entrada_sem_uf = uf_entrada.isna() | uf_entrada.fillna('').isin(['', '-'])
-    deveria_preencher = entrada_sem_uf & uf_insumo.notna()
-    divergencias_preenchimento = deveria_preencher & (uf_saida != uf_insumo)
+    saida_preencheu_uf_vazia = entrada_sem_uf & ~uf_saida.fillna('').isin(['', '-'])
 
     for linha, local, valor_saida, valor_esperado in zip(
-        df_saida.index[divergencias_preenchimento][:LIMITE_EXEMPLOS] + 2,
-        df_saida.loc[divergencias_preenchimento, 'LOCAL'].head(LIMITE_EXEMPLOS),
-        uf_saida[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
-        uf_insumo[divergencias_preenchimento].head(LIMITE_EXEMPLOS),
+        df_saida.index[saida_preencheu_uf_vazia][:LIMITE_EXEMPLOS] + 2,
+        df_saida.loc[saida_preencheu_uf_vazia, 'LOCAL'].head(LIMITE_EXEMPLOS),
+        uf_saida[saida_preencheu_uf_vazia].head(LIMITE_EXEMPLOS),
+        uf_entrada[saida_preencheu_uf_vazia].fillna('VAZIO').head(LIMITE_EXEMPLOS),
     ):
         registrar_erro(
             erros,
-            f"Linha {int(linha)} deveria receber UF do insumo para LOCAL "
-            f"'{local}': esperado '{valor_esperado}', encontrado '{valor_saida}'."
+            f"Linha {int(linha)} preencheu UF que estava vazia para LOCAL "
+            f"'{local}': original '{valor_esperado}', encontrado '{valor_saida}'."
         )
 
     uf_entrada_comparacao = uf_entrada.str.upper()
@@ -270,7 +252,7 @@ def validar_uf_por_insumo(df_entrada, df_saida, mapa_uf):
             f"'{local}': original '{valor_original}', encontrado '{valor_saida}'."
         )
 
-    return erros, int(deveria_preencher.sum())
+    return erros
 
 
 def contar_contratacoes(df):
@@ -407,13 +389,7 @@ def executar():
 
         total_uf_preenchida_esperado = 0
         if 'UF' in df_entrada.columns and 'UF' in df_saida.columns:
-            mapa_uf = criar_mapa_uf_insumos(df_insumos)
-            erros_uf, total_uf_preenchida_esperado = validar_uf_por_insumo(
-                df_entrada,
-                df_saida,
-                mapa_uf,
-            )
-            erros.extend(erros_uf)
+            erros.extend(validar_uf_preservada(df_entrada, df_saida))
 
         with open(ARQUIVO_RESUMO_JSON, 'r', encoding='utf-8') as arquivo:
             resumo = json.load(arquivo)
@@ -436,7 +412,7 @@ def executar():
     print('Quantidade de linhas preservada.')
     print('Valores de CONTRATACAO validos.')
     print('CONTRATACAO bate com o insumo por LOCAL.')
-    print('UF vazia ou "-" foi preenchida pelo insumo sem sobrescrever UF existente.')
+    print('UF vazia ou "-" foi preservada sem preenchimento pelo insumo.')
     print('Resumo de locais sem UF foi gerado.')
     print('Resumo JSON bate com o CSV.')
     print('Schema das colunas esta padronizado.')

@@ -62,7 +62,7 @@ TABLE_NAME = os.getenv(
 )
 
 CONSULTA_ANO = int(os.getenv("CONSULTA_ANO", "2026"))
-CONSULTA_MES = int(os.getenv("CONSULTA_MES", "7"))
+CONSULTA_MES = int(os.getenv("CONSULTA_MES", "9"))
 CONSULTA_OUTPUT_DIR = Path(
     os.getenv("CONSULTA_OUTPUT_DIR", r"data\oracle\consulta_5_estrelas")
 )
@@ -165,6 +165,12 @@ def montar_consultas(tabela):
               AND MES = :mes
               AND NOTA1 = 'N/A'
             UNION ALL
+            SELECT 'NQA' AS INDICADOR, COUNT(*) AS QUANTIDADE
+            FROM {tabela}
+            WHERE ANO = :ano
+              AND MES = :mes
+              AND NOTA1 = 'NQA'
+            UNION ALL
             SELECT 'IGN' AS INDICADOR, COUNT(*) AS QUANTIDADE
             FROM {tabela}
             WHERE ANO = :ano
@@ -224,11 +230,13 @@ def montar_resumo_unico(dfs):
     }
     validos = contagens.get("VALIDOS", 0)
     n_a = contagens.get("N/A", 0)
+    nqa = contagens.get("NQA", 0)
     ign = contagens.get("IGN", 0)
     urgencia = int(dfs["urgencia"].iloc[0]["TOTAL_ATENDIMENTOS"])
     eletivos = int(dfs["eletivos"].iloc[0]["TOTAL_ATENDIMENTOS"])
     atendimentos = urgencia + eletivos
-    percentual = validos / atendimentos if atendimentos else 0
+    validos_mais_nqa = validos + nqa
+    percentual = validos_mais_nqa / atendimentos if atendimentos else 0
 
     return pd.DataFrame(
         [
@@ -237,11 +245,12 @@ def montar_resumo_unico(dfs):
                 "MES": CONSULTA_MES,
                 "VALIDOS": validos,
                 "N/A": n_a,
+                "NQA": nqa,
                 "IGN": ign,
                 "URGENCIA": urgencia,
                 "ELETIVOS": eletivos,
                 "ATENDIMENTOS": atendimentos,
-                "PERCENTUAL_VALIDOS_SOBRE_ATENDIMENTOS": percentual,
+                "PERCENTUAL_VALIDOS_MAIS_NQA_SOBRE_ATENDIMENTOS": percentual,
             }
         ]
     )
@@ -254,7 +263,7 @@ def escrever_aba_resumo(writer, resumo_df, quantidade_por_dia_df):
     worksheet = writer.sheets[sheet_name]
 
     percentual_coluna = resumo_df.columns.get_loc(
-        "PERCENTUAL_VALIDOS_SOBRE_ATENDIMENTOS"
+        "PERCENTUAL_VALIDOS_MAIS_NQA_SOBRE_ATENDIMENTOS"
     ) + 1
     worksheet.cell(row=2, column=percentual_coluna).number_format = "0.00%"
 

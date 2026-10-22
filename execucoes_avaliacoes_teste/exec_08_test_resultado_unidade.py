@@ -58,12 +58,6 @@ def padronizar_chaves(df):
     for coluna in COLUNAS_GRUPO:
         df_base[coluna] = normalizar_texto(df_base[coluna])
 
-    mascara_uf_vazia = (
-        df_base['UF'].isna()
-        | (df_base['UF'] == '')
-        | (df_base['UF'].str.lower() == 'vazio')
-    )
-    df_base.loc[mascara_uf_vazia, 'UF'] = 'CE'
     return df_base
 
 
@@ -93,17 +87,6 @@ def validar_resultado_unidade(df_saida):
         )
 
     return erros, esperado
-
-
-def validar_uf_preenchida(df_saida):
-    erros = []
-    uf = normalizar_texto(df_saida['UF']).str.upper()
-    vazio = (uf == '') | (uf == 'VAZIO')
-
-    for linha in df_saida.index[vazio][:LIMITE_EXEMPLOS] + 2:
-        registrar_erro(erros, f"Linha {int(linha)} com UF vazia apos execucao 08.")
-
-    return erros
 
 
 def validar_resumo_json(df_saida, resumo, esperado_resultado):
@@ -246,7 +229,6 @@ def executar():
 
     erros_resultado, esperado_resultado = validar_resultado_unidade(df_saida)
     erros.extend(erros_resultado)
-    erros.extend(validar_uf_preenchida(df_saida))
     erros.extend(validar_resumo_json(df_saida, resumo, esperado_resultado))
     erros.extend(validar_arquivos_auxiliares(df_inspecao, df_linhas_chave_vazia, resumo))
     erros.extend(validar_resumo_csv(df_resumo_csv, resumo))
@@ -262,7 +244,7 @@ def executar():
     print(f'Total de linhas analisadas: {len(df_saida)}')
     print('Quantidade de linhas preservada.')
     print('RESULTADO DA UNIDADE bate com media por CLASSIFICACAO + LOCAL EDITADO + UF.')
-    print("UF vazia/'vazio' tratada para CE.")
+    print("UF vazia/'vazio' preservada como chave vazia.")
     print('Resumo JSON/CSV e arquivos auxiliares coerentes com o CSV.')
     print('Schema das colunas esta padronizado.')
     return 0

@@ -46,11 +46,6 @@ def processar_resultado_unidade(df_base):
     for coluna in colunas_grupo:
         df[coluna] = normalizar_texto(df[coluna])
 
-    mascara_uf_vazia = (
-        df['UF'].isna() | (df['UF'] == '') | (df['UF'].str.lower() == 'vazio')
-    )
-    df.loc[mascara_uf_vazia, 'UF'] = 'CE'
-
     df['NOTA GERAL'] = pd.to_numeric(df['NOTA GERAL'], errors='coerce')
     df['RESULTADO DA UNIDADE'] = (
         df.groupby(colunas_grupo, dropna=False)['NOTA GERAL']
